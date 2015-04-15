@@ -1,6 +1,6 @@
 @CHARSET "UTF-8";
 
-@keyframes .rpg-dialog-arrow-anim {
+@keyframes .dialog-box-arrow-anim {
    from { margin-top: 58px; }
      to { margin-top: 67px; }
 }
@@ -64,6 +64,7 @@
 	border-width: 38px; /* 30px */
 	margin-top: -35px;
 }
+
 .rpg-dialog:before {
 	border-color: rgba(194, 225, 245, 0);
 	border-right-color: black;

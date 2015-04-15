@@ -17,7 +17,7 @@ rpgDialog = {
 				setTimeout(function(){
 					$(selector).text($(selector).text() + dialog[i]);
 					if (i == dialog.length-1 ) {
-						$(selector).prepend('<div class="rpg-dialog-arrow"></div>');
+						$(selector).prepend('<div class="dialog-box-arrow"></div>');
 						$(selector).bind('click', function() {
 							if (dialogList[initial+1]) {
 								$(selector).text('');
