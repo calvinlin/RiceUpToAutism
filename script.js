@@ -1,13 +1,11 @@
 window.onload = function (){
 
-	
 var game = $(document.getElementById("game"));
 var sequence = function ( sequenceList ){
 	var nCalls = 0;
 	game
 		.on("next", function (){
 			if (sequenceList.length){
-				console.log(++nCalls);
 				sequenceList.shift()();
 			}
 		})
@@ -47,9 +45,11 @@ var sequential = function( context, blocking, fn ){
 // class Dialog:
 //
 //	constructor Dialog( [speed, selector] )
+// 	
+//  Determines the Dialog's speed and gets the element using the selector.  
 //
 //	Number speed	[default 10]				: how quickly each character is printed, in ms.
-//  String element	[default ".dialog-box"]		: a jQuery selector for the element which will
+//  jQuery element	[default ".dialog-box"]		: a jQuery selector for the element which will
 //												  function as a dialog box
 //
 //  printDialog( String dialog )				: prints out dialog to the specified element
@@ -105,18 +105,14 @@ Dialog.prototype.promptNext = function () { return sequential(this, true, functi
 }); };
 
 //
-// class Dialog:
+// class Animal:
 //
-//	constructor Dialog( [options] )
+//	constructor Animal( type, [elementClass] )
 //
-//	Number speed	[default 10]				: how quickly each character is printed, in ms.
-//  String element	[default ".dialog-box"]		: a jQuery selector for the element which will
-//												  function as a dialog box
-//
-//  printDialog( String dialog )				: prints out dialog to the specified element
-//  promptNext()								: idles until the player clicks on the dialog box
-//
-
+//	String type									: the type of animal represented.
+//  String elementClass							: the selector used to identify Animal elements
+//			[default [type]-animal-type]		  defaults to [type]-animal-type	
+//												  
 
 function Animal ( type, elementClass ){
 	
@@ -129,16 +125,102 @@ function Animal ( type, elementClass ){
 	
 }
 
-function Field ( selector, animalClass ){
+//
+// class Field:
+//
+//	constructor Field( [selector, animalClass, wanderingClass, animateFreq] )
+//
+//	jQuery element [default $(".field")]			: the jQuery representing the field. Is 
+//													  determined from $(selector)
+//  String animalClass [default "animal"]			: the selector used to identify Animal elements.
+//												  	  used to create the Animal elements.
+//  String wanderingClass 							: the selector used to identify wandering
+// 		[default "field-wandering"]					  animal elements. 
+//  Number animateFreq								: represents the amount of time a 'tick' of
+//		[default 10]								  animation should take, in ms
+//
+
+function Field ( selector, animalClass, wanderingClass, animateFreq ){
 
 	this.element = selector === undefined ? $(".field") : $(selector);
 	this.animalClass = animalClass === undefined ? "animal" : animalClass;
+	this.wanderingClass = wanderingClass === undefined ? "field-wandering" : wanderingClass;
+	this.animateFreq = animateFreq === undefined ? 10 : animateFreq;
 	
+	this.updater = function (){
+		
+		var self = this;
+		
+		$('.'+this.wanderingClass+'.'+this.animalClass).each(function(){
+			
+			var nUpdate = parseInt(this.getAttribute("duration"));
+			
+			var xPos = parseFloat(this.getAttribute("x-pos"));
+			var yPos = parseFloat(this.getAttribute("y-pos"));
+			
+			var heading = parseFloat(this.getAttribute("heading"));
+			
+			if (nUpdate === 0){
+				heading = Math.PI * 2 * Math.random();
+				nUpdate = 300 + Math.round(Math.random() * 200);
+			}
+
+			var newXPos = xPos + Math.cos(heading);
+			var newYPos = yPos + Math.sin(heading);
+			
+			var dims = this.getBoundingClientRect();
+			
+			console.log(newXPos, newYPos);
+			
+			
+			if (newXPos > self.element.width() - dims.width || newXPos < 0){
+				heading = Math.atan2(Math.sin(heading), -Math.cos(heading));
+				newXPos = xPos + Math.cos(heading);
+			}
+					
+			if (newYPos > self.element.height() - dims.height || newYPos < 0){
+				heading = Math.atan2(-Math.sin(heading), Math.cos(heading));
+				newYPos = yPos + Math.sin(heading);
+			}
+			
+			console.log(newXPos, newYPos);
+			this.setAttribute("duration", --nUpdate);
+			this.setAttribute("x-pos", newXPos);
+			this.setAttribute("y-pos", newYPos);
+			this.setAttribute("heading", heading);
+			$(this).transition({x: newXPos, y: newYPos}, 0, "linear");
+			
+			
+		});
+		
+		window.setTimeout(this.updater, this.animateFreq);
+		
+	}.bind(this);
+	
+	window.setTimeout(this.updater, this.animateFreq);
+
 }
 
 Field.prototype.spawn = function ( animalType ){ return sequential( this, false, function (){
 	
-	this.element.append('<div class="' + animalType.type + ' ' + this.animalClass + '"></div>');
+	var newElement = document.createElement("div");
+	newElement.classList.add(this.animalClass);
+	newElement.classList.add(this.wanderingClass);
+	newElement.classList.add(animalType.type);
+	
+	this.element.append(newElement);
+	
+	var dims = newElement.getBoundingClientRect();
+	
+	newElement.setAttribute("heading", Math.PI * 2 * Math.random());
+	newElement.setAttribute("x-pos", Math.random() * (this.element.width() - dims.width));
+	newElement.setAttribute("y-pos", Math.random() * (this.element.height() - dims.height));
+	newElement.setAttribute("duration", 300 + Math.round(Math.random() * 200));
+	
+	$(newElement).transition({
+		x: parseInt(newElement.getAttribute("x-pos")),
+		y: parseInt(newElement.getAttribute("y-pos"))
+	}, 0, "linear");
 	
 }); };
 
@@ -164,15 +246,20 @@ var dialog = new Dialog();
 // "next", which notifies that the given function has stopped.
 //
 
+var dummyAnimal = new Animal("corgi");
+var field = new Field(undefined, undefined, undefined, 30);
 
-sequence([
+sequence([field.spawn(dummyAnimal),
+          field.spawn(dummyAnimal),
+          field.spawn(dummyAnimal),
+          field.spawn(dummyAnimal),
           dialog.printDialog('Farmer: "Howdy! You must be my neighbor [username]!"'),
           dialog.promptNext(),
           dialog.clearDialog(),
           dialog.printDialog('Farmer: "Glad you could come take over my farm!"'),
           dialog.promptNext(),
           dialog.clearDialog(),
-          dialog.printDialog('Farmer: "Before I leave though, I need you to help me out with loading animals onto my truck."')	          
+          dialog.printDialog('Farmer: "Before I leave though, I need you to help me out with loading animals onto my truck."')
 ]);
 
 };
