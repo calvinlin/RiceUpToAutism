@@ -21,6 +21,7 @@ html {
 }
 
 .field {
+  z-index: 1;
   left: 50px;
   top: 50px;
   width: 980px;
@@ -30,15 +31,17 @@ html {
 }
 
 .animal {
+  z-index: 1;
   position: absolute;
   top: 0;
   left: 0;
   width: 100px;
   height: 100px;
-  background-color: white;
+  background-color: purple;
 }
 
 .dialog-head {
+  z-index: 0;
   left: 100px;
   bottom: 0;
   width: 200px;
@@ -48,6 +51,7 @@ html {
 }
 
 .dialog-box {
+  z-index: 0;
   position: absolute;
   left: 400px;
   bottom: 80px;
@@ -135,6 +139,8 @@ html {
 }
 
 .truck {
+  z-index: 0;
+  position: absolute;
   width: 220px;
   height: 450px;
   left: 1050px;

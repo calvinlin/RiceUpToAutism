@@ -1,5 +1,4 @@
 window.onload = function (){
-
 var game = $(document.getElementById("game"));
 var sequence = function ( sequenceList ){
 	var nCalls = 0;
@@ -14,7 +13,6 @@ var sequence = function ( sequenceList ){
 };
 
 var sequential = function( context, blocking, fn ){
-
 	newFn = function (){
 		if ( !blocking ){
 			game.trigger("next");
@@ -41,8 +39,9 @@ var sequential = function( context, blocking, fn ){
 };
 
 
-//
+//=======================================================================================
 // class Dialog:
+//=======================================================================================
 //
 //	constructor Dialog( [speed, selector] )
 // 	
@@ -55,6 +54,7 @@ var sequential = function( context, blocking, fn ){
 //  printDialog( String dialog )				: prints out dialog to the specified element
 //  promptNext()								: idles until the player clicks on the dialog box
 //
+//=======================================================================================
 
 function Dialog ( speed, selector ){
 	
@@ -104,15 +104,17 @@ Dialog.prototype.promptNext = function () { return sequential(this, true, functi
 	
 }); };
 
-//
+//=======================================================================================
 // class Animal:
+//=======================================================================================
 //
 //	constructor Animal( type, [elementClass] )
 //
 //	String type									: the type of animal represented.
 //  String elementClass							: the selector used to identify Animal elements
 //			[default [type]-animal-type]		  defaults to [type]-animal-type	
-//												  
+//
+//=======================================================================================
 
 function Animal ( type, elementClass ){
 	
@@ -125,8 +127,9 @@ function Animal ( type, elementClass ){
 	
 }
 
-//
+//=======================================================================================
 // class Field:
+//=======================================================================================
 //
 //	constructor Field( [selector, animalClass, wanderingClass, animateFreq] )
 //
@@ -139,13 +142,19 @@ function Animal ( type, elementClass ){
 //  Number animateFreq								: represents the amount of time a 'tick' of
 //		[default 10]								  animation should take, in ms
 //
+//  spawn( Animal animalType )						: creates an Element inside the field Element that
+//													  represents an Animal
+//
+//=======================================================================================
 
 function Field ( selector, animalClass, wanderingClass, animateFreq ){
 
-	this.element = selector === undefined ? $(".field") : $(selector);
+	this.selector = selector === undefined ? ".field" : selector;
 	this.animalClass = animalClass === undefined ? "animal" : animalClass;
 	this.wanderingClass = wanderingClass === undefined ? "field-wandering" : wanderingClass;
-	this.animateFreq = animateFreq === undefined ? 10 : animateFreq;
+	this.animateFreq = animateFreq === undefined ? 500 : animateFreq;
+	
+	this.element = $(this.selector);
 	
 	this.updater = function (){
 		
@@ -162,7 +171,7 @@ function Field ( selector, animalClass, wanderingClass, animateFreq ){
 			
 			if (nUpdate === 0){
 				heading = Math.PI * 2 * Math.random();
-				nUpdate = 300 + Math.round(Math.random() * 200);
+				nUpdate = 15 + Math.round(Math.random() * 10);
 			}
 
 			var newXPos = xPos + Math.cos(heading);
@@ -189,7 +198,6 @@ function Field ( selector, animalClass, wanderingClass, animateFreq ){
 			this.setAttribute("y-pos", newYPos);
 			this.setAttribute("heading", heading);
 			$(this).transition({x: newXPos, y: newYPos}, 0, "linear");
-			
 			
 		});
 		
@@ -224,9 +232,9 @@ Field.prototype.spawn = function ( animalType ){ return sequential( this, false,
 	
 }); };
 
-//==========================================================
+//=======================================================================================
 //  Program main:
-//==========================================================
+//=======================================================================================
 
 //
 // initialize variables
@@ -248,6 +256,79 @@ var dialog = new Dialog();
 
 var dummyAnimal = new Animal("corgi");
 var field = new Field(undefined, undefined, undefined, 30);
+
+interact('.'+field.animalClass).draggable({
+	onstart: function(event){
+		event.target.classList.remove(field.wanderingClass);
+		event.target.classList.add("panic");
+	},
+	onmove: function (event){
+		
+		var newXPos = parseFloat(event.target.getAttribute("x-pos")) + event.dx;
+		var newYPos = parseFloat(event.target.getAttribute("y-pos")) + event.dy;
+		
+		event.target.setAttribute("x-pos", newXPos);
+		event.target.setAttribute("y-pos", newYPos);
+		
+		$(event.target).transition({
+			x: newXPos,
+			y: newYPos
+		}, 0, "linear");
+		
+	},
+	onend: function (event){
+		
+		var xPos = parseFloat(event.target.getAttribute("x-pos"));
+		var yPos = parseFloat(event.target.getAttribute("y-pos"));
+		
+		var dim = event.target.getBoundingClientRect();
+	
+		if (xPos > field.element.width() - dim.width){
+			xPos = field.element.width() - dim.width;
+		} else if (xPos < 0){
+			xPos = 0;
+		}
+		
+		if (yPos > field.element.height() - dim.height){
+			yPos = field.element.height() - dim.height;
+		} else if (yPos < 0){
+			yPos = 0;
+		}
+		
+		event.target.setAttribute("x-pos", xPos);
+		event.target.setAttribute("y-pos", yPos);
+		
+		$(event.target)
+			.transition({
+				x: xPos,
+				y: yPos
+				}, 300, "snap"
+			)
+			.removeClass("panic")
+			.addClass(field.wanderingClass);
+		
+	}
+});
+
+interact(".truck").dropzone({
+	ondragenter: function(event){
+		event.target.classList.add("drop-hover");
+	},
+	ondragleave: function(event){
+		event.target.classList.remove("drop-hover");
+	},
+	ondrop: function(event){
+		$(event.relatedTarget)
+			.transition({
+				opacity: 0.0,
+				y: '+=100'
+			}, 500, "ease", $(event.relatedTarget).remove);
+		event.target.classList.remove("drop-hover");
+	}
+
+
+})
+
 
 sequence([field.spawn(dummyAnimal),
           field.spawn(dummyAnimal),

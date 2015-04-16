@@ -30,6 +30,8 @@ body, html {
 	
 	.field {
 	
+		z-index: 1;
+		
 		left: 50px;
 		top: 50px;
 	
@@ -44,6 +46,8 @@ body, html {
 	
 	.animal {
 	
+		z-index: 1;
+	
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -51,11 +55,13 @@ body, html {
 		width: 100px;
 		height: 100px;
 		
-		background-color: white;
+		background-color: purple;
 	
 	}
 	
 	.dialog-head {
+	
+		z-index: 0;
 	
 		left: 100px;
 		bottom: 0;
@@ -70,6 +76,8 @@ body, html {
 	}
 	
 	.dialog-box {
+	
+		z-index: 0;
 	
 		position: absolute;
 		
@@ -148,6 +156,10 @@ body, html {
 		}
 	
 	.truck {
+	
+		z-index: 0;
+	
+		position: absolute;
 	
 		width: 220px;
 		height: 450px;
