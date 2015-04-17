@@ -1,38 +1,33 @@
 window.onload = function (){
-var game = $(document.getElementById("game"));
-var sequence = function ( sequenceList ){
-	var nCalls = 0;
-	game
-		.on("next", function (){
-			if (sequenceList.length){
-				sequenceList.shift()();
-			}
-		})
-		.trigger("next");
-	
-};
 
-var sequential = function( context, blocking, fn ){
-	
-	return $.extend(
-			function (){
-				if ( !blocking ) { game.trigger("next"); }
-				fn.call(context, function (){
-					if ( blocking ){
-						game.trigger("next");
-					}
-				})
-			},
-		{ blocking: function(){ return fn.bind(context, function(){game.trigger("next"); } )} } ,
-		{ nonBlocking: function(){
-				return function(){
-					game.trigger("next");
-					fn.call(context, function(){});
+var BLOCKING = "blocking";
+var NONBLOCK = "nonblock";
+
+var sequential = {
+	newFunction: function (blocking, fn){
+		this._sequence.push(function(){
+			this._active = true;			
+			if (blocking !== undefined){
+				if (blocking === BLOCKING){
+					fn(function(){ this._next()(); }.bind(this));
+				} else if (blocking === NONBLOCK){
+					fn(function(){});
+					this._next()();
 				}
-		}}
-	);
+			}
+			console.log(this);
+		}.bind(this));
+		
+		if (!this._active){
+			this._sequence.shift()();
+		}
+	},
+	_sequence: [],
+	_active: false,
+	_next: function (){
+		return this._sequence.length ? this._sequence.shift() : function(){ this._active = false }.bind(this);
+	}
 };
-
 
 //=======================================================================================
 // class Dialog:
@@ -51,23 +46,26 @@ var sequential = function( context, blocking, fn ){
 //
 //=======================================================================================
 
-function Dialog ( speed, selector ){
+function Dialog (speed, selector, headSelector){
 	
 	this.speed = speed === undefined ? 10 : speed;
-	this.element = selector === undefined ? $(".dialog-box") : $(options.selector);
-
+	this.element = selector === undefined ? $(".dialog-box") : $(selector);
+	this.head = headSelector === undefined ? $(".dialog-head") : $(headSelector);
+	
 };
 
-Dialog.prototype.clearDialog = function () { return sequential ( this, true, function(nextInSequence){
+Dialog.prototype.clearDialog = function (blocking) { 
+	sequential.newFunction(blocking, function(next){
 	
 	this.element.empty();
-	nextInSequence();
+	next();
 	
-}); };
+}.bind(this))};
 
-Dialog.prototype.printDialog = function ( dialog ) { return sequential( this, true, function(nextInSequence){
+Dialog.prototype.printDialog = function (dialog, blocking) {
+	sequential.newFunction(blocking, function(next){
 	
-	$(".dialog-head").addClass("talking");
+	this.head.addClass("talking");
 	
 	var letters = dialog.split("");
 	var toRemove = 0;
@@ -78,47 +76,49 @@ Dialog.prototype.printDialog = function ( dialog ) { return sequential( this, tr
 			toRemove = window.setTimeout(nextLetter, this.speed);
 		} else {
 			this.element.off("click");
-			$(".dialog-head").removeClass("talking");
-			nextInSequence();
+			this.head.removeClass("talking");
+			console.log("hello", next);
+			next();
 		}	
 	}.bind(this);
 	
 	this.element.one("click", function(){
 		this.element.text(this.element.text() + letters.join(""));
 		window.clearTimeout(toRemove);
-		$(".dialog-head").removeClass("talking");
-		nextInSequence();
+		this.head.removeClass("talking");
+		next();
 	}.bind(this));
 	
 	toRemove = window.setTimeout(nextLetter, this.speed);
 	
-}); };
+}.bind(this))};
 	
-Dialog.prototype.promptNext = function () { return sequential(this, true, function(nextInSequence){
+Dialog.prototype.promptNext = function (blocking) {
+	sequential.newFunction( blocking, function(next){
 		
 	this.element.append('<div class="dialog-box-arrow"></div><div class="dialog-continue">click to continue</div>');
 	this.element.one("click", function(){
-		nextInSequence();
+		next();
 	}.bind(this));
 	
-}); };
+}.bind(this))};
 
 //=======================================================================================
 // class Animal:
 //=======================================================================================
 //
-//	constructor Animal( type, [elementClass] )
+//	constructor Animal( type, [elementClass], sound )
 //
 //	String type									: the type of animal represented.
 //  String elementClass							: the selector used to identify Animal elements
 //			[default [type]]		  			  defaults to [type]	
-//
+//	
 //=======================================================================================
 
-function Animal ( type, elementClass ){
+function Animal ( type, elementClass, sound ){
 	
 	if ( type === undefined ){
-		throw "Animal.constructor: Argument 'type' is a required argument.";
+		throw "Animal.prototype: Argument 'type' is a required argument.";
 	}
 		
 	this.type = type;
@@ -261,8 +261,9 @@ function Field ( selector, animalClass, wanderingClass, animateFreq ){
 	
 }
 
-Field.prototype.spawn = function ( animalType ){ return sequential( this, false, function (nextInSequence){
-	
+Field.prototype.spawn = function (animalType, blocking){
+	sequential.newFunction(blocking, function(next){
+		
 	var newElement = document.createElement("div");
 	var wanderingClass = this.wanderingClass;
 	newElement.classList.add(this.animalClass);
@@ -290,13 +291,11 @@ Field.prototype.spawn = function ( animalType ){ return sequential( this, false,
 		});
 	});
 	
-	nextInSequence();
+	next();
 	
-}); };
+}.bind(this))};
 
-Field.prototype.waitForPickup = function ( animalType ){ return sequential( this, false, function (nextInSequence){
-	
-}); };
+
 //=======================================================================================
 // class Dropzone:
 //=======================================================================================
@@ -377,20 +376,22 @@ Dropzone.prototype._accept = function (animalList){
 	
 };
 
-Dropzone.prototype.accept = function (animalList){ return sequential(this, false, function(nextInSequence){
+Dropzone.prototype.accept = function (animalList, blocking){
+	sequential.newFunction(blocking, function(next){
 	
 	this._accept(animalList);	
-	nextInSequence();
+	next();
 	
-}); };
+}.bind(this))};
 
-Dropzone.prototype.waitForNDrops = function (dropNumber){ return sequential(this, true, function(nextInSequence){
+Dropzone.prototype.waitForNDrops = function (dropNumber, blocking){ 
+	sequential.newFunction(blocking, function(next){
 	
 	this._dropsNeeded = dropNumber;
 	this._isWaiting = true;
-	this.nextInSequence = nextInSequence;
+	this.nextInSequence = next;
 	
-}); };
+}.bind(this))};
 
 
 
@@ -423,53 +424,63 @@ var sheep = new Animal("sheep");
 // function must trigger the global /game/ variable event
 // "next", which notifies that the given function has stopped.
 //
-var name = window.prompt("What is your name?", "Enter name here:");
 
-sequence([
-          dialog.printDialog('Howdy! You must be my neighbor ' + name + '!'),
-          dialog.promptNext(),
-          dialog.clearDialog(),
-          dialog.printDialog('Glad you could come take over my farm!'),
-          dialog.promptNext(),
-          dialog.clearDialog(),
-          dialog.printDialog('Before I leave though, I need you to help me out with loading animals onto my truck.'),
-          dialog.promptNext(),
-          field.spawn(cow),
-          field.spawn(cow),
-          field.spawn(pig),
-          field.spawn(horse),
-          field.spawn(sheep),
-          dialog.clearDialog(),
-          dialog.printDialog('Try picking up a cow and putting it into the truck.').nonBlocking(),
-          truck.accept([cow]).blocking(),
-          truck.waitForNDrops(1).blocking(),
-          truck.accept(false).blocking(),
-          dialog.clearDialog(),
-          dialog.printDialog('Good job!'),
-          dialog.promptNext(),
-          dialog.clearDialog(),
-          dialog.printDialog('Try picking up a pig and putting it into the truck.').nonBlocking(),
-          truck.accept([pig]).blocking(),
-          truck.waitForNDrops(1).blocking(),
-          truck.accept(false).blocking(),
-          dialog.clearDialog(),
-          dialog.printDialog('You\'re great at this!'),
-          dialog.promptNext(),
-          dialog.clearDialog(),
-          dialog.printDialog('Now get a horse and put it in.').nonBlocking(),
-          truck.accept([horse]).blocking(),
-          truck.waitForNDrops(1).blocking(),
-          truck.accept(false).blocking(),
-          dialog.clearDialog(),
-          dialog.printDialog('Almost done!.'),
-          dialog.promptNext(),
-          dialog.clearDialog(),
-          dialog.printDialog('Now put the sheep and the cow in.').nonBlocking(),
-          truck.accept(true).blocking(),
-          truck.waitForNDrops(2).blocking(),
-          truck.accept(false).blocking(),
-          dialog.clearDialog(),
-          dialog.printDialog('[Insert message here]').nonBlocking()
-]);
+dialog.printDialog('Howdy! You must be my neighbor!', BLOCKING);
+dialog.promptNext(BLOCKING);
+
+dialog.clearDialog(BLOCKING);
+dialog.printDialog('Glad you could come take over my farm!', BLOCKING);
+dialog.promptNext(BLOCKING);
+
+dialog.clearDialog(BLOCKING);
+dialog.printDialog('Before I leave though, I need you to help me out with loading animals onto my truck.', BLOCKING);
+dialog.promptNext(BLOCKING);
+
+field.spawn(cow, NONBLOCK);
+field.spawn(cow, NONBLOCK);
+field.spawn(pig, NONBLOCK);
+field.spawn(horse, NONBLOCK);
+field.spawn(sheep, NONBLOCK);
+
+dialog.clearDialog(BLOCKING);
+dialog.printDialog('Try picking up a cow and putting it into the truck.', NONBLOCK);
+truck.accept([cow], BLOCKING);
+truck.waitForNDrops(1, BLOCKING);
+
+truck.accept(false, BLOCKING);
+dialog.clearDialog(BLOCKING);
+dialog.printDialog('Good job!', BLOCKING);
+dialog.promptNext(BLOCKING);
+
+dialog.clearDialog(BLOCKING);
+dialog.printDialog('Try picking up a pig and putting it into the truck.', NONBLOCK);
+truck.accept([pig], BLOCKING);
+truck.waitForNDrops(1, BLOCKING);
+
+truck.accept(false, BLOCKING);
+dialog.clearDialog(BLOCKING);
+dialog.printDialog('You\'re great at this!', BLOCKING);
+dialog.promptNext(BLOCKING);
+
+dialog.clearDialog(BLOCKING);
+dialog.printDialog('Now get a horse and put it in.', NONBLOCK);
+truck.accept([horse], BLOCKING);
+truck.waitForNDrops(1, BLOCKING);
+
+truck.accept(false, BLOCKING);
+dialog.clearDialog(BLOCKING);
+dialog.printDialog('Almost done!.', BLOCKING);
+dialog.promptNext(BLOCKING);
+
+dialog.clearDialog(BLOCKING);
+dialog.printDialog('Now put the sheep and the cow in.', NONBLOCK);
+truck.accept(true, BLOCKING);
+truck.waitForNDrops(2, BLOCKING);
+
+truck.accept(false, BLOCKING);
+dialog.clearDialog(BLOCKING);
+dialog.printDialog('[Insert message here]', NONBLOCK);
+
+console.log(sequential);
 
 };
