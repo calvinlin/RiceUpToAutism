@@ -25,10 +25,11 @@ var sequential = function( context, blocking, fn ){
 			},
 		{ blocking: function(){ return fn.bind(context, function(){game.trigger("next"); } )} } ,
 		{ nonBlocking: function(){
-				game.trigger("next");
-				return fn.bind(context, function(){});
-			}
-		}
+				return function(){
+					game.trigger("next");
+					fn.call(context, function(){});
+				}
+		}}
 	);
 };
 
@@ -91,7 +92,7 @@ Dialog.prototype.printDialog = function ( dialog ) { return sequential( this, tr
 	
 Dialog.prototype.promptNext = function () { return sequential(this, true, function(nextInSequence){
 		
-	this.element.append('<div class="dialog-box-arrow"></div>');
+	this.element.append('<div class="dialog-box-arrow"></div><div class="dialog-continue">click to continue</div>');
 	this.element.one("click", function(){
 		nextInSequence();
 	}.bind(this));
@@ -106,7 +107,7 @@ Dialog.prototype.promptNext = function () { return sequential(this, true, functi
 //
 //	String type									: the type of animal represented.
 //  String elementClass							: the selector used to identify Animal elements
-//			[default [type]-animal-type]		  defaults to [type]-animal-type	
+//			[default [type]]		  			  defaults to [type]	
 //
 //=======================================================================================
 
@@ -117,7 +118,7 @@ function Animal ( type, elementClass ){
 	}
 		
 	this.type = type;
-	this.elementClass = elementClass === undefined ? this.type + "-animal-type" : elementClass;
+	this.elementClass = elementClass === undefined ? this.type : elementClass;
 	
 }
 
@@ -322,10 +323,10 @@ function Dropzone ( selector, accepts ){
 	this._nDrops = 0;
 	
 	this.isAccepted = function (element){
-		return this.accepts !== null && 
+		return this.accepts !== null && (this.accepts === [] || 
 			   this.accepts.reduce(function(prev, curr, ind, arr){
 				   return prev || element.classList.contains(curr);
-			   }, false);
+			   }, false));
 	}.bind(this);
 	
 	interact(selector).dropzone({
@@ -352,6 +353,8 @@ function Dropzone ( selector, accepts ){
 					this._isWaiting = false;
 					this.nextInSequence();
 				}
+			} else {
+				//dialog.printDialog("That's the wrong animal!").nonBlocking()();
 			}
 		}.bind(this)
 	});
@@ -395,7 +398,11 @@ Dropzone.prototype.waitForNDrops = function (dropNumber){ return sequential(this
 var dialog = new Dialog();
 var field = new Field(undefined, undefined, undefined, 30);
 var truck = new Dropzone(".truck", null);
-var corgi = new Animal("corgi");
+
+var cow = new Animal("cow");
+var pig = new Animal("pig");
+var horse = new Animal("horse");
+var sheep = new Animal("sheep");
 
 
 //
@@ -419,16 +426,39 @@ sequence([
           dialog.clearDialog(),
           dialog.printDialog('Farmer: "Before I leave though, I need you to help me out with loading animals onto my truck."'),
           dialog.promptNext(),
-          field.spawn(corgi),
-          field.spawn(corgi),
-          field.spawn(corgi),
-          field.spawn(corgi),
+          field.spawn(cow),
+          field.spawn(cow),
+          field.spawn(pig),
+          field.spawn(horse),
+          field.spawn(sheep),
           dialog.clearDialog(),
-          dialog.printDialog('Farmer: "Try picking up the corgi and putting it into the truck."'),
-          truck.accept([corgi]).blocking(),
+          dialog.printDialog('Farmer: "Try picking up a cow and putting it into the truck."').nonBlocking(),
+          truck.accept([cow]).blocking(),
           truck.waitForNDrops(1).blocking(),
+          truck.accept(null).blocking(),
           dialog.clearDialog(),
-          dialog.printDialog('Farmer: "Good job!"')
+          dialog.printDialog('Farmer: "Good job!"'),
+          dialog.promptNext(),
+          dialog.clearDialog(),
+          dialog.printDialog('Farmer: "Try picking up a pig and putting it into the truck."').nonBlocking(),
+          truck.accept([pig]).blocking(),
+          truck.waitForNDrops(1).blocking(),
+          truck.accept(null).blocking(),
+          dialog.clearDialog(),
+          dialog.printDialog('Farmer: "Good job!"'),
+          dialog.promptNext(),
+          dialog.clearDialog(),
+          dialog.printDialog('Farmer: "Now get a horse and put it in."').nonBlocking(),
+          truck.accept([horse]).blocking(),
+          truck.waitForNDrops(1).blocking(),
+          truck.accept(null).blocking(),
+          dialog.clearDialog(),
+          dialog.printDialog('Farmer: "Almost done!."'),
+          dialog.promptNext(),
+          dialog.clearDialog(),
+          dialog.printDialog('Farmer: "Now put the sheep and the cow in."').nonBlocking(),
+          truck.accept().blocking(),
+          truck.waitForNDrops(2).blocking()
 ]);
 
 };
