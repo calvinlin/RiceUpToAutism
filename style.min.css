@@ -14,7 +14,7 @@ html {
   margin-left: -640px;
   width: 1280px;
   height: 720px;
-  background: url("images/background.jpg") center/contain;
+  background: url("images/background_flipped.jpg") center/cover;
 }
 
 #game > * {
@@ -83,7 +83,7 @@ html {
   /* 30px */
   padding: 15px;
   border-radius: 5px;
-  box-shadow: 0 0 0 20px #F5EAC8, 0 0 0 21px #251C00;
+  box-shadow: 0 0 0 20px #F5EAC8, 0 0 0 25px #251C00;
   background: white;
   color: black;
   font-family: Unkempt, Arial;
@@ -105,8 +105,6 @@ html {
   width: 0;
   position: absolute;
   pointer-events: none;
-  margin-right: 19px;
-  /* 4 px */
 }
 
 .dialog-box:after {
@@ -115,15 +113,17 @@ html {
   border-width: 38px;
   /* 30px */
   margin-top: -35px;
+  margin-right: 19px;
 }
 
 .dialog-box:before {
   border-color: rgba(194, 225, 245, 0);
   border-right-color: black;
-  border-width: 40px;
+  border-width: 44px;
   /* 31px */
-  margin-top: -37px;
+  margin-top: -42px;
   /* 31px */
+  margin-right: 20px;
 }
 
 @-webkit-keyframes dialog-box-arrow-anim {
@@ -155,8 +155,8 @@ html {
   border-left: 10px solid red;
   border-bottom: 10px solid transparent;
   border-top: 10px solid transparent;
-  -webkit-animation: dialog-box-arrow-anim .3s steps(3) infinite;
-  animation: dialog-box-arrow-anim .3s steps(3) infinite;
+  -webkit-animation: dialog-box-arrow-anim .5s steps(3) infinite;
+  animation: dialog-box-arrow-anim .5s steps(3) infinite;
 }
 
 .dialog-continue {
@@ -174,4 +174,56 @@ html {
   right: 0;
   bottom: 200px;
   background: url("images/truck.png") bottom/contain no-repeat;
+}
+
+@-webkit-keyframes drop-hover-animation {
+  0% {
+    background-position: 60px 80px, bottom;
+  }
+
+  100% {
+    background-position: 60px 120px, bottom;
+  }
+}
+
+@keyframes drop-hover-animation {
+  0% {
+    background-position: 60px 80px, bottom;
+  }
+
+  100% {
+    background-position: 60px 120px, bottom;
+  }
+}
+
+.truck.drop-hover {
+  background: url("images/arrow.png") 60px 80px / 100px auto no-repeat, url("images/truck.png") bottom/contain no-repeat;
+  -webkit-animation: drop-hover-animation 1s ease-in-out infinite alternate;
+  animation: drop-hover-animation 1s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes wrong-hover-animation {
+  0% {
+    background-size: 100px auto, contain;
+  }
+
+  100% {
+    background-size: 0 0, contain;
+  }
+}
+
+@keyframes wrong-hover-animation {
+  0% {
+    background-size: 100px auto, contain;
+  }
+
+  100% {
+    background-size: 0 0, contain;
+  }
+}
+
+.truck.wrong-hover {
+  background: url("images/denied.png") 60px 120px / 100px auto no-repeat, url("images/truck.png") bottom/contain no-repeat;
+  -webkit-animation: wrong-hover-animation 0.5s linear infinite alternate;
+  animation: wrong-hover-animation 0.5s linear infinite alternate;
 }

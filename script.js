@@ -323,21 +323,26 @@ function Dropzone ( selector, accepts ){
 	this._nDrops = 0;
 	
 	this.isAccepted = function (element){
-		return this.accepts !== null && (this.accepts === [] || 
-			   this.accepts.reduce(function(prev, curr, ind, arr){
+		console.log(this.accepts === true)
+		return ( (this.accepts === true) || 
+				 (this.accepts instanceof Array && this.accepts.reduce(function(prev, curr, ind, arr){
 				   return prev || element.classList.contains(curr);
-			   }, false));
+			   }, false)));
 	}.bind(this);
 	
 	interact(selector).dropzone({
 		ondragenter: function(event){
 			if (this.isAccepted(event.relatedTarget)){
 				event.target.classList.add("drop-hover");
+			} else {
+				event.target.classList.add("wrong-hover");
 			}
 		}.bind(this),
 		ondragleave: function(event){
 			if (this.isAccepted(event.relatedTarget)){
 				event.target.classList.remove("drop-hover");
+			} else {
+				event.target.classList.remove("wrong-hover");
 			}
 		}.bind(this),
 		ondrop: function(event){
@@ -354,6 +359,7 @@ function Dropzone ( selector, accepts ){
 					this.nextInSequence();
 				}
 			} else {
+				event.target.classList.remove("wrong-hover");
 				//dialog.printDialog("That's the wrong animal!").nonBlocking()();
 			}
 		}.bind(this)
@@ -363,10 +369,7 @@ function Dropzone ( selector, accepts ){
 
 Dropzone.prototype._accept = function (animalList){
 	
-	this.accepts = animalList;
-	if (animalList !== null){
-		this.accepts = animalList === undefined ? [] : animalList.map(function(curr){return curr.elementClass});
-	}
+	this.accepts = animalList instanceof Array ? animalList.map(function(curr){return curr.elementClass}) : animalList;
 	
 };
 
@@ -416,15 +419,16 @@ var sheep = new Animal("sheep");
 // function must trigger the global /game/ variable event
 // "next", which notifies that the given function has stopped.
 //
+var name = window.prompt("What is your name?", "Enter name here:");
 
 sequence([
-          dialog.printDialog('Farmer: "Howdy! You must be my neighbor [username]!"'),
+          dialog.printDialog('Howdy! You must be my neighbor ' + name + '!'),
           dialog.promptNext(),
           dialog.clearDialog(),
-          dialog.printDialog('Farmer: "Glad you could come take over my farm!"'),
+          dialog.printDialog('Glad you could come take over my farm!'),
           dialog.promptNext(),
           dialog.clearDialog(),
-          dialog.printDialog('Farmer: "Before I leave though, I need you to help me out with loading animals onto my truck."'),
+          dialog.printDialog('Before I leave though, I need you to help me out with loading animals onto my truck.'),
           dialog.promptNext(),
           field.spawn(cow),
           field.spawn(cow),
@@ -432,33 +436,36 @@ sequence([
           field.spawn(horse),
           field.spawn(sheep),
           dialog.clearDialog(),
-          dialog.printDialog('Farmer: "Try picking up a cow and putting it into the truck."').nonBlocking(),
+          dialog.printDialog('Try picking up a cow and putting it into the truck.').nonBlocking(),
           truck.accept([cow]).blocking(),
           truck.waitForNDrops(1).blocking(),
-          truck.accept(null).blocking(),
+          truck.accept(false).blocking(),
           dialog.clearDialog(),
-          dialog.printDialog('Farmer: "Good job!"'),
+          dialog.printDialog('Good job!'),
           dialog.promptNext(),
           dialog.clearDialog(),
-          dialog.printDialog('Farmer: "Try picking up a pig and putting it into the truck."').nonBlocking(),
+          dialog.printDialog('Try picking up a pig and putting it into the truck.').nonBlocking(),
           truck.accept([pig]).blocking(),
           truck.waitForNDrops(1).blocking(),
-          truck.accept(null).blocking(),
+          truck.accept(false).blocking(),
           dialog.clearDialog(),
-          dialog.printDialog('Farmer: "Good job!"'),
+          dialog.printDialog('Good job!'),
           dialog.promptNext(),
           dialog.clearDialog(),
-          dialog.printDialog('Farmer: "Now get a horse and put it in."').nonBlocking(),
+          dialog.printDialog('Now get a horse and put it in.').nonBlocking(),
           truck.accept([horse]).blocking(),
           truck.waitForNDrops(1).blocking(),
-          truck.accept(null).blocking(),
+          truck.accept(false).blocking(),
           dialog.clearDialog(),
-          dialog.printDialog('Farmer: "Almost done!."'),
+          dialog.printDialog('Almost done!.'),
           dialog.promptNext(),
           dialog.clearDialog(),
-          dialog.printDialog('Farmer: "Now put the sheep and the cow in."').nonBlocking(),
-          truck.accept().blocking(),
-          truck.waitForNDrops(2).blocking()
+          dialog.printDialog('Now put the sheep and the cow in.').nonBlocking(),
+          truck.accept(true).blocking(),
+          truck.waitForNDrops(2).blocking(),
+          truck.accept(false).blocking(),
+          dialog.clearDialog(),
+          dialog.printDialog('[Insert self-affirming message here]').nonBlocking()
 ]);
 
 };
