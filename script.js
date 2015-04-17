@@ -67,6 +67,8 @@ Dialog.prototype.clearDialog = function () { return sequential ( this, true, fun
 
 Dialog.prototype.printDialog = function ( dialog ) { return sequential( this, true, function(nextInSequence){
 	
+	$(".dialog-head").addClass("talking");
+	
 	var letters = dialog.split("");
 	var toRemove = 0;
 	
@@ -76,6 +78,7 @@ Dialog.prototype.printDialog = function ( dialog ) { return sequential( this, tr
 			toRemove = window.setTimeout(nextLetter, this.speed);
 		} else {
 			this.element.off("click");
+			$(".dialog-head").removeClass("talking");
 			nextInSequence();
 		}	
 	}.bind(this);
@@ -83,6 +86,7 @@ Dialog.prototype.printDialog = function ( dialog ) { return sequential( this, tr
 	this.element.one("click", function(){
 		this.element.text(this.element.text() + letters.join(""));
 		window.clearTimeout(toRemove);
+		$(".dialog-head").removeClass("talking");
 		nextInSequence();
 	}.bind(this));
 	
@@ -398,7 +402,7 @@ Dropzone.prototype.waitForNDrops = function (dropNumber){ return sequential(this
 // initialize variables
 //
 
-var dialog = new Dialog();
+var dialog = new Dialog(15);
 var field = new Field(undefined, undefined, undefined, 30);
 var truck = new Dropzone(".truck", null);
 
@@ -449,7 +453,7 @@ sequence([
           truck.waitForNDrops(1).blocking(),
           truck.accept(false).blocking(),
           dialog.clearDialog(),
-          dialog.printDialog('Good job!'),
+          dialog.printDialog('You\'re great at this!'),
           dialog.promptNext(),
           dialog.clearDialog(),
           dialog.printDialog('Now get a horse and put it in.').nonBlocking(),

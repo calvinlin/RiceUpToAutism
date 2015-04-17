@@ -72,6 +72,32 @@ html {
   background: url('images/farmer.png') center/contain no-repeat;
 }
 
+@-webkit-keyframes dialog-head-talking {
+  from {
+    background-position: 50% 155px, center;
+  }
+
+  to {
+    background-position: 50% 150px, center;
+  }
+}
+
+@keyframes dialog-head-talking {
+  from {
+    background-position: 50% 155px, center;
+  }
+
+  to {
+    background-position: 50% 150px, center;
+  }
+}
+
+.dialog-head.talking {
+  background: url('images/moustache.png') 50% 155px/26.5% auto no-repeat, url('images/farmer-nostache.png') center/contain no-repeat;
+  -webkit-animation: dialog-head-talking 0.1s linear 0.03s infinite alternate;
+  animation: dialog-head-talking 0.1s linear 0.03s infinite alternate;
+}
+
 .dialog-box {
   z-index: 0;
   position: absolute;
@@ -90,7 +116,7 @@ html {
   font-size: 25px;
   /* 18px */
   font-weight: bold;
-  text-transform: uppercase;
+  /*		text-transform: uppercase;*/
   word-spacing: 3px;
   /* 3px */
 }
@@ -126,26 +152,6 @@ html {
   margin-right: 20px;
 }
 
-@-webkit-keyframes dialog-box-arrow-anim {
-  from {
-    right: 10px;
-  }
-
-  to {
-    right: 5px;
-  }
-}
-
-@keyframes dialog-box-arrow-anim {
-  from {
-    right: 10px;
-  }
-
-  to {
-    right: 5px;
-  }
-}
-
 .dialog-box-arrow {
   position: absolute;
   bottom: 10px;
@@ -155,13 +161,11 @@ html {
   border-left: 10px solid red;
   border-bottom: 10px solid transparent;
   border-top: 10px solid transparent;
-  -webkit-animation: dialog-box-arrow-anim .5s steps(3) infinite;
-  animation: dialog-box-arrow-anim .5s steps(3) infinite;
 }
 
 .dialog-continue {
   position: absolute;
-  left: 550px;
+  right: 30px;
   bottom: 10px;
   font-size: 18px;
 }
