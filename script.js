@@ -80,7 +80,7 @@ Dialog.prototype.printDialog = function ( dialog ) { return sequential( this, tr
 	}.bind(this);
 	
 	this.element.one("click", function(){
-		this.element.text(this.element.text() + letters.join());
+		this.element.text(this.element.text() + letters.join(""));
 		window.clearTimeout(toRemove);
 		nextInSequence();
 	}.bind(this));
@@ -419,6 +419,9 @@ sequence([
           dialog.clearDialog(),
           dialog.printDialog('Farmer: "Before I leave though, I need you to help me out with loading animals onto my truck."'),
           dialog.promptNext(),
+          field.spawn(corgi),
+          field.spawn(corgi),
+          field.spawn(corgi),
           field.spawn(corgi),
           dialog.clearDialog(),
           dialog.printDialog('Farmer: "Try picking up the corgi and putting it into the truck."'),
