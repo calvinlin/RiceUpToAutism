@@ -13,29 +13,23 @@ var sequence = function ( sequenceList ){
 };
 
 var sequential = function( context, blocking, fn ){
-	newFn = function (){
-		if ( !blocking ){
-			game.trigger("next");
-		}
-		fn.call( $.extend({}, context, { _sequenceNext: function (){
-			if ( blocking ){
+	
+	return $.extend(
+			function (){
+				if ( !blocking ) { game.trigger("next"); }
+				fn.call(context, function (){
+					if ( blocking ){
+						game.trigger("next");
+					}
+				})
+			},
+		{ blocking: function(){ return fn.bind(context, function(){game.trigger("next"); } )} } ,
+		{ nonBlocking: function(){
 				game.trigger("next");
+				return fn.bind(context, function(){});
 			}
-		}} )
-		);
-	};
-	
-	newFn.blocking = function (){
-		blocking = true;
-		return newFn;
-	};
-	
-	newFn.nonBlocking = function(){
-		blocking = false;
-		return newFn;
-	};
-	
-	return newFn;
+		}
+	);
 };
 
 
@@ -63,14 +57,14 @@ function Dialog ( speed, selector ){
 
 };
 
-Dialog.prototype.clearDialog = function () { return sequential ( this, true, function(){
+Dialog.prototype.clearDialog = function () { return sequential ( this, true, function(nextInSequence){
 	
 	this.element.empty();
-	this._sequenceNext();
+	nextInSequence();
 	
 }); };
 
-Dialog.prototype.printDialog = function ( dialog ) { return sequential( this, true, function(){
+Dialog.prototype.printDialog = function ( dialog ) { return sequential( this, true, function(nextInSequence){
 	
 	var letters = dialog.split("");
 	var toRemove = 0;
@@ -81,25 +75,25 @@ Dialog.prototype.printDialog = function ( dialog ) { return sequential( this, tr
 			toRemove = window.setTimeout(nextLetter, this.speed);
 		} else {
 			this.element.off("click");
-			this._sequenceNext();
+			nextInSequence();
 		}	
 	}.bind(this);
 	
 	this.element.one("click", function(){
 		this.element.text(this.element.text() + letters.join());
 		window.clearTimeout(toRemove);
-		this._sequenceNext();
+		nextInSequence();
 	}.bind(this));
 	
 	toRemove = window.setTimeout(nextLetter, this.speed);
 	
 }); };
 	
-Dialog.prototype.promptNext = function () { return sequential(this, true, function(){
+Dialog.prototype.promptNext = function () { return sequential(this, true, function(nextInSequence){
 		
 	this.element.append('<div class="dialog-box-arrow"></div>');
 	this.element.one("click", function(){
-		this._sequenceNext();
+		nextInSequence();
 	}.bind(this));
 	
 }); };
@@ -171,28 +165,24 @@ function Field ( selector, animalClass, wanderingClass, animateFreq ){
 			
 			if (nUpdate === 0){
 				heading = Math.PI * 2 * Math.random();
-				nUpdate = 15 + Math.round(Math.random() * 10);
+				nUpdate = 150 + Math.round(Math.random() * 100);
 			}
 
-			var newXPos = xPos + Math.cos(heading);
-			var newYPos = yPos + Math.sin(heading);
+			var newXPos = xPos + Math.cos(heading) * 3;
+			var newYPos = yPos + Math.sin(heading) * 3;
 			
 			var dims = this.getBoundingClientRect();
 			
-			console.log(newXPos, newYPos);
-			
-			
 			if (newXPos > self.element.width() - dims.width || newXPos < 0){
 				heading = Math.atan2(Math.sin(heading), -Math.cos(heading));
-				newXPos = xPos + Math.cos(heading);
+				newXPos = xPos + Math.cos(heading) * 3;
 			}
 					
 			if (newYPos > self.element.height() - dims.height || newYPos < 0){
 				heading = Math.atan2(-Math.sin(heading), Math.cos(heading));
-				newYPos = yPos + Math.sin(heading);
+				newYPos = yPos + Math.sin(heading) * 3;
 			}
 			
-			console.log(newXPos, newYPos);
 			this.setAttribute("duration", --nUpdate);
 			this.setAttribute("x-pos", newXPos);
 			this.setAttribute("y-pos", newYPos);
@@ -205,16 +195,73 @@ function Field ( selector, animalClass, wanderingClass, animateFreq ){
 		
 	}.bind(this);
 	
+	interact('.'+this.animalClass).draggable({
+		onstart: function(event){
+			
+			event.target.classList.remove(this.wanderingClass);
+			event.target.classList.add("panic");
+			
+		}.bind(this),
+		onmove: function (event){
+			
+			var newXPos = parseFloat(event.target.getAttribute("x-pos")) + event.dx;
+			var newYPos = parseFloat(event.target.getAttribute("y-pos")) + event.dy;
+			
+			event.target.setAttribute("x-pos", newXPos);
+			event.target.setAttribute("y-pos", newYPos);
+			
+			$(event.target).transition({
+				x: newXPos,
+				y: newYPos
+			}, 0, "linear");
+			
+		},
+		onend: function (event){
+			
+			var xPos = parseFloat(event.target.getAttribute("x-pos"));
+			var yPos = parseFloat(event.target.getAttribute("y-pos"));
+			
+			var dim = event.target.getBoundingClientRect();
+		
+			if (xPos > this.element.width() - dim.width){
+				xPos = this.element.width() - dim.width;
+			} else if (xPos < 0){
+				xPos = 0;
+			}
+			
+			if (yPos > this.element.height() - dim.height){
+				yPos = this.element.height() - dim.height;
+			} else if (yPos < 0){
+				yPos = 0;
+			}
+			
+			event.target.setAttribute("x-pos", xPos);
+			event.target.setAttribute("y-pos", yPos);
+			
+			$(event.target)
+				.transition({
+					x: xPos,
+					y: yPos
+				}, 300, "snap", function(){
+					$(event.target)
+						.removeClass("panic")
+						.addClass(field.wanderingClass);
+				}
+			);
+			
+		}.bind(this)
+	});	
+	
 	window.setTimeout(this.updater, this.animateFreq);
-
+	
 }
 
-Field.prototype.spawn = function ( animalType ){ return sequential( this, false, function (){
+Field.prototype.spawn = function ( animalType ){ return sequential( this, false, function (nextInSequence){
 	
 	var newElement = document.createElement("div");
+	var wanderingClass = this.wanderingClass;
 	newElement.classList.add(this.animalClass);
-	newElement.classList.add(this.wanderingClass);
-	newElement.classList.add(animalType.type);
+	newElement.classList.add(animalType.elementClass);
 	
 	this.element.append(newElement);
 	
@@ -223,14 +270,119 @@ Field.prototype.spawn = function ( animalType ){ return sequential( this, false,
 	newElement.setAttribute("heading", Math.PI * 2 * Math.random());
 	newElement.setAttribute("x-pos", Math.random() * (this.element.width() - dims.width));
 	newElement.setAttribute("y-pos", Math.random() * (this.element.height() - dims.height));
-	newElement.setAttribute("duration", 300 + Math.round(Math.random() * 200));
+	newElement.setAttribute("duration", 150 + Math.round(Math.random() * 100));
 	
 	$(newElement).transition({
-		x: parseInt(newElement.getAttribute("x-pos")),
-		y: parseInt(newElement.getAttribute("y-pos"))
-	}, 0, "linear");
+		opacity: 0.0,
+		x: parseFloat(newElement.getAttribute("x-pos")),
+		y: parseFloat(newElement.getAttribute("y-pos")) - 50
+	}, 0, "linear", function(){
+		$(newElement).transition({
+			opacity: 1,
+			y: "+=50"
+		}, 500, "ease", function (){
+			$(newElement).addClass(wanderingClass).bind();
+		});
+	});
+	
+	nextInSequence();
 	
 }); };
+
+Field.prototype.waitForPickup = function ( animalType ){ return sequential( this, false, function (nextInSequence){
+	
+}); };
+//=======================================================================================
+// class Dropzone:
+//=======================================================================================
+//
+//	constructor Field( [selector] )
+//
+//	jQuery element [default $(".field")]			: the jQuery representing the field. Is 
+//													  determined from $(selector)
+//  String animalClass [default "animal"]			: the selector used to identify Animal elements.
+//												  	  used to create the Animal elements.
+//  String wanderingClass 							: the selector used to identify wandering
+//		[default "field-wandering"]					  animal elements. 
+//  Number animateFreq								: represents the amount of time a 'tick' of
+//		[default 10]								  animation should take, in ms
+//
+//  accept( [[ Animal ] animalList] or null )		: makes dropzone only accept the Animals in
+//													  animalList. If animalList is omitted, accepts
+//													  all. If animalList is null, accepts nothing.
+//
+//=======================================================================================
+
+function Dropzone ( selector, accepts ){
+
+	this.selector = selector === undefined ? ".dropzone" : selector;
+	this._accept(accepts);
+	
+	this._isWaiting = false;
+	this._nDrops = 0;
+	
+	this.isAccepted = function (element){
+		return this.accepts !== null && 
+			   this.accepts.reduce(function(prev, curr, ind, arr){
+				   return prev || element.classList.contains(curr);
+			   }, false);
+	}.bind(this);
+	
+	interact(selector).dropzone({
+		ondragenter: function(event){
+			if (this.isAccepted(event.relatedTarget)){
+				event.target.classList.add("drop-hover");
+			}
+		}.bind(this),
+		ondragleave: function(event){
+			if (this.isAccepted(event.relatedTarget)){
+				event.target.classList.remove("drop-hover");
+			}
+		}.bind(this),
+		ondrop: function(event){
+			if (this.isAccepted(event.relatedTarget)){
+				$(event.relatedTarget)
+					.transition({
+						opacity: 0.0,
+						y: '+=100'
+					}, 500, "ease", $(event.relatedTarget).remove);
+				event.target.classList.remove("drop-hover");
+				
+				if (--this._dropsNeeded == 0){
+					this._isWaiting = false;
+					this.nextInSequence();
+				}
+			}
+		}.bind(this)
+	});
+	
+}
+
+Dropzone.prototype._accept = function (animalList){
+	
+	this.accepts = animalList;
+	if (animalList !== null){
+		this.accepts = animalList === undefined ? [] : animalList.map(function(curr){return curr.elementClass});
+	}
+	
+};
+
+Dropzone.prototype.accept = function (animalList){ return sequential(this, false, function(nextInSequence){
+	
+	this._accept(animalList);	
+	nextInSequence();
+	
+}); };
+
+Dropzone.prototype.waitForNDrops = function (dropNumber){ return sequential(this, true, function(nextInSequence){
+	
+	this._dropsNeeded = dropNumber;
+	this._isWaiting = true;
+	this.nextInSequence = nextInSequence;
+	
+}); };
+
+
 
 //=======================================================================================
 //  Program main:
@@ -241,6 +393,10 @@ Field.prototype.spawn = function ( animalType ){ return sequential( this, false,
 //
 
 var dialog = new Dialog();
+var field = new Field(undefined, undefined, undefined, 30);
+var truck = new Dropzone(".truck", null);
+var corgi = new Animal("corgi");
+
 
 //
 // create sequence of actions
@@ -254,93 +410,22 @@ var dialog = new Dialog();
 // "next", which notifies that the given function has stopped.
 //
 
-var dummyAnimal = new Animal("corgi");
-var field = new Field(undefined, undefined, undefined, 30);
-
-interact('.'+field.animalClass).draggable({
-	onstart: function(event){
-		event.target.classList.remove(field.wanderingClass);
-		event.target.classList.add("panic");
-	},
-	onmove: function (event){
-		
-		var newXPos = parseFloat(event.target.getAttribute("x-pos")) + event.dx;
-		var newYPos = parseFloat(event.target.getAttribute("y-pos")) + event.dy;
-		
-		event.target.setAttribute("x-pos", newXPos);
-		event.target.setAttribute("y-pos", newYPos);
-		
-		$(event.target).transition({
-			x: newXPos,
-			y: newYPos
-		}, 0, "linear");
-		
-	},
-	onend: function (event){
-		
-		var xPos = parseFloat(event.target.getAttribute("x-pos"));
-		var yPos = parseFloat(event.target.getAttribute("y-pos"));
-		
-		var dim = event.target.getBoundingClientRect();
-	
-		if (xPos > field.element.width() - dim.width){
-			xPos = field.element.width() - dim.width;
-		} else if (xPos < 0){
-			xPos = 0;
-		}
-		
-		if (yPos > field.element.height() - dim.height){
-			yPos = field.element.height() - dim.height;
-		} else if (yPos < 0){
-			yPos = 0;
-		}
-		
-		event.target.setAttribute("x-pos", xPos);
-		event.target.setAttribute("y-pos", yPos);
-		
-		$(event.target)
-			.transition({
-				x: xPos,
-				y: yPos
-				}, 300, "snap"
-			)
-			.removeClass("panic")
-			.addClass(field.wanderingClass);
-		
-	}
-});
-
-interact(".truck").dropzone({
-	ondragenter: function(event){
-		event.target.classList.add("drop-hover");
-	},
-	ondragleave: function(event){
-		event.target.classList.remove("drop-hover");
-	},
-	ondrop: function(event){
-		$(event.relatedTarget)
-			.transition({
-				opacity: 0.0,
-				y: '+=100'
-			}, 500, "ease", $(event.relatedTarget).remove);
-		event.target.classList.remove("drop-hover");
-	}
-
-
-})
-
-
-sequence([field.spawn(dummyAnimal),
-          field.spawn(dummyAnimal),
-          field.spawn(dummyAnimal),
-          field.spawn(dummyAnimal),
+sequence([
           dialog.printDialog('Farmer: "Howdy! You must be my neighbor [username]!"'),
           dialog.promptNext(),
           dialog.clearDialog(),
           dialog.printDialog('Farmer: "Glad you could come take over my farm!"'),
           dialog.promptNext(),
           dialog.clearDialog(),
-          dialog.printDialog('Farmer: "Before I leave though, I need you to help me out with loading animals onto my truck."')
+          dialog.printDialog('Farmer: "Before I leave though, I need you to help me out with loading animals onto my truck."'),
+          dialog.promptNext(),
+          field.spawn(corgi),
+          dialog.clearDialog(),
+          dialog.printDialog('Farmer: "Try picking up the corgi and putting it into the truck."'),
+          truck.accept([corgi]).blocking(),
+          truck.waitForNDrops(1).blocking(),
+          dialog.clearDialog(),
+          dialog.printDialog('Farmer: "Good job!"')
 ]);
 
 };
