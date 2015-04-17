@@ -469,7 +469,7 @@ sequence([
           truck.waitForNDrops(2).blocking(),
           truck.accept(false).blocking(),
           dialog.clearDialog(),
-          dialog.printDialog('[Insert self-affirming message here]').nonBlocking()
+          dialog.printDialog('[Insert message here]').nonBlocking()
 ]);
 
 };

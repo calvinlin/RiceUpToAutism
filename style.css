@@ -1,5 +1,9 @@
 body, html { 
 	
+	
+	min-width: 1280px;
+	min-height: 720px;
+	
 	width: 100%;
 	height: 100%;
 	
@@ -103,8 +107,8 @@ body, html {
 		width: 300px;
 		height: 300px;
 	
-		background: url('images/farmer.png') center/contain no-repeat;
-		
+		background: url('images/moustache.png') 50% 155px/26.5% auto no-repeat, url('images/farmer-nostache.png') center/contain no-repeat;
+			
 	}
 	
 		@keyframes dialog-head-talking {
