@@ -33,7 +33,7 @@ Dialog.prototype._dialog = function(callback, dialog, image, align){
 		this.element.addClass("with-image-" + align);
 	}
 	
-	this.element.addClass("talking");
+	this.head.addClass("talking");
 	
 	var textBox = $('<div class="dialog-box-text"></div>').appendTo(this.element);
 	var letters = dialog.split("");
