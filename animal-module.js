@@ -10,7 +10,7 @@
 //	
 //=======================================================================================
 
-function Animal ( type, elementClass, sound ){
+function Animal ( type, elementClass, sound, image ){
 	
 	if ( type === undefined ){
 		throw "Animal.prototype: Argument 'type' is a required argument.";
@@ -18,5 +18,8 @@ function Animal ( type, elementClass, sound ){
 		
 	this.type = type;
 	this.elementClass = elementClass === undefined ? this.type : elementClass;
+	
+	this.sound = sound;
+	this.image = image;
 	
 }

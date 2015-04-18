@@ -19,8 +19,9 @@
 //
 //=======================================================================================
 
-function Dropzone ( selector, accepts ){
+function Dropzone (sequencer, selector, accepts){
 
+	this.sequencer = sequencer;
 	this.selector = selector === undefined ? ".dropzone" : selector;
 	this._accept(accepts);
 	
@@ -28,7 +29,6 @@ function Dropzone ( selector, accepts ){
 	this._nDrops = 0;
 	
 	this.isAccepted = function (element){
-		console.log(this.accepts === true)
 		return ( (this.accepts === true) || 
 				 (this.accepts instanceof Array && this.accepts.reduce(function(prev, curr, ind, arr){
 				   return prev || element.classList.contains(curr);
@@ -65,7 +65,6 @@ function Dropzone ( selector, accepts ){
 				}
 			} else {
 				event.target.classList.remove("wrong-hover");
-				//dialog.printDialog("That's the wrong animal!").nonBlocking()();
 			}
 		}.bind(this)
 	});
@@ -79,7 +78,7 @@ Dropzone.prototype._accept = function (animalList){
 };
 
 Dropzone.prototype.accept = function (animalList, blocking){
-	sequential.newFunction(blocking, function(next){
+	this.sequencer.newFunction(blocking, function(next){
 	
 	this._accept(animalList);	
 	next();
@@ -87,7 +86,7 @@ Dropzone.prototype.accept = function (animalList, blocking){
 }.bind(this))};
 
 Dropzone.prototype.waitForNDrops = function (dropNumber, blocking){ 
-	sequential.newFunction(blocking, function(next){
+	this.sequencer.newFunction(blocking, function(next){
 	
 	this._dropsNeeded = dropNumber;
 	this._isWaiting = true;

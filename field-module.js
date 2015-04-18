@@ -18,8 +18,9 @@
 //
 //=======================================================================================
 
-function Field ( selector, animalClass, wanderingClass, animateFreq ){
+function Field (sequencer, selector, animalClass, wanderingClass, animateFreq ){
 
+	this.sequencer = sequencer;
 	this.selector = selector === undefined ? ".field" : selector;
 	this.animalClass = animalClass === undefined ? "animal" : animalClass;
 	this.wanderingClass = wanderingClass === undefined ? "field-wandering" : wanderingClass;
@@ -78,6 +79,10 @@ function Field ( selector, animalClass, wanderingClass, animateFreq ){
 			event.target.classList.remove(this.wanderingClass);
 			event.target.classList.add("panic");
 			
+			$(event.target).transition({
+				scale: [1.25, 1.25]
+			}, 0, "linear");
+			
 		}.bind(this),
 		onmove: function (event){
 			
@@ -121,6 +126,9 @@ function Field ( selector, animalClass, wanderingClass, animateFreq ){
 					y: yPos
 				}, 300, "snap", function(){
 					$(event.target)
+						.transition({
+							scale: [1.0, 1.0]
+						}, 200, "snap")
 						.removeClass("panic")
 						.addClass(this.wanderingClass);
 				}.bind(this)
@@ -134,7 +142,7 @@ function Field ( selector, animalClass, wanderingClass, animateFreq ){
 }
 
 Field.prototype.spawn = function (animalType, blocking){
-	sequential.newFunction(blocking, function(next){
+	this.sequencer.newFunction(blocking, function(next){
 		
 	var newElement = document.createElement("div");
 	var wanderingClass = this.wanderingClass;
