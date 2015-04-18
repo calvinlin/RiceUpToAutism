@@ -2,7 +2,7 @@
   "name": "FarmTown",
   "icons": [
     {
-      "src": "images/farmer.png",
+      "src": "/images/farmer.png",
       "sizes": "300x300",
 `      "type": "image/png"
     }
