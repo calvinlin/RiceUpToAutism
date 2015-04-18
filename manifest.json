@@ -4,8 +4,7 @@
     {
       "src": "images/farmer.png",
       "sizes": "300x300",
-      "type": "image/png",
-      "density": "0.75"
+`      "type": "image/png"
     }
   ],
   "start_url": "/index.html",
