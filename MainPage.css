@@ -1,0 +1,94 @@
+@CHARSET "US-ASCII";
+
+.layer {
+	position: fixed;
+	height: 720px;
+	width: 1280px;
+	top: 50%;
+	left: 50%;
+	margin-top: 360px;
+	margin-left: 640px;
+}
+
+.layer>* {
+	position: absolute;
+}
+
+#task_1 {
+	z-index: 1;
+	position: fixed;
+	top: 30%;
+	left: 20%;
+	height: 120px;
+	width: 120px;
+	background: url("resources/images/property_icon/pig_pen.png") center/cover;
+}
+
+#task_2 {
+	z-index: 1;
+	position: fixed;
+	top: 20%;
+	left: 55%;
+	height: 120px;
+	width: 120px;
+	background: url("resources/images/property_icon/sheep_pen.png") center/cover;
+}
+
+#task_3 {
+	z-index: 1;
+	background-color: #D49F6A;
+	position: fixed;
+	top: 70%;
+	left: 40%;
+	height: 120px;
+	width: 120px;
+}
+
+#task_4 {
+	z-index: 1;
+	background-color: #407F7F;
+	position: fixed;
+	top: 45%;
+	left: 75%;
+	height: 120px;
+	width: 120px;
+}
+
+#shop {
+	z-index: 1;
+	background-color: #585494;
+	position: fixed;
+	top: 75%;
+	left: 10%;
+	height: 50px;
+	width: 150px;
+}
+
+#achievements {
+	z-index: 1;
+	background-color: #6CB259;
+	position: fixed;
+	top: 75%;
+	right: 10%;
+	height: 50px;
+	width: 150px;
+}
+
+.xp {
+	z-index: 1;
+	background-color: #3A5200;
+	position: fixed;
+	top: 95%;
+	left: 0%;
+	height: 5%;
+	width: 10%;
+}
+
+.money {
+	background-color: #0E1D8B;
+	position: fixed;
+	top: 95%;
+	left: 90%;
+	height: 5%;
+	width: 10%;
+}
