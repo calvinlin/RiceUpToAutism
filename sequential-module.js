@@ -15,14 +15,17 @@ Sequential.prototype._next = function (){
 
 Sequential.prototype.newFunction =  function (blocking, fn){
 	this._sequence.push(function(){
-		this._active = true;			
 		if (blocking !== undefined){
+			this._active = true;
 			if (blocking === BLOCKING){
 				fn(function(){ this._next()(); }.bind(this));
 			} else if (blocking === NONBLOCK){
 				fn(function(){});
 				this._next()();
 			}
+		} else {
+			this._next()();
+			fn(function(){});
 		}
 	}.bind(this));
 	
