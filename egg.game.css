@@ -41,7 +41,7 @@ body, html {
 		bottom: 310px;
 		
 		width: 730px;
-		height: 70px;
+		height: 80px;
 		
 		margin-left: 39px; /* 30px */
 		padding: 15px;
@@ -196,7 +196,8 @@ body, html {
 
 		background: black;
 
-		opacity: 0.5;
+		border: 3px solid black;
+		border-radius: 20px;
 	}
 
 		.nest .egg {
@@ -260,7 +261,7 @@ body, html {
 		margin-top: -250px;
 		
 		width: 300px;
-		height: 500px;
+		height: 0px;
 	
 		padding: 15px;
 		border-radius: 5px;
@@ -270,4 +271,89 @@ body, html {
 		background: white;
 
 		display: none;
+		opacity: 0;
+		
+		font-family: Unkempt, Arial, sans-serif;
+		font-size: 90px;
+		color: black;
+		
 	}
+	
+		#tally-box .tally-row {
+			
+			position: relative;
+			
+			height: 100px;
+			width: 100%;
+		
+			line-height: 100px;
+			
+		}
+		
+			#tally-box .tally-row:last-child {
+			
+				border-top: 5px solid black;
+			
+				opacity: 0;
+				
+				text-align: center;
+			}
+			
+			#tally-box .tally-row div {
+		 
+				position: absolute;
+				
+				top: 0;
+				
+				height: 100%;
+				
+				opacity: 0;
+				
+			}
+			
+			
+			#tally-box .tally-row .tally-egg-count {
+
+				left: 0;
+				
+				width: 150px;
+				
+				font-size: 30px;
+				
+				text-align: center;
+
+			}
+			
+				#tally-box .tally-row .tally-egg-count:before {
+					content: "(";
+				}
+			
+				#tally-box .tally-row .tally-egg-count:after {
+				
+					content: ")";
+				}
+
+			#tally-box .tally-row .tally-multiplier {
+			
+				left: 160px;
+				
+				width: 50px;
+				
+				font-size: 30px;
+				color: grey;
+				
+			}
+			
+			#tally-box .tally-row .tally-score {
+			
+				left: 215px;
+				
+				width: 100px;
+				height: 100%;
+				
+				font-size: 70px;
+				
+				text-align: right;
+				
+			}
+			

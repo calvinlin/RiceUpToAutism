@@ -140,6 +140,8 @@ function Nest ( sequencer, element, accepts, eggElement ){
 	this.selector = element === undefined ? ".nest#nest-" + (++Nest.NUM_OF_INSTANCES) : element; 
 	this.accepts = accepts === undefined ? true : accepts;
 
+	$(this.selector).css("background", typeof this.accepts === "string" ? this.accepts : this.accepts[0]);
+	
 	this.nDropped = 0;
 	
 	this._isAccepted = function(element){
@@ -173,55 +175,198 @@ function Nest ( sequencer, element, accepts, eggElement ){
 
 Nest.NUM_OF_INSTANCES = 0;
 
+function shuffle( array ){
+	var result = [];
+	var deepArray = JSON.parse(JSON.stringify(array));
+	while (deepArray.length){
+		result.push(deepArray.splice(Math.floor(Math.random() * deepArray.length), 1)[0]);
+	}
+	return result;
+}
+
+
+//$("audio").get(0).volume = 0.3;
 var sequencer = new Sequential();
 var sleep = new Sleeper(sequencer);
 
-var conveyor = new ConveyorBelt( sequencer, 6000, 5 );
+var conveyor = new ConveyorBelt( sequencer, 4000, 5 );
 var dialog = new Dialog( sequencer, undefined, "#dialog-box", "#dialog-head");
 
-var nest1 = new Nest(sequencer, undefined, "green");
-var nest2 = new Nest(sequencer, undefined, false);
-var nest3 = new Nest(sequencer, undefined, false);
+// generate egg colors to use in the nests
+var COLORS = ["red", "orange", "yellow", "green", "blue", "purple"];
+var chosenColors = [COLORS.splice(Math.floor(Math.random() * 6), 1)[0],
+                    COLORS.splice(Math.floor(Math.random() * 5), 1)[0],
+					COLORS.splice(Math.floor(Math.random() * 4), 1)[0]];
 
+// use the chosen colors to generate the nests
+var nest1 = new Nest(sequencer, undefined, chosenColors[0]);
+var nest2 = new Nest(sequencer, undefined, chosenColors[1]);
+var nest3 = new Nest(sequencer, undefined, chosenColors[2]);
+
+// keep track of eggs collected at each speed
 var eggsCollectedAtSpeed = [];
 
-
+// display the beginning of the game
 dialog.printDialog("Mother Hen is laying eggs! Help sort the colored eggs by dropping them the correct colored nests.", BLOCKING);
+
+// move the dialog box to the bottom
 dialog.promptNext(BLOCKING);
 dialog.clearDialog(BLOCKING);
 
-sequential.newFunction(BLOCKING, function (next){
-	
-	sequencer.element.animate({"bottom"})
-	
+sequencer.newFunction(BLOCKING, function (next){
+	dialog.element.transition({ bottom : 50 }, 500, "ease-in-out",
+			function(){this.css("z-index", 3)});
+	dialog.head.transition({ bottom : 0 }, 500, "ease-in-out",
+			function(){this.css("z-index", 3)});
+		
+	$(document.getElementById("greyout"))
+		.transition({ opacity: 0 }, 500, "ease-in-out", 
+			function (){
+				this.css("display", "none");
+				next()
+			}
+		);
 });
 
+sleep.ms(500, BLOCKING);
+
 dialog.printDialog("Put the eggs into the basket with the correct color.", BLOCKING);
+dialog.promptNext(BLOCKING);
+sequencer.newFunction(BLOCKING, function(next){
+	$("#dialog-box").children().not(".dialog-box-text").remove();
+	next();
+});
 
-conveyor.spawnEgg("green", BLOCKING);
-sleep.ms(1000, BLOCKING);
-conveyor.spawnEgg("purple", BLOCKING);
+// First "wave"
+var currentQueue = [];
 
+for (var i = 0; i < 6; ++i){
+	currentQueue.push(shuffle(chosenColors)[0]);
+}
+for (var i = 0; i < 4; ++i){
+	currentQueue.push(shuffle(COLORS)[0]);
+}
+
+currentQueue = shuffle(currentQueue);
+
+for (var i = 0; i < 10; ++i){
+	conveyor.spawnEgg(currentQueue[i], BLOCKING);
+	sleep.ms(1000, BLOCKING);
+}
 conveyor.waitOnClear(BLOCKING);
 
+sequencer.newFunction(BLOCKING, function(next){
+	eggsCollectedAtSpeed[0] = [nest1.nDropped, nest2.nDropped, nest3.nDropped];
+	nest1.nDropped = nest2.nDropped = nest3.nDropped = 0;
+	next();
+});
+
 dialog.clearDialog(BLOCKING);
+conveyor.setSpeed(3000, BLOCKING);
 dialog.printDialog("Watch out! It's getting faster!", BLOCKING);
 dialog.promptNext(BLOCKING);
 dialog.clearDialog(BLOCKING);
 
-conveyor.setSpeed(4000, BLOCKING);
+// second "wave"
+currentQueue = [];
 
-conveyor.spawnEgg("green", BLOCKING);
-sleep.ms(1000, BLOCKING);
-conveyor.spawnEgg("pink", BLOCKING);
-sleep.ms(1000, BLOCKING);
-conveyor.spawnEgg("green", BLOCKING);
+for (var i = 0; i < 9; ++i){
+	currentQueue.push(shuffle(chosenColors)[0]);
+}
+for (var i = 0; i < 4; ++i){
+	currentQueue.push(shuffle(COLORS)[0]);
+}
 
+currentQueue = shuffle(currentQueue);
+
+for (var i = 0; i < 13; ++i){
+	conveyor.spawnEgg(currentQueue[i], BLOCKING);
+	sleep.ms(1000, BLOCKING);
+}
 conveyor.waitOnClear(BLOCKING);
-sleep.ms(1000, BLOCKING);
-sequencer.newFunction(BLOCKING, function (next){
-	document.getElementById("greyout").style.display = "block";
-	document.getElementById("tally-box").style.display = "block";
+
+sequencer.newFunction(BLOCKING, function(next){
+	eggsCollectedAtSpeed[1] = [nest1.nDropped, nest2.nDropped, nest3.nDropped];
+	nest1.nDropped = nest2.nDropped = nest3.nDropped = 0;
 	next();
 });
+
+dialog.clearDialog(BLOCKING);
+conveyor.setSpeed(2000, BLOCKING);
+dialog.printDialog("Watch out! It's getting much faster!", BLOCKING);
+dialog.promptNext(BLOCKING);
+dialog.clearDialog(BLOCKING);
+
+// third "wave"
+currentQueue = [];
+
+for (var i = 0; i < 14; ++i){
+	currentQueue.push(shuffle(chosenColors)[0]);
+}
+for (var i = 0; i < 6; ++i){
+	currentQueue.push(shuffle(COLORS)[0]);
+}
+
+currentQueue = shuffle(currentQueue);
+
+for (var i = 0; i < 20; ++i){
+	conveyor.spawnEgg(currentQueue[i], BLOCKING);
+	sleep.ms(1000, BLOCKING);
+}
+conveyor.waitOnClear(BLOCKING);
+
+sequencer.newFunction(BLOCKING, function(next){
+	eggsCollectedAtSpeed[2] = [nest1.nDropped, nest2.nDropped, nest3.nDropped];
+	nest1.nDropped = nest2.nDropped = nest3.nDropped = 0;
+	next();
+});
+
+// display the score
+sequencer.newFunction(BLOCKING, function (next){
+	console.log(eggsCollectedAtSpeed);
+	$(document.getElementById("greyout"))
+		.css("display", "block")
+		.transition({opacity: 0.5}, 500, "ease-in-out");
+	$(document.getElementById("tally-box"))
+		.css("display", "block")
+		.transition({opacity: 1}, 500, "ease-in-out", next);
+});
+
+$("#tally-box .tally-row").slice(0, -1).each(function (index){
+	sequencer.newFunction(BLOCKING, function(next){
+		
+		$("#tally-box")
+			.transition({
+				height: 100 * (index + 1)
+			}, 500, "snap", function(){
+				$(this)
+					.children(".tally-score")
+					.text((eggsCollectedAtSpeed[index].reduce(function (prev, curr){
+						return prev + curr;
+					}, 0)* (index + 1)).toString());
+				$(this).children(".tally-egg-count")
+					.text(eggsCollectedAtSpeed[index].join(" + "));
+				
+				$(this).children().each(function (index){
+					window.setTimeout(function(){$(this).transition({ opacity: 1 }, 300, "ease-in-out")}.bind(this), index * 300);
+				});
+				window.setTimeout(next, 900);
+				
+			}.bind(this));
+		
+}.bind(this))});
+
+sequencer.newFunction(BLOCKING, function( next ){
+	$("#tally-box").transition({ height: 400 }, 500, "snap",
+		function(){
+			$(".tally-score")
+				.each(function(){
+					console.log(parseInt($("#tally-total-score").text()));
+					$("#tally-total-score").text((parseInt($("#tally-total-score").text()) || 0) + parseInt($(this).text()));
+				});
+			$("#tally-total-score")
+				.transition({ opacity: 1 }, 500, "ease-in-out");
+		});
+});
+
 }

@@ -18,6 +18,7 @@
 		
 	</head>
 	<body>
+		<!-- audio src="audio/task.mp3" autoplay loop></audio -->
 		<div class="layer" id="egg-game">
 			<div id="conveyor-belt"></div>
 			<div id="conveyor-rollers"></div>
@@ -27,7 +28,25 @@
 			<div id="dialog-head"></div>
 			<div id="dialog-box"></div>
 			<div id="greyout"></div>
-			<div id="tally-box"></div>
+			<div id="tally-box">
+				<div class="tally-row" id="tally-speed-1">
+					<div class="tally-egg-count"></div>
+					<div class="tally-multiplier">x 1</div>
+  					<div class="tally-score"></div>
+				</div>
+				<div class="tally-row" id="tally-speed-2">
+					<div class="tally-egg-count"></div>
+  					<div class="tally-multiplier">x 2</div>
+  					<div class="tally-score"></div>
+				</div>
+				<div class="tally-row" id="tally-speed-3">
+					<div class="tally-egg-count"></div>
+					<div class="tally-multiplier">x 3</div>
+  					<div class="tally-score"></div>
+				</div>
+				<div class="tally-row" id="tally-total-score">
+				</div>
+			</div>
 		</div>
 	</body>
 </html>
