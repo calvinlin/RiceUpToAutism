@@ -337,7 +337,8 @@ $("#tally-box .tally-row").slice(0, -1).each(function (index){
 		
 		$("#tally-box")
 			.transition({
-				height: 100 * (index + 1)
+				height: 100 * (index + 1),
+				top: 360 - 50 * (index + 1)
 			}, 500, "snap", function(){
 				$(this)
 					.children(".tally-score")
@@ -357,7 +358,7 @@ $("#tally-box .tally-row").slice(0, -1).each(function (index){
 }.bind(this))});
 
 sequencer.newFunction(BLOCKING, function( next ){
-	$("#tally-box").transition({ height: 400 }, 500, "snap",
+	$("#tally-box").transition({ height: 400, top: 160 }, 500, "snap",
 		function(){
 			$(".tally-score")
 				.each(function(){

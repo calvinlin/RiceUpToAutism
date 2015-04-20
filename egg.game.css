@@ -253,12 +253,11 @@ body, html {
 
 	#tally-box {
 		z-index: 10;
-	
-		top: 50%;
+		
 		left: 50%;
+		top: 50%;
 		
 		margin-left: -150px;
-		margin-top: -250px;
 		
 		width: 300px;
 		height: 0px;
@@ -346,14 +345,14 @@ body, html {
 			
 			#tally-box .tally-row .tally-score {
 			
-				left: 215px;
+				left: 210px;
 				
 				width: 100px;
 				height: 100%;
 				
 				font-size: 70px;
 				
-				text-align: right;
+				text-align: center;
 				
 			}
 			
