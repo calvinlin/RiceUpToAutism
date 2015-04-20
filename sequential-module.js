@@ -13,9 +13,10 @@ Sequential.prototype._next = function (){
 	return this._sequence.length ? this._sequence.shift() : function(){ this._active = false }.bind(this);
 };
 
+var count = 0;
 Sequential.prototype.newFunction =  function (blocking, fn){
-	this._sequence.push(function(){
-		if (blocking !== undefined){
+	if (blocking !== undefined){
+		this._sequence.push(function(){
 			this._active = true;
 			if (blocking === BLOCKING){
 				fn(function(){ this._next()(); }.bind(this));
@@ -23,13 +24,12 @@ Sequential.prototype.newFunction =  function (blocking, fn){
 				fn(function(){});
 				this._next()();
 			}
-		} else {
-			this._next()();
-			fn(function(){});
+		}.bind(this));
+		if (!this._active){
+			this._sequence.shift()();
 		}
-	}.bind(this));
-	
-	if (!this._active){
-		this._sequence.shift()();
+	} else {
+		fn(function(){});
 	}
+	
 };

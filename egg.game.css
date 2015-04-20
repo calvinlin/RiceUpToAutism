@@ -87,6 +87,34 @@ body, html {
 			margin-top: -42px; /* 31px */
 			margin-right: 20px;
 		}
+		
+		.dialog-box-arrow {
+		
+			position: absolute;
+		
+			right: 10px;
+			bottom: 10px;
+			
+			height: 0; 
+			width: 0; 
+		
+			border-left: 10px solid red;
+			border-bottom: 10px solid transparent;
+			border-top: 10px solid transparent;
+		
+		}
+		
+		.dialog-continue {
+		
+			  position: absolute;
+			  
+			  right: 30px;
+			  bottom: 10px;
+			  
+			  font-size: 18px;
+			  line-height: 18px;
+		
+		}
 
 	#dialog-head {
 	

@@ -95,6 +95,7 @@ function ConveyorBelt( sequencer, speed, updateInterval, element, eggElement ){
 			});
 		} else {
 			this.fireOnEmpty();
+			this.fireOnEmpty = function(){};
 		}
 		window.setTimeout(updateEggPos, updateInterval);
 	}.bind(this);
@@ -112,6 +113,8 @@ ConveyorBelt.prototype.setSpeed = function (speed, blocking){
 		"-moz-animation-duration": (this.speed / 7).toString() + "ms",
 		"-o-animation-duration": (this.speed / 7).toString() + "ms"
 	});
+	
+	next();
 	
 }.bind(this))};
 
@@ -180,13 +183,22 @@ var nest1 = new Nest(sequencer, undefined, "green");
 var nest2 = new Nest(sequencer, undefined, false);
 var nest3 = new Nest(sequencer, undefined, false);
 
+var eggsCollectedAtSpeed = [];
+
+
 dialog.printDialog("Put the eggs into the basket with the correct color.");
 
 conveyor.spawnEgg("green", BLOCKING);
 sleep.ms(1000, BLOCKING);
 conveyor.spawnEgg("purple", BLOCKING);
 
-conveyor.waitOnClear(BLOCKING)
+conveyor.waitOnClear(BLOCKING);
+
+dialog.clearDialog(BLOCKING);
+dialog.printDialog("Watch out! It's getting faster!", BLOCKING);
+dialog.promptNext(BLOCKING);
+dialog.clearDialog(BLOCKING);
+
 conveyor.setSpeed(4000, BLOCKING);
 
 conveyor.spawnEgg("green", BLOCKING);
@@ -198,7 +210,6 @@ conveyor.spawnEgg("green", BLOCKING);
 conveyor.waitOnClear(BLOCKING);
 sleep.ms(1000, BLOCKING);
 sequencer.newFunction(BLOCKING, function (next){
-	console.log("hello");
 	document.getElementById("greyout").style.display = "block";
 	document.getElementById("tally-box").style.display = "block";
 	next();
