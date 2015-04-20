@@ -185,7 +185,7 @@ function shuffle( array ){
 }
 
 
-//$("audio").get(0).volume = 0.3;
+$("audio").get(0).volume = 0.3;
 var sequencer = new Sequential();
 var sleep = new Sleeper(sequencer);
 
