@@ -89,8 +89,6 @@ Dialog.prototype.promptNext = function (blocking) {
 	this.sequencer.newFunction(blocking, function(next){
 		
 	this.element.append('<div class="dialog-box-arrow"></div><div class="dialog-continue">click to continue</div>');
-	this.element.one("click", function(){
-		next();
-	}.bind(this));
+	this.element.one("click", next);
 	
 }.bind(this))};

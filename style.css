@@ -94,6 +94,26 @@ body, html {
 			background: url('images/sheep_2.png') center/cover no-repeat, url("images/shadow.png") bottom/contain no-repeat;
 		
 		}
+		
+	.animal.chicken {
+		
+		background: url('images/chicken.jpg') center/cover no-repeat, url("images/shadow.png") bottom/contain no-repeat;
+		
+	}
+	
+		.animal.chicken.panic {
+		
+			background: url('images/chicken_2.jpg') center/cover no-repeat, url("images/shadow.png") bottom/contain no-repeat;
+		
+		}
+		
+	.animal.goat {
+	
+		background: url('images/goat.jpg') center/cover no-repeat, url("images/shadow.png") bottom/contain no-repeat;
+	
+	}
+	
+	
 	
 	.dialog-head {
 	
