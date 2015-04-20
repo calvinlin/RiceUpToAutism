@@ -26,10 +26,10 @@ html {
 }
 
 #dialog-box {
-  z-index: 3;
+  z-index: 10;
   position: absolute;
   left: 350px;
-  bottom: 50px;
+  bottom: 310px;
   width: 730px;
   height: 70px;
   margin-left: 39px;
@@ -97,9 +97,9 @@ html {
 }
 
 #dialog-head {
-  z-index: 3;
+  z-index: 10;
   left: 100px;
-  bottom: 0;
+  bottom: 260px;
   width: 200px;
   height: 200px;
   background: url('images/chicken.png') center/contain no-repeat;
@@ -208,7 +208,6 @@ html {
   height: 100%;
   background: black;
   opacity: 0.5;
-  display: none;
 }
 
 #tally-box {

@@ -186,7 +186,17 @@ var nest3 = new Nest(sequencer, undefined, false);
 var eggsCollectedAtSpeed = [];
 
 
-dialog.printDialog("Put the eggs into the basket with the correct color.");
+dialog.printDialog("Mother Hen is laying eggs! Help sort the colored eggs by dropping them the correct colored nests.", BLOCKING);
+dialog.promptNext(BLOCKING);
+dialog.clearDialog(BLOCKING);
+
+sequential.newFunction(BLOCKING, function (next){
+	
+	sequencer.element.animate({"bottom"})
+	
+});
+
+dialog.printDialog("Put the eggs into the basket with the correct color.", BLOCKING);
 
 conveyor.spawnEgg("green", BLOCKING);
 sleep.ms(1000, BLOCKING);

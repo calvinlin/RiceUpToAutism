@@ -13,7 +13,6 @@ Sequential.prototype._next = function (){
 	return this._sequence.length ? this._sequence.shift() : function(){ this._active = false }.bind(this);
 };
 
-var count = 0;
 Sequential.prototype.newFunction =  function (blocking, fn){
 	if (blocking !== undefined){
 		this._sequence.push(function(){
@@ -30,6 +29,5 @@ Sequential.prototype.newFunction =  function (blocking, fn){
 		}
 	} else {
 		fn(function(){});
-	}
-	
+	}	
 };
