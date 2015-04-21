@@ -321,7 +321,7 @@ sequencer.newFunction(BLOCKING, function(next){
 	next();
 });
 
-// display the score
+// display the scoreboard
 sequencer.newFunction(BLOCKING, function (next){
 	console.log(eggsCollectedAtSpeed);
 	$(document.getElementById("greyout"))
@@ -332,25 +332,39 @@ sequencer.newFunction(BLOCKING, function (next){
 		.transition({opacity: 1}, 500, "ease-in-out", next);
 });
 
+// animate in each row, displaying the points earned at each speed
 $("#tally-box .tally-row").slice(0, -1).each(function (index){
+	
+	// register three animations
 	sequencer.newFunction(BLOCKING, function(next){
 		
+		// move the top of the box down as it expands, so that
+		// it stays centered
 		$("#tally-box")
 			.transition({
 				height: 100 * (index + 1),
 				top: 360 - 50 * (index + 1)
 			}, 500, "snap", function(){
+				
+				// add up the eggs earned and multiply them by the "wave"
 				$(this)
 					.children(".tally-score")
 					.text((eggsCollectedAtSpeed[index].reduce(function (prev, curr){
 						return prev + curr;
 					}, 0)* (index + 1)).toString());
+				
+				// string to represent total eggs collected as sum of each
+				// color
 				$(this).children(".tally-egg-count")
 					.text(eggsCollectedAtSpeed[index].join(" + "));
 				
+				// animate in each cell of the row at a staggered time
 				$(this).children().each(function (index){
 					window.setTimeout(function(){$(this).transition({ opacity: 1 }, 300, "ease-in-out")}.bind(this), index * 300);
 				});
+				
+				// go to the next animation when animating in the row is finished
+				// 300 ms per row, 3 rows = 900 ms
 				window.setTimeout(next, 900);
 				
 			}.bind(this));
@@ -360,11 +374,14 @@ $("#tally-box .tally-row").slice(0, -1).each(function (index){
 sequencer.newFunction(BLOCKING, function( next ){
 	$("#tally-box").transition({ height: 400, top: 160 }, 500, "snap",
 		function(){
+		
+			// tally up the total score as sum of values from cells
 			$(".tally-score")
 				.each(function(){
-					console.log(parseInt($("#tally-total-score").text()));
 					$("#tally-total-score").text((parseInt($("#tally-total-score").text()) || 0) + parseInt($(this).text()));
 				});
+			
+			// fade the score in
 			$("#tally-total-score")
 				.transition({ opacity: 1 }, 500, "ease-in-out");
 		});

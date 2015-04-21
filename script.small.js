@@ -5,6 +5,12 @@
 window.onload = function (){
 
 //
+//	initialize the data
+//
+
+var data = fetchPlayerData();
+	
+//
 // initialize variables
 //
 
@@ -102,11 +108,7 @@ dialog.clearDialog(BLOCKING);
 dialog.printDialogWithImage('Last animal! Can you bring the goat in?', goat.image, "left", NONBLOCK);
 truck.accept([goat], BLOCKING);
 truck.waitForNDrops(1, BLOCKING);
-/*
-truck.accept(false, BLOCKING);
-dialog.clearDialog(BLOCKING);
-dialog.printDialog('[Insert message here]', NONBLOCK);
-*/
+
 truck.accept(false, BLOCKING);
 dialog.clearDialog(BLOCKING);
 dialog.printDialog("Thanks neighbor! You did a pretty good job here.", BLOCKING);
@@ -134,12 +136,6 @@ dialog.promptNext(BLOCKING);
 
 dialog.clearDialog(BLOCKING);
 dialog.printDialog("Oh look at the time! I must be going, good luck neighbor!", NONBLOCK);
-
-
-
-
-
-
 
 
 };
