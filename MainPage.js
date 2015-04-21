@@ -18,6 +18,19 @@ window.onload = function (){
 //-----------------------------------------------------------------------------
 // Remembers music file locations, starts/stops when necessary 
 //-----------------------------------------------------------------------------
+		
+		// Recommendation:
+		//
+		// toggle is deprecated I think, so:
+		//
+		// // if you still want to use toggle for other things 
+		// function toggle (fn1, fn2){
+		// 		var clicked = 0;
+		// 		return function (){(clicked ^= 1) ? fn1() : fn2()};
+		// }
+		// document.getElementById("music").addEventListener("click", toggle(startMusic, stopMusic));
+		//
+	
 		$('#music').toggle(
 				function () {
 					startMusic();
@@ -69,6 +82,18 @@ window.onload = function (){
 // When one of the things is clicked, it will go and navigate to the specified
 // div and hide all the other ones
 //-----------------------------------------------------------------------------
+
+// recommendation:
+//
+//	have all clickable things that change layers as .layer-changer (or something like that)
+//  and the current active layer as .layer (so that its class is .active.layer) and then have:
+//  
+// $(".layer-changer").click(function(){
+//	$(this).closest(".layer").hide(); 				// assume the element just clicked is part of the currently visible layer
+//	$("#_" + this.id.replace(/[\W_]/, '')).show();	// transforms e.g. "#task_1" to "#_task1"
+//  taskMusic.play();
+// });
+//
 	
 	$('#task_1').on('click', function() {
 		navigate('11');
