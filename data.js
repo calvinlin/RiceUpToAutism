@@ -1,3 +1,35 @@
+// Can I recommend the following? -- Wilmer
+
+function initPlayerData(){
+	// define the data model here
+	var result = {
+		money: 0,
+		xp: 0,
+		name: "neighbor",
+		unlocked_task: [false, false, false, false] 
+	};
+	window.localStorage.setItem("playerData", JSON.stringify(result));
+		
+	return result;
+}
+
+function getPlayerData(){
+	// return the playerData in localStorage if it exists; call initPlayerData
+	// to initialize it otherwise
+	return JSON.parse(window.localStorage.getItem("playerData")) || initPlayerData();
+}
+
+function pushPlayerData( playerData ){
+	// assume the given playerData is valid. later, probably validate by creating
+	// an actual model to match against.
+	window.localSotrage.setItem("playerData", JSON.stringify(result));
+}
+
+// The method above will work for the default javascript types and arrays of them
+// I assume. If you wanted to implement getters/setters to the things, you could
+// do that directly on the data object too.
+
+
 function dataInit() {
 	if (window.localStorage.getItem("money") === null){
 		window.localStorage.setItem("money", "0");
