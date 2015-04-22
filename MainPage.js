@@ -6,18 +6,38 @@ window.onload = function (){
 		//load XP amount
 		$('.layer').hide();
 		$('#_mainScreen').show();
+		var _data = fetchPlayerData();
+		checkLevelUnlocked(_data);
+		getXPandMoney(_data);
 		startMusic();
+		
 	}
 	
+	var _data = fetchPlayerData();
 	var mainMusic = new Audio('audio/bgm.mp3');
 	var taskMusic = new Audio('audio/task.mp3');
 	init();
+	$('.nonClickable').click(function(){return false;});
+	
 	
 //=============================================================================
 // MUSIC FUNCTIONALITY
 //-----------------------------------------------------------------------------
 // Remembers music file locations, starts/stops when necessary 
 //-----------------------------------------------------------------------------
+		
+		// Recommendation:
+		//
+		// toggle is deprecated I think, so:
+		//
+		// // if you still want to use toggle for other things 
+		// function toggle (fn1, fn2){
+		// 		var clicked = 0;
+		// 		return function (){(clicked ^= 1) ? fn1() : fn2()};
+		// }
+		// document.getElementById("music").addEventListener("click", toggle(startMusic, stopMusic));
+		//
+	
 		$('#music').toggle(
 				function () {
 					startMusic();
@@ -54,12 +74,12 @@ window.onload = function (){
 // show
 //-----------------------------------------------------------------------------
 	
-	$('.task').hover(function() {
-		$(this).css({ transform: 'scale(1.05)' });
-	}
-	,function(){
-		$(this).css({ transform: 'scale(1)' });
-	});
+//	$('.task').hover(function() {
+//		$(this).css({ transform: 'scale(1.05)' });
+//	}
+//	,function(){
+//		$(this).css({ transform: 'scale(1)' });
+//	});
 
 //=============================================================================
 
@@ -69,6 +89,18 @@ window.onload = function (){
 // When one of the things is clicked, it will go and navigate to the specified
 // div and hide all the other ones
 //-----------------------------------------------------------------------------
+
+// recommendation:
+//
+//	have all clickable things that change layers as .layer-changer (or something like that)
+//  and the current active layer as .layer (so that its class is .active.layer) and then have:
+//  
+// $(".layer-changer").click(function(){
+//	$(this).closest(".layer").hide(); 				// assume the element just clicked is part of the currently visible layer
+//	$("#_" + this.id.replace(/[\W_]/, '')).show();	// transforms e.g. "#task_1" to "#_task1"
+//  taskMusic.play();
+// });
+//
 	
 	$('#task_1').on('click', function() {
 		navigate('11');
@@ -92,23 +124,23 @@ window.onload = function (){
 
 	function navigate(data) {
 		stopMusic();
-		$('#_mainPage').hide();
-		if(data == '11') {
+
+		if((data == '11') && (_data.hasUnlockedTask("pigpen"))) {
 			$('.layer').hide();
 			$('#_task1').show();
 			taskMusic.play();
 		}
-		else if(data == '12') {
+		else if(data == '12' && (_data.hasUnlockedTask("stable"))) {
 			$('.layer').hide();
 			$('#_task2').show();
 			taskMusic.play();
 		}
-		else if(data == '13') {
+		else if(data == '13' && (_data.hasUnlockedTask("shearing"))) {
 			$('.layer').hide();
 			$('#_task3').show();
 			taskMusic.play();
 		}
-		else if(data == '14') {
+		else if(data == '14' && (_data.hasUnlockedTask("eggsort"))) {
 			$('.layer').hide();
 			$('#_task4').show();
 			taskMusic.play();
@@ -118,15 +150,129 @@ window.onload = function (){
 			$('#_shop').show();
 			taskMusic.play();
 		}
-		else if(data=='2') {
-			$('.layer').hide();
-			$('#_shop').show();
-			taskMusic.play();
-		}
+//		else if(data=='2') {
+//			$('.layer').hide();
+//			$('#_shop').show();
+//			taskMusic.play();
+//		}
 	}
 //=============================================================================
 
+	function checkLevelUnlocked(data) {
 
+		if(data.hasUnlockedTask("pigpen") == false) {
+			$('#task_1').css('background','url("resources/images/property_icon/pig_pen_locked.png") center/cover');
+			$('#task1_locked').show();
+			$('#task_1').addClass('nonClickable');
+			
+			//prevent image growing on hover
+			$('#task_1').hover(function() {
+				$(this).css({ transform: 'scale(1)' });
+			}
+			,function(){
+				$(this).css({ transform: 'scale(1)' });
+			});
+		}
+		else {
+			$('#task_1').css('background','url("resources/images/property_icon/pig_pen.png") center/cover');
+			$('#task1_locked').hide();
+			$('#task_1').removeClass('nonClickable');
+			
+			//allow image growing on hover
+			$('#task_1').hover(function() {
+				$(this).css({ transform: 'scale(1.05)' });
+			}
+			,function(){
+				$(this).css({ transform: 'scale(1)' });
+			});
+		}
+		
+		if(data.hasUnlockedTask("stable") == false) {
+			$('#task_2').css('background','url("resources/images/property_icon/stable_locked.png") center/cover');
+			$('#task2_locked').show();
+			$('#task_2').addClass('nonClickable');
+			
+			//prevent image growing on hover
+			$('#task_2').hover(function() {
+				$(this).css({ transform: 'scale(1)' });
+			}
+			,function(){
+				$(this).css({ transform: 'scale(1)' });
+			});
+		}
+		else {
+			$('#task_2').css('background','url("resources/images/property_icon/stable.png") center/cover');
+			$('#task2_locked').hide();
+			$('#task_2').removeClass('nonClickable');
+			
+			//allow image growing on hover
+			$('#task_2').hover(function() {
+				$(this).css({ transform: 'scale(1.05)' });
+			}
+			,function(){
+				$(this).css({ transform: 'scale(1)' });
+			});
+		}
+		
+		if(data.hasUnlockedTask("shearing") == false) {
+			$('#task_3').css('background','url("resources/images/property_icon/sheep_pen_locked.png") center/cover');
+			$('#task3_locked').show();
+			$('#task_3').addClass('nonClickable');
+			
+			//prevent image growing on hover
+			$('#task_3').hover(function() {
+				$(this).css({ transform: 'scale(1)' });
+			}
+			,function(){
+				$(this).css({ transform: 'scale(1)' });
+			});
+		}
+		else {
+			$('#task_3').css('background','url("resources/images/property_icon/sheep_pen.png") center/cover');
+			$('#task3_locked').hide();
+			$('#task_3').removeClass('nonClickable');
+			
+			//allow image growing on hover
+			$('#task_3').hover(function() {
+				$(this).css({ transform: 'scale(1.05)' });
+			}
+			,function(){
+				$(this).css({ transform: 'scale(1)' });
+			});
+		}
+		
+		if(data.hasUnlockedTask("eggsort") == false) {
+			$('#task_4').css('background','url("resources/images/property_icon/chicken_coup_locked.png") center/cover');
+			$('#task4_locked').show();
+			$('#task_4').addClass('nonClickable');
+			
+			//prevent image growing on hover
+			$('#task_4').hover(function() {
+				$(this).css({ transform: 'scale(1)' });
+			}
+			,function(){
+				$(this).css({ transform: 'scale(1)' });
+			});
+		}
+		else {
+			$('#task_4').css('background','url("resources/images/property_icon/chicken_coup.png") center/cover');
+			$('#task4_locked').hide();
+			$('#task_4').removeClass('nonClickable');
+			
+			//prevent image growing on hover
+			$('#task_4').hover(function() {
+				$(this).css({ transform: 'scale(1.05)' });
+			}
+			,function(){
+				$(this).css({ transform: 'scale(1)' });
+			});
+		}
+	}
+	
+	function getXPandMoney(data) {
+		$('#_xp').text(data.getXP());
+		$('#_money').text(data.getMoney());
+	}
 	
 };
 

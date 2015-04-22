@@ -1,8 +1,9 @@
-window.onload = function(){
+layerFunction.eggsort = function(){
 
 function Sleeper ( sequencer ){
 	this.sequencer = sequencer;
 }	
+
 
 Sleeper.prototype.ms = function ( time, blocking ){
 	this.sequencer.newFunction( blocking, function(next){
@@ -122,7 +123,7 @@ ConveyorBelt.prototype.spawnEgg = function( color, blocking ){
 	this.sequencer.newFunction ( blocking, function( next ){
 		
 	$("<div class='egg on-conveyor " + color + "'></div>")
-		.css("background", color)
+		.css("background", "url('Resources/images/colored eggs/egg_" + color + ".png') center/contain no-repeat")
 		.appendTo(this.element);
 	window.setTimeout(next, 120 / (120 + 1280) * this.speed);
 	
@@ -140,7 +141,7 @@ function Nest ( sequencer, element, accepts, eggElement ){
 	this.selector = element === undefined ? ".nest#nest-" + (++Nest.NUM_OF_INSTANCES) : element; 
 	this.accepts = accepts === undefined ? true : accepts;
 
-	$(this.selector).css("background", typeof this.accepts === "string" ? this.accepts : this.accepts[0]);
+	$(this.selector).css("background", "url('Resources/images/colored nests/nest_" + this.accepts + ".png') center/cover");
 	
 	this.nDropped = 0;
 	
@@ -185,7 +186,6 @@ function shuffle( array ){
 }
 
 
-$("audio").get(0).volume = 0.3;
 var sequencer = new Sequential();
 var sleep = new Sleeper(sequencer);
 
@@ -321,9 +321,8 @@ sequencer.newFunction(BLOCKING, function(next){
 	next();
 });
 
-// display the score
+// display the scoreboard
 sequencer.newFunction(BLOCKING, function (next){
-	console.log(eggsCollectedAtSpeed);
 	$(document.getElementById("greyout"))
 		.css("display", "block")
 		.transition({opacity: 0.5}, 500, "ease-in-out");
@@ -332,25 +331,39 @@ sequencer.newFunction(BLOCKING, function (next){
 		.transition({opacity: 1}, 500, "ease-in-out", next);
 });
 
+// animate in each row, displaying the points earned at each speed
 $("#tally-box .tally-row").slice(0, -1).each(function (index){
+	
+	// register three animations
 	sequencer.newFunction(BLOCKING, function(next){
 		
+		// move the top of the box down as it expands, so that
+		// it stays centered
 		$("#tally-box")
 			.transition({
 				height: 100 * (index + 1),
 				top: 360 - 50 * (index + 1)
 			}, 500, "snap", function(){
+				
+				// add up the eggs earned and multiply them by the "wave"
 				$(this)
 					.children(".tally-score")
 					.text((eggsCollectedAtSpeed[index].reduce(function (prev, curr){
 						return prev + curr;
 					}, 0)* (index + 1)).toString());
+				
+				// string to represent total eggs collected as sum of each
+				// color
 				$(this).children(".tally-egg-count")
 					.text(eggsCollectedAtSpeed[index].join(" + "));
 				
+				// animate in each cell of the row at a staggered time
 				$(this).children().each(function (index){
 					window.setTimeout(function(){$(this).transition({ opacity: 1 }, 300, "ease-in-out")}.bind(this), index * 300);
 				});
+				
+				// go to the next animation when animating in the row is finished
+				// 300 ms per row, 3 rows = 900 ms
 				window.setTimeout(next, 900);
 				
 			}.bind(this));
@@ -360,14 +373,21 @@ $("#tally-box .tally-row").slice(0, -1).each(function (index){
 sequencer.newFunction(BLOCKING, function( next ){
 	$("#tally-box").transition({ height: 400, top: 160 }, 500, "snap",
 		function(){
+		
+			// tally up the total score as sum of values from cells
 			$(".tally-score")
 				.each(function(){
-					console.log(parseInt($("#tally-total-score").text()));
 					$("#tally-total-score").text((parseInt($("#tally-total-score").text()) || 0) + parseInt($(this).text()));
 				});
+			
+			// fade the score in
 			$("#tally-total-score")
-				.transition({ opacity: 1 }, 500, "ease-in-out");
+				.transition({ opacity: 1 }, 500, "ease-in-out", next);
 		});
+});
+
+sequencer.newFunction(BLOCKING, function( next ){
+	window.addEventListener("click", switchToLayer.bind(null, "main"))	
 });
 
 }

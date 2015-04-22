@@ -1,0 +1,124 @@
+@CHARSET "US-ASCII";
+
+#main {
+	background: url("Resources/images/background.jpg") center/cover;
+}
+
+#main .layer-switcher {
+	
+	z-index: 1;
+	position: fixed;
+	
+	height: 170px;
+	width: 170px;
+	
+}
+
+#main  #pig_pen-link {
+	top: 25%;
+	left: 25%;
+	background: url("Resources/images/property_icon/pig_pen.png") center/cover;
+}
+
+#main  #stable-link {
+	top: 3%;
+	left: 55%;
+	width: 250px;
+	background: url("Resources/images/property_icon/stable.png") center/cover;
+}
+
+#main #sheep_pen-link {
+	background-color: #D49F6A;
+	top: 60%;
+	left: 40%;
+	height: 200px;
+	width: 200px;
+	background: url("Resources/images/property_icon/sheep_pen.png") center/cover;
+}
+
+#main #chicken_coup-link {
+	background-color: #407F7F;
+	top: 40%;
+	left: 80%;
+	background: url("Resources/images/property_icon/chicken_coup.png") center/cover;
+}
+
+#main #shop-link {
+	background-color: #585494;
+	top: 65%;
+	left: 5%;
+	background: url("Resources/images/shop_sign.png") center/cover;
+}
+
+#main #achievements-link {
+	background-color: #6CB259;
+	top: 65%;
+	right: 5%;
+	background: url("Resources/images/achievement_sign.png") center/cover;
+}
+
+#main .nav:hover {
+	-webkit-transform: scale(1.05);
+	-moz-transform: scale(1.1);
+	-ms-transform: scale(1.1);
+	-o-transform: scale(1.1);
+}
+
+#main .task .menuTitle  {
+	opacity: 0;
+	text-align: center;
+	margin-top: 20%;
+	color: white;
+	text-shadow: 0px 0px 5px black;
+	font-size: 50px;
+	line-height: 40px;
+	font-family: Unkempt, Arial, sans-serif;
+	font-weight: bold;
+}
+
+#main .task.locked .menuTitle:after {
+	opacity: 0;
+	text-align: center;
+	color: white;
+	font-family: Unkempt, Arial;
+	font-size: 20px;
+	text-shadow: 0px 0px 3px black;
+	font-weight: bold;
+	display: block;
+	content: "LOCKED";
+}
+
+#main .task:not(.locked) {
+	transform: scale(1);
+	transition: transform 0.2s;	
+}
+
+#main .task:not(.locked):hover {
+	transform: scale(1.05);
+}
+
+#main .task:hover .menuTitle, #main .task.locked:hover .menuTitle:after {
+	opacity: 1.0;
+	text-align: center;
+	color: white;
+}
+
+#main .xp {
+	background-color: #3A5200;
+	text-align: center;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	height: 5%;
+	width: 10%;
+}
+
+#main .money {
+	background-color: #0E1D8B;
+	text-align: center;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	height: 5%;
+	width: 10%;
+}

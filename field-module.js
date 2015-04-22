@@ -128,7 +128,7 @@ function Field (sequencer, selector, animalClass, wanderingClass, animateFreq ){
 					$(event.target)
 						.transition({
 							scale: [1.0, 1.0]
-						}, 200, "snap")
+						}, 50, "snap")
 						.removeClass("panic")
 						.addClass(this.wanderingClass);
 				}.bind(this)

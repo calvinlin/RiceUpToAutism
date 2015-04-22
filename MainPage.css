@@ -33,7 +33,7 @@
 	left: 25%;
 	height: 170px;
 	width: 170px;
-	background: url("resources/images/property_icon/pig_pen.png") center/cover;
+	/* background: url("resources/images/property_icon/pig_pen.png") center/cover; */
 }
 
 #task_2 {
@@ -43,7 +43,7 @@
 	left: 55%;
 	height: 170px;
 	width: 250px;
-	background: url("resources/images/property_icon/stable.png") center/cover;
+	/* background: url("resources/images/property_icon/stable.png") center/cover; */
 }
 
 #task_3 {
@@ -54,7 +54,7 @@
 	left: 40%;
 	height: 200px;
 	width: 200px;
-	background: url("resources/images/property_icon/sheep_pen.png") center/cover;
+	/* background: url("resources/images/property_icon/sheep_pen.png") center/cover; */
 }
 
 #task_4 {
@@ -65,7 +65,7 @@
 	left: 80%;
 	height: 170px;
 	width: 170px;
-	background: url("resources/images/property_icon/chicken_coup.png") center/cover;
+	/* background: url("resources/images/property_icon/chicken_coup.png") center/cover; */
 }
 
 #shop {
@@ -76,7 +76,7 @@
 	left: 5%;
 	height: 170px;
 	width: 170px;
-	background: url("Resources/images/picket_left.png") center/cover;
+	background: url("Resources/images/shop_sign.png") center/cover;
 }
 
 #achievements {
@@ -87,7 +87,7 @@
 	right: 5%;
 	height: 170px;
 	width: 170px;
-	background: url("Resources/images/picket_right.png") center/cover;
+	background: url("Resources/images/achievement_sign.png") center/cover;
 }
 
 .nav:hover {
@@ -109,7 +109,7 @@
 	font-weight: bold;
 }
 
-.task .menuLock {
+.menuLock {
 	opacity: 0;
 	text-align: center;
 	color: white;
@@ -119,7 +119,7 @@
 	font-weight: bold;
 }
 
-.task:hover .menuLock, .task:hover .menuTitle {
+.task:hover .menuLock, .task:hover .menuTitle, .nav:hover .menuLock {
 	opacity: 1.0;
 	text-align: center;
 	color: white;

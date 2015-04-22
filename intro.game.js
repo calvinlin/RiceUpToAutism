@@ -2,8 +2,14 @@
 //  Program main:
 //=======================================================================================
 
-window.onload = function (){
+layerFunction.intro = function (){
 
+//
+//	initialize the data
+//
+
+var data = fetchPlayerData();
+	
 //
 // initialize variables
 //
@@ -102,11 +108,7 @@ dialog.clearDialog(BLOCKING);
 dialog.printDialogWithImage('Last animal! Can you bring the goat in?', goat.image, "left", NONBLOCK);
 truck.accept([goat], BLOCKING);
 truck.waitForNDrops(1, BLOCKING);
-/*
-truck.accept(false, BLOCKING);
-dialog.clearDialog(BLOCKING);
-dialog.printDialog('[Insert message here]', NONBLOCK);
-*/
+
 truck.accept(false, BLOCKING);
 dialog.clearDialog(BLOCKING);
 dialog.printDialog("Thanks neighbor! You did a pretty good job here.", BLOCKING);
@@ -115,6 +117,7 @@ dialog.promptNext(BLOCKING);
 dialog.clearDialog(BLOCKING);
 dialog.printDialog("Here on out you can do similar tasks like this and gain XP points and gold tokens.", BLOCKING);
 dialog.promptNext(BLOCKING);
+
 
 dialog.clearDialog(BLOCKING);
 dialog.printDialog("See these properties? Some of them you can't buy yet, but don't worry, complete enough tasks and one day you will be able to buy all of them!", BLOCKING);
@@ -135,11 +138,9 @@ dialog.promptNext(BLOCKING);
 dialog.clearDialog(BLOCKING);
 dialog.printDialog("Oh look at the time! I must be going, good luck neighbor!", NONBLOCK);
 
-
-
-
-
-
-
+sequencer.newFunction(NONBLOCK, function (next){
+	switchToLayer("main");
+	next();
+});
 
 };
