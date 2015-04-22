@@ -2,7 +2,7 @@
 //  Program main:
 //=======================================================================================
 
-window.onload = function (){
+layerFunction.intro = function (){
 
 //
 //	initialize the data
@@ -118,6 +118,7 @@ dialog.clearDialog(BLOCKING);
 dialog.printDialog("Here on out you can do similar tasks like this and gain XP points and gold tokens.", BLOCKING);
 dialog.promptNext(BLOCKING);
 
+
 dialog.clearDialog(BLOCKING);
 dialog.printDialog("See these properties? Some of them you can't buy yet, but don't worry, complete enough tasks and one day you will be able to buy all of them!", BLOCKING);
 dialog.promptNext(BLOCKING);
@@ -137,5 +138,9 @@ dialog.promptNext(BLOCKING);
 dialog.clearDialog(BLOCKING);
 dialog.printDialog("Oh look at the time! I must be going, good luck neighbor!", NONBLOCK);
 
+sequencer.newFunction(NONBLOCK, function (next){
+	switchToLayer("main");
+	next();
+});
 
 };

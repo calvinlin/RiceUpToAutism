@@ -1,8 +1,9 @@
-window.onload = function(){
+layerFunction.eggsort = function(){
 
 function Sleeper ( sequencer ){
 	this.sequencer = sequencer;
 }	
+
 
 Sleeper.prototype.ms = function ( time, blocking ){
 	this.sequencer.newFunction( blocking, function(next){
@@ -122,7 +123,7 @@ ConveyorBelt.prototype.spawnEgg = function( color, blocking ){
 	this.sequencer.newFunction ( blocking, function( next ){
 		
 	$("<div class='egg on-conveyor " + color + "'></div>")
-		.css("background", color)
+		.css("background", "url('Resources/images/colored eggs/egg_" + color + ".png') center/contain no-repeat")
 		.appendTo(this.element);
 	window.setTimeout(next, 120 / (120 + 1280) * this.speed);
 	
@@ -140,7 +141,7 @@ function Nest ( sequencer, element, accepts, eggElement ){
 	this.selector = element === undefined ? ".nest#nest-" + (++Nest.NUM_OF_INSTANCES) : element; 
 	this.accepts = accepts === undefined ? true : accepts;
 
-	$(this.selector).css("background", typeof this.accepts === "string" ? this.accepts : this.accepts[0]);
+	$(this.selector).css("background", "url('Resources/images/colored nests/nest_" + this.accepts + ".png') center/cover");
 	
 	this.nDropped = 0;
 	
@@ -185,7 +186,6 @@ function shuffle( array ){
 }
 
 
-$("audio").get(0).volume = 0.3;
 var sequencer = new Sequential();
 var sleep = new Sleeper(sequencer);
 
@@ -323,7 +323,6 @@ sequencer.newFunction(BLOCKING, function(next){
 
 // display the scoreboard
 sequencer.newFunction(BLOCKING, function (next){
-	console.log(eggsCollectedAtSpeed);
 	$(document.getElementById("greyout"))
 		.css("display", "block")
 		.transition({opacity: 0.5}, 500, "ease-in-out");
@@ -383,8 +382,12 @@ sequencer.newFunction(BLOCKING, function( next ){
 			
 			// fade the score in
 			$("#tally-total-score")
-				.transition({ opacity: 1 }, 500, "ease-in-out");
+				.transition({ opacity: 1 }, 500, "ease-in-out", next);
 		});
+});
+
+sequencer.newFunction(BLOCKING, function( next ){
+	window.addEventListener("click", switchToLayer.bind(null, "main"))	
 });
 
 }

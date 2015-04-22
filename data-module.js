@@ -7,6 +7,7 @@ function fetchPlayerData(){
 	// function, since there'll be methods and no direct access. new
 	// instances of this are also created to "reset" data
 	function Model (){
+		this.isNew			= true;
 		this.money 			= 0;
 		this.xp				= 0;
 		this.name			= "neighbor";
@@ -66,7 +67,7 @@ function fetchPlayerData(){
 		getXP: function (){ return data.xp },
 		getName: function (){ return data.name },
 		hasUnlockedTask: function (task){ return data.unlocked_task[task] },
-		
+		isNewPlayer: function (){ return data.isNew },
 		// nonconst functions ----------------------
 		
 		// resets the data, but the old copies remain
@@ -84,7 +85,8 @@ function fetchPlayerData(){
 		changeName: function (name) { return nonconst( function () { return (data.name = name) } ) },
 		
 		// sets the value of a task to be unlocked 
-		unlockTask: function (task) { return nonconst( function() { data.unlocked_task[task] = true } ) }
+		unlockTask: function (task) { return nonconst( function() { data.unlocked_task[task] = true } ) },
 		
+		setNew: function (val) { return nonconst( function() { data.isNew = val } ) }
 	};
 };
