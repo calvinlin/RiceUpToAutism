@@ -79,7 +79,7 @@ function ConveyorBelt( sequencer, speed, updateInterval, element, eggElement ){
 	var updateEggPos = function(){
 		var updateInterval = this.updateInterval;
 		var baseDx = this.baseDx;
-		var compDx = (Date.now() - this.time) - this.updateInterval;
+		var compDx = ((Date.now() - this.time) - this.updateInterval) * this.speed;
 		this.time = Date.now();
 		
 		var eggs = $(this.selector + " > " + this.eggSelector);
