@@ -12,7 +12,9 @@ function fetchPlayerData(){
 		this.name			= "neighbor";
 		this.unlocked_task 	= {
 			"shearing": false,
-			"eggsort": false
+			"eggsort": true,
+			"stable": false,
+			"pigpen": false
 		}
 	};
 	

@@ -76,7 +76,7 @@
 	left: 5%;
 	height: 170px;
 	width: 170px;
-	background: url("Resources/images/picket_left.png") center/cover;
+	background: url("Resources/images/shop_sign.png") center/cover;
 }
 
 #achievements {
@@ -87,7 +87,7 @@
 	right: 5%;
 	height: 170px;
 	width: 170px;
-	background: url("Resources/images/picket_right.png") center/cover;
+	background: url("Resources/images/achievement_sign.png") center/cover;
 }
 
 .nav:hover {
@@ -109,7 +109,7 @@
 	font-weight: bold;
 }
 
-.task .menuLock {
+.menuLock {
 	opacity: 0;
 	text-align: center;
 	color: white;
