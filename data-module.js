@@ -18,7 +18,6 @@ function fetchPlayerData(){
 	
 	// fetch the index of the most recent update
 	var index = window.localStorage.getItem("playerDataIndex");
-	console.log(index);
 	
 	// have a local variable to store the data. this object will not be 
 	// returned from here.
@@ -38,8 +37,6 @@ function fetchPlayerData(){
 	else {
 		data = JSON.parse(window.localStorage.getItem("playerData[" + index + "]"));
 	}
-	
-	console.log(data);
 	
 	// define an object to handle accessing the data. the data will effectively
 	// be encapsulated and only mutable through this object's methods. also note 
