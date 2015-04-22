@@ -1,9 +1,5 @@
-* {
-	user-select: none;
-}
 
 body, html { 
-	
 	
 	min-width: 1280px;
 	min-height: 720px;
@@ -14,6 +10,10 @@ body, html {
 	margin: 0;
 	padding: 0;
 	
+}
+
+* {
+	user-select: none;
 }
 
 .layer {

@@ -21,7 +21,7 @@ for (var task in tasks){
 		if (!data.hasUnlockedTask(task)){
 			var locked = currentLayer.querySelector("#" + tasks[task] + "-link");
 			locked.style.background = 
-				'url("resources/images/property_icon/' + tasks[task] + '_locked.png") center/cover';
+				'url("Resources/images/property_icon/' + tasks[task] + '_locked.png") center/cover';
 			locked.classList.toggle("locked");
 		}
 	}

@@ -75,20 +75,23 @@ function ConveyorBelt( sequencer, speed, updateInterval, element, eggElement ){
 	});
 	
 	
-	var time = Date.now();
+	this.time = Date.now();
 	var updateEggPos = function(){
 		var updateInterval = this.updateInterval;
-		var dx = (120 + 1280) * ((Date.now() - time) / this.speed);
-		time = Date.now();
+		var baseDx = this.baseDx;
+		var compDx = (Date.now() - this.time) - this.updateInterval;
+		this.time = Date.now();
 		
 		var eggs = $(this.selector + " > " + this.eggSelector);
 		
 		if (eggs.length > 0){
 			var self = this;
-			eggs.filter(".on-conveyor").each(function(){	
-				var newPos = parseFloat($(this).css("transform").split(",")[4]) + dx;
-				if (newPos < 1280){
-					$(this).transition({ x: newPos }, updateInterval, "linear");
+			eggs.filter(".on-conveyor").each(function(){
+				var compPos = parseFloat($(this).css("transform").split(",")[4]) + compDx;
+				if (compPos < 1280){
+					$(this).transition({ x: compPos }, 0, "linear", function(){
+						$(this).transition({ x:  "+=" + baseDx }, updateInterval, "linear");
+					});
 				} else {
 					++self.dropped;
 					$(this).remove();
@@ -107,12 +110,14 @@ function ConveyorBelt( sequencer, speed, updateInterval, element, eggElement ){
 ConveyorBelt.prototype.setSpeed = function (speed, blocking){
 	this.sequencer.newFunction( blocking, function(next){
 	
-	this.speed = speed;
+	this.speed = (1280 + 150) / speed;
+	this.baseDx = this.updateInterval * this.speed;
+	
 	this.element.css({ 
-		"animation-duration": (this.speed / 7).toString() + "ms",
-		"-webkit-animation-duration": (this.speed / 7).toString() + "ms",
-		"-moz-animation-duration": (this.speed / 7).toString() + "ms",
-		"-o-animation-duration": (this.speed / 7).toString() + "ms"
+		"animation-duration": (speed / 7).toString() + "ms",
+		"-webkit-animation-duration": (speed / 7).toString() + "ms",
+		"-moz-animation-duration": (speed / 7).toString() + "ms",
+		"-o-animation-duration": (speed / 7).toString() + "ms"
 	});
 	
 	next();
@@ -121,11 +126,13 @@ ConveyorBelt.prototype.setSpeed = function (speed, blocking){
 
 ConveyorBelt.prototype.spawnEgg = function( color, blocking ){
 	this.sequencer.newFunction ( blocking, function( next ){
-		
+	
 	$("<div class='egg on-conveyor " + color + "'></div>")
 		.css("background", "url('Resources/images/colored eggs/egg_" + color + ".png') center/contain no-repeat")
-		.appendTo(this.element);
-	window.setTimeout(next, 120 / (120 + 1280) * this.speed);
+		.appendTo(this.element)
+		.transition({x: -150 + (this.updateInterval - (Date.now() - this.time)) * this.speed}, 
+				this.updateInterval - (Date.now() - this.time), "linear");
+	window.setTimeout(next, 150 / this.speed);
 	
 }.bind(this))};
 
@@ -189,7 +196,7 @@ function shuffle( array ){
 var sequencer = new Sequential();
 var sleep = new Sleeper(sequencer);
 
-var conveyor = new ConveyorBelt( sequencer, 4000, 5 );
+var conveyor = new ConveyorBelt( sequencer, 4000, 500);
 var dialog = new Dialog( sequencer, undefined, "#dialog-box", "#dialog-head");
 
 // generate egg colors to use in the nests
@@ -387,7 +394,7 @@ sequencer.newFunction(BLOCKING, function( next ){
 });
 
 sequencer.newFunction(BLOCKING, function( next ){
-	window.addEventListener("click", switchToLayer.bind(null, "main"))	
+	currentLayer.addEventListener("click", switchToLayer.bind(null, "main"))	
 });
 
 }
