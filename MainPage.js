@@ -6,6 +6,8 @@ window.onload = function (){
 		//load XP amount
 		$('.layer').hide();
 		$('#_mainScreen').show();
+		var _data = fetchPlayerData();
+		checkLevelUnlocked(_data);
 		startMusic();
 	}
 	
@@ -67,12 +69,12 @@ window.onload = function (){
 // show
 //-----------------------------------------------------------------------------
 	
-	$('.task').hover(function() {
-		$(this).css({ transform: 'scale(1.05)' });
-	}
-	,function(){
-		$(this).css({ transform: 'scale(1)' });
-	});
+//	$('.task').hover(function() {
+//		$(this).css({ transform: 'scale(1.05)' });
+//	}
+//	,function(){
+//		$(this).css({ transform: 'scale(1)' });
+//	});
 
 //=============================================================================
 
@@ -151,7 +153,108 @@ window.onload = function (){
 	}
 //=============================================================================
 
+	function checkLevelUnlocked(data) {
 
+		if(data.hasUnlockedTask(0) == false) {
+			$('#task_1').css('background','url("resources/images/property_icon/pig_pen_locked.png") center/cover');
+			$('#task1_locked').show();
+			
+			//prevent image growing on hover
+			$('#task_1').hover(function() {
+				$(this).css({ transform: 'scale(1)' });
+			}
+			,function(){
+				$(this).css({ transform: 'scale(1)' });
+			});
+		}
+		else {
+			$('#task_1').css('background','url("resources/images/property_icon/pig_pen.png") center/cover');
+			$('#task1_locked').hide();
+			
+			//allow image growing on hover
+			$('#task_1').hover(function() {
+				$(this).css({ transform: 'scale(1.05)' });
+			}
+			,function(){
+				$(this).css({ transform: 'scale(1)' });
+			});
+		}
+		
+		if(data.hasUnlockedTask(1) == false) {
+			$('#task_2').css('background','url("resources/images/property_icon/stable_locked.png") center/cover');
+			$('#task2_locked').show();
+			
+			//prevent image growing on hover
+			$('#task_2').hover(function() {
+				$(this).css({ transform: 'scale(1)' });
+			}
+			,function(){
+				$(this).css({ transform: 'scale(1)' });
+			});
+		}
+		else {
+			$('#task_2').css('background','url("resources/images/property_icon/stable.png") center/cover');
+			$('#task2_locked').hide();
+			
+			//allow image growing on hover
+			$('#task_2').hover(function() {
+				$(this).css({ transform: 'scale(1.05)' });
+			}
+			,function(){
+				$(this).css({ transform: 'scale(1)' });
+			});
+		}
+		
+		if(data.hasUnlockedTask(2) == false) {
+			$('#task_3').css('background','url("resources/images/property_icon/sheep_pen_locked.png") center/cover');
+			$('#task3_locked').show();
+			
+			//prevent image growing on hover
+			$('#task_3').hover(function() {
+				$(this).css({ transform: 'scale(1)' });
+			}
+			,function(){
+				$(this).css({ transform: 'scale(1)' });
+			});
+		}
+		else {
+			$('#task_3').css('background','url("resources/images/property_icon/sheep_pen_locked.png") center/cover');
+			$('#task3_locked').hide();
+			
+			//allow image growing on hover
+			$('#task_3').hover(function() {
+				$(this).css({ transform: 'scale(1.05)' });
+			}
+			,function(){
+				$(this).css({ transform: 'scale(1)' });
+			});
+		}
+		
+		if(data.hasUnlockedTask(3) == false) {
+			$('#task_4').css('background','url("resources/images/property_icon/chicken_coup_locked.png") center/cover');
+			$('#task4_locked').show();
+			
+			//prevent image growing on hover
+			$('#task_4').hover(function() {
+				$(this).css({ transform: 'scale(1)' });
+			}
+			,function(){
+				$(this).css({ transform: 'scale(1)' });
+			});
+		}
+		else {
+			$('#task_4').css('background','url("resources/images/property_icon/chicken_coup.png") center/cover');
+			$('#task4_locked').hide();
+			
+			//prevent image growing on hover
+			$('#task_4').hover(function() {
+				$(this).css({ transform: 'scale(1.05)' });
+			}
+			,function(){
+				$(this).css({ transform: 'scale(1)' });
+			});
+		}
+	}
 	
 };
 

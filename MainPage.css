@@ -33,7 +33,7 @@
 	left: 25%;
 	height: 170px;
 	width: 170px;
-	background: url("resources/images/property_icon/pig_pen.png") center/cover;
+	/* background: url("resources/images/property_icon/pig_pen.png") center/cover; */
 }
 
 #task_2 {
@@ -43,7 +43,7 @@
 	left: 55%;
 	height: 170px;
 	width: 250px;
-	background: url("resources/images/property_icon/stable.png") center/cover;
+	/* background: url("resources/images/property_icon/stable.png") center/cover; */
 }
 
 #task_3 {
@@ -54,7 +54,7 @@
 	left: 40%;
 	height: 200px;
 	width: 200px;
-	background: url("resources/images/property_icon/sheep_pen.png") center/cover;
+	/* background: url("resources/images/property_icon/sheep_pen.png") center/cover; */
 }
 
 #task_4 {
@@ -65,7 +65,7 @@
 	left: 80%;
 	height: 170px;
 	width: 170px;
-	background: url("resources/images/property_icon/chicken_coup.png") center/cover;
+	/* background: url("resources/images/property_icon/chicken_coup.png") center/cover; */
 }
 
 #shop {
