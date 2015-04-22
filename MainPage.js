@@ -8,12 +8,17 @@ window.onload = function (){
 		$('#_mainScreen').show();
 		var _data = fetchPlayerData();
 		checkLevelUnlocked(_data);
+		getXPandMoney(_data);
 		startMusic();
+		
 	}
 	
+	var _data = fetchPlayerData();
 	var mainMusic = new Audio('audio/bgm.mp3');
 	var taskMusic = new Audio('audio/task.mp3');
 	init();
+	$('.nonClickable').click(function(){return false;});
+	
 	
 //=============================================================================
 // MUSIC FUNCTIONALITY
@@ -119,23 +124,23 @@ window.onload = function (){
 
 	function navigate(data) {
 		stopMusic();
-		$('#_mainPage').hide();
-		if(data == '11') {
+
+		if((data == '11') && (_data.hasUnlockedTask("pigpen"))) {
 			$('.layer').hide();
 			$('#_task1').show();
 			taskMusic.play();
 		}
-		else if(data == '12') {
+		else if(data == '12' && (_data.hasUnlockedTask("stable"))) {
 			$('.layer').hide();
 			$('#_task2').show();
 			taskMusic.play();
 		}
-		else if(data == '13') {
+		else if(data == '13' && (_data.hasUnlockedTask("shearing"))) {
 			$('.layer').hide();
 			$('#_task3').show();
 			taskMusic.play();
 		}
-		else if(data == '14') {
+		else if(data == '14' && (_data.hasUnlockedTask("eggsort"))) {
 			$('.layer').hide();
 			$('#_task4').show();
 			taskMusic.play();
@@ -145,11 +150,11 @@ window.onload = function (){
 			$('#_shop').show();
 			taskMusic.play();
 		}
-		else if(data=='2') {
-			$('.layer').hide();
-			$('#_shop').show();
-			taskMusic.play();
-		}
+//		else if(data=='2') {
+//			$('.layer').hide();
+//			$('#_shop').show();
+//			taskMusic.play();
+//		}
 	}
 //=============================================================================
 
@@ -158,6 +163,7 @@ window.onload = function (){
 		if(data.hasUnlockedTask("pigpen") == false) {
 			$('#task_1').css('background','url("resources/images/property_icon/pig_pen_locked.png") center/cover');
 			$('#task1_locked').show();
+			$('#task_1').addClass('nonClickable');
 			
 			//prevent image growing on hover
 			$('#task_1').hover(function() {
@@ -170,6 +176,7 @@ window.onload = function (){
 		else {
 			$('#task_1').css('background','url("resources/images/property_icon/pig_pen.png") center/cover');
 			$('#task1_locked').hide();
+			$('#task_1').removeClass('nonClickable');
 			
 			//allow image growing on hover
 			$('#task_1').hover(function() {
@@ -183,6 +190,7 @@ window.onload = function (){
 		if(data.hasUnlockedTask("stable") == false) {
 			$('#task_2').css('background','url("resources/images/property_icon/stable_locked.png") center/cover');
 			$('#task2_locked').show();
+			$('#task_2').addClass('nonClickable');
 			
 			//prevent image growing on hover
 			$('#task_2').hover(function() {
@@ -195,6 +203,7 @@ window.onload = function (){
 		else {
 			$('#task_2').css('background','url("resources/images/property_icon/stable.png") center/cover');
 			$('#task2_locked').hide();
+			$('#task_2').removeClass('nonClickable');
 			
 			//allow image growing on hover
 			$('#task_2').hover(function() {
@@ -208,6 +217,7 @@ window.onload = function (){
 		if(data.hasUnlockedTask("shearing") == false) {
 			$('#task_3').css('background','url("resources/images/property_icon/sheep_pen_locked.png") center/cover');
 			$('#task3_locked').show();
+			$('#task_3').addClass('nonClickable');
 			
 			//prevent image growing on hover
 			$('#task_3').hover(function() {
@@ -220,6 +230,7 @@ window.onload = function (){
 		else {
 			$('#task_3').css('background','url("resources/images/property_icon/sheep_pen.png") center/cover');
 			$('#task3_locked').hide();
+			$('#task_3').removeClass('nonClickable');
 			
 			//allow image growing on hover
 			$('#task_3').hover(function() {
@@ -233,6 +244,7 @@ window.onload = function (){
 		if(data.hasUnlockedTask("eggsort") == false) {
 			$('#task_4').css('background','url("resources/images/property_icon/chicken_coup_locked.png") center/cover');
 			$('#task4_locked').show();
+			$('#task_4').addClass('nonClickable');
 			
 			//prevent image growing on hover
 			$('#task_4').hover(function() {
@@ -245,6 +257,7 @@ window.onload = function (){
 		else {
 			$('#task_4').css('background','url("resources/images/property_icon/chicken_coup.png") center/cover');
 			$('#task4_locked').hide();
+			$('#task_4').removeClass('nonClickable');
 			
 			//prevent image growing on hover
 			$('#task_4').hover(function() {
@@ -254,6 +267,11 @@ window.onload = function (){
 				$(this).css({ transform: 'scale(1)' });
 			});
 		}
+	}
+	
+	function getXPandMoney(data) {
+		$('#_xp').text(data.getXP());
+		$('#_money').text(data.getMoney());
 	}
 	
 };
