@@ -1,0 +1,13 @@
+{
+	name: "RanchTales",
+	icons: [
+	{
+		src: "images/farmer.png", 
+		type: "image/png",
+		sizes: "300x300"
+    }
+	],
+	"start_url": "main.page.html",
+	"display": "standalone",
+	"orientation": "landscape"
+}
