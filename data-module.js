@@ -10,11 +10,15 @@ function fetchPlayerData(){
 		this.money 			= 0;
 		this.xp				= 0;
 		this.name			= "neighbor";
-		this.unlocked_task 	= [false, false, false, false]; 
+		this.unlocked_task 	= {
+			"shearing": false,
+			"eggsort": false
+		}
 	};
 	
 	// fetch the index of the most recent update
-	var index = window.localStorage.getItem("playerDataindex");
+	var index = window.localStorage.getItem("playerDataIndex");
+	console.log(index);
 	
 	// have a local variable to store the data. this object will not be 
 	// returned from here.
@@ -35,6 +39,8 @@ function fetchPlayerData(){
 		data = JSON.parse(window.localStorage.getItem("playerData[" + index + "]"));
 	}
 	
+	console.log(data);
+	
 	// define an object to handle accessing the data. the data will effectively
 	// be encapsulated and only mutable through this object's methods. also note 
 	// that these functions don't use this, so there's nothing to worry about
@@ -44,12 +50,12 @@ function fetchPlayerData(){
 	// auto-update playerData and the index in localStorage when wrapped 
 	// around a function, by running the function first and then calling
 	// on localStorage's methods. 
-	var nonconst = function ( fn ){ return function (){ 
+	var nonconst = function ( fn ){
 		var to_return = fn();
 		window.localStorage.setItem("playerDataIndex", ++index);
 		window.localStorage.setItem("playerData[" + index + "]", JSON.stringify(data));
 		return to_return;
-	}};
+	};
 	
 	// define the object and its methods, and return it
 	return {
@@ -60,26 +66,26 @@ function fetchPlayerData(){
 		getMoney: function (){ return data.money },
 		getXP: function (){ return data.xp },
 		getName: function (){ return data.name },
-		hasUnlockedTask: function (taskNo){ return data.unlocked_task[taskNo] },
+		hasUnlockedTask: function (task){ return data.unlocked_task[task] },
 		
 		// nonconst functions ----------------------
 		
 		// resets the data, but the old copies remain
-		reset: nonconst ( function (amt) { data = new Model() }),
+		reset: function(){ nonconst( function () { data = new Model() }) },
 		
 		// money incrementers and decrementers
-		incMoneyBy: function (amt) { nonconst( function (){ return (data.money += amt) } ) },
-		decMoneyBy: function (amt) { nonconst( function (){ return (data.money -= amt) } ) },
+		incMoneyBy: function (amt) { return nonconst( function (){ return (data.money += amt) } ) },
+		decMoneyBy: function (amt) { return nonconst( function (){ return (data.money -= amt) } ) },
 		
 		// xp incrementers and... decrementers (if needed?)
-		incXPBy: function (amt) { nonconst( function () { return (data.xp += amt) } ) },
-		decXPBy: function (amt) { nonconst( function () { return (data.xp -= amt) } ) },
+		incXPBy: function (amt) { return nonconst( function () { return (data.xp += amt) } ) },
+		decXPBy: function (amt) { return nonconst( function () { return (data.xp -= amt) } ) },
 		
 		// change name... maybe?
-		changeName: function (name) { nonconst( function () { return (data.name = name) } ) },
+		changeName: function (name) { return nonconst( function () { return (data.name = name) } ) },
 		
 		// sets the value of a task to be unlocked 
-		unlockTask: function (task) { nonconst( function() { data.unlocked_task[taskNo] = true } ) }
+		unlockTask: function (task) { return nonconst( function() { data.unlocked_task[task] = true } ) }
 		
 	};
 };
