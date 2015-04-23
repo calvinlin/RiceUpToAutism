@@ -6,6 +6,9 @@ window.onload = function (){
 		//load XP amount
 		$('.layer').hide();
 		$('#_mainScreen').show();
+		$('#codeDialog').show();
+		$('#notanumber').hide();
+		$('#outofrange').hide();
 		var _data = fetchPlayerData();
 		checkLevelUnlocked(_data);
 		getXPandMoney(_data);
@@ -31,21 +34,11 @@ window.onload = function (){
 		// toggle is deprecated I think, so:
 		//
 		// // if you still want to use toggle for other things 
-		// function toggle (fn1, fn2){
-		// 		var clicked = 0;
-		// 		return function (){(clicked ^= 1) ? fn1() : fn2()};
-		// }
-		// document.getElementById("music").addEventListener("click", toggle(startMusic, stopMusic));
-		//
-	
-		$('#music').toggle(
-				function () {
-					startMusic();
-				},
-				function () {
-					stopMusic();
-				}
-		);
+		 function toggle (fn1, fn2){
+		 		var clicked = 0;
+		 		return function (){(clicked ^= 1) ? fn1() : fn2()};
+		 }
+		 $("#toggleMusic").click(toggle(stopMusic, startMusic));
 		
 		function stopMusic() {
 			mainMusic.pause();
@@ -158,6 +151,13 @@ window.onload = function (){
 	}
 //=============================================================================
 
+	
+//=============================================================================
+// CHECK LEVELS FUNCTIONALITY
+//-----------------------------------------------------------------------------
+// Checks if the level has been unlocked, and adjusts behavior properly
+//-----------------------------------------------------------------------------
+
 	function checkLevelUnlocked(data) {
 
 		if(data.hasUnlockedTask("pigpen") == false) {
@@ -268,10 +268,58 @@ window.onload = function (){
 			});
 		}
 	}
+//=============================================================================
+
 	
 	function getXPandMoney(data) {
-		$('#_xp').text(data.getXP());
-		$('#_money').text(data.getMoney());
+		$('#xp').text(data.getXP());
+		$('#money').text(data.getMoney());
+	}
+	
+	$('#addAmt').click(function() {
+		var tempAmt = $('#code').val();
+		var op = 1;
+		$('#notanumber').hide();
+		$('#outofrange').hide();
+		
+		if(checkValidNumber(tempAmt, op)) {
+			_data.incMoneyBy(parseInt(tempAmt));
+			tempAmt = 0;
+			getXPandMoney(_data);
+		}
+	});
+	
+	$('#decAmt').click(function() {
+		var tempAmt = $('#code').val();
+		var op = 0;
+		$('#notanumber').hide();
+		$('#outofrange').hide();
+		
+		if(checkValidNumber(tempAmt, op)) {
+			_data.decMoneyBy(parseInt(tempAmt));
+			tempAmt = 0;
+			getXPandMoney(_data);
+		}
+	});
+	
+	function checkValidNumber(num, op) {
+		if(isNaN(num)){
+			$('#notanumber').show();
+			  return false;
+		}
+		else{
+			currAmt = _data.getMoney();
+			if((op == 1) && (currAmt + parseInt(num) <= 99999)) {
+				return true;
+			}
+			else if((op == 0) && (currAmt - parseInt(num) >= 0)) {
+				return true;
+			}
+			else {
+				$('#outofrange').show();
+				return false;
+			}
+		}
 	}
 	
 };
