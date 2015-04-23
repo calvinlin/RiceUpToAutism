@@ -1,0 +1,50 @@
+<html>
+	<head>
+		<link href='http://fonts.googleapis.com/css?family=Unkempt:400,700' rel='stylesheet' type='text/css'>
+		<link type="text/css" rel="stylesheet" href="shearing.template.css">
+	</head>	
+	<body>
+		<audio src="audio/task.mp3" loop autoplay></audio>
+		
+		<div class="layer" id="">
+			<div id="greyout"></div>
+			<div class="speaker" id="dialog-head"></div>
+			<div class="field"></div>
+			<div class="dialog-box" id="dialog-box"></div>
+			<div class = "wool" id="wool-color-1"></div>
+				<div class = "wool1" id="wool-count-1"></div>
+			
+			<div class = "wool" id="wool-color-2"></div>
+				<div class = "wool2" id="wool-count-2"></div>
+			
+			<div class = "wool" id="wool-color-3"></div>
+				<div class = "wool3" id="wool-count-3"></div>
+			
+			<div id="not-required-wool"></div>
+			
+			<div id="tally-box">
+				<div class="tally-row" id="tally-speed-1">
+				<div class="tally-wool-count"></div>
+				<div class="tally-multiplier"></div>
+  				<div class="tally-score"></div>
+  				<div class="tally-xp"></div>
+  				</div>
+				<div class="tally-row" id="tally-total-score"></div>
+				<div class="tally-row" id="tally-total-xp"></div>
+			</div>
+			
+			<!-- insert divs here -->
+		</div>
+		
+		<script type="text/javascript" src="jslibs/jquery-2.1.3.min.js"></script>
+		<script type="text/javascript" src="jslibs/jquery.transit.min.js"></script>
+		<script type="text/javascript" src="jslibs/interact-1.2.4.min.js"></script>
+		
+		<script type="text/javascript" src="sequential-module.js"></script>
+		<script type="text/javascript" src="dialog-module.js"></script>
+		<script type="text/javascript" src="animal-module.js"></script>
+		
+		<script type="text/javascript" src="shearing.game.js"></script>
+		
+	</body>
+</html>
