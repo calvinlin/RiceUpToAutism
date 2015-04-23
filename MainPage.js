@@ -9,6 +9,7 @@ window.onload = function (){
 		$('#codeDialog').show();
 		$('#notanumber').hide();
 		$('#outofrange').hide();
+		$('#codeDialog').hide();
 		var _data = fetchPlayerData();
 		checkLevelUnlocked(_data);
 		getXPandMoney(_data);
@@ -275,6 +276,14 @@ window.onload = function (){
 		$('#xp').text(data.getXP());
 		$('#money').text(data.getMoney());
 	}
+	
+	$('#changeAmt').click(function() {
+		$('#codeDialog').show();
+	});
+	
+	$('#closeCodeDialog').click(function() {
+		$('#codeDialog').hide();
+	})
 	
 	$('#addAmt').click(function() {
 		var tempAmt = $('#code').val();
