@@ -7,7 +7,7 @@
 #main .layer-switcher {
 	
 	z-index: 1;
-	position: fixed;
+	position: absolute;
 	
 	height: 170px;
 	width: 170px;

@@ -18,6 +18,7 @@
 	line-height: 30px;
 	font-weight: bold;
 	word-spacing: 3px;
+	opacity: 0;
 }
 
 #eggsort #dialog-box:after, #dialog-box:before {
@@ -73,6 +74,7 @@
 	width: 200px;
 	height: 200px;
 	background: url('images/chicken.png') center/contain no-repeat;
+	opacity: 0;
 }
 
 #eggsort #dialog-head.talking {
@@ -103,6 +105,7 @@
 }
 
 #eggsort .egg {
+	-webkit-backface-visibility: hidden;
 	position: absolute;
 	bottom: 20px;
 	left: 0;
@@ -113,8 +116,9 @@
 
 #eggsort .nest {
 	width: 250px;
-	height: 140px;
+	height: 180px;
 	line-height: 30px;
+	top: 360px;
 }
 
 #eggsort .nest .egg {
@@ -124,22 +128,32 @@
 	height: 120px;
 }
 
-#eggsort .nest .egg:not (:first-child ) {
-	margin-left: -40px;
+#eggsort .nest .egg:nth-child(n+1) {
+	margin-top: -100px;
+	margin-left: -70px;
+}
+
+#eggsort .nest .egg:nth-child(-n+6) {
+	margin-top: 0px;
+}
+
+#eggsort .nest .egg:nth-child(6n+1) {
+	margin-left: 0px;
+}
+
+#eggsort .nest .ehh:first-child {
+	margin-top: 0;
 }
 
 #eggsort #nest-1 {
-	top: 365px;
 	left: 120px;
 }
 
 #eggsort #nest-2 {
-	top: 420px;
 	left: 520px;
 }
 
 #eggsort #nest-3 {
-	top: 390px;
 	right: 135px;
 }
 
@@ -153,9 +167,8 @@
 
 #eggsort #tally-box {
 	z-index: 10;
-	left: 50%;
+	left: 475px;
 	top: 50%;
-	margin-left: -150px;
 	width: 300px;
 	height: 0px;
 	padding: 15px;
@@ -218,3 +231,157 @@
 	font-size: 70px;
 	text-align: center;
 }
+
+#eggsort .growth-display {    
+		display: none;
+	
+		z-index: 10;
+
+        width: 0px;
+		height: 200px;
+	
+		padding: 15px;
+		border-radius: 5px;
+		
+		box-shadow: 0 0 0 20px #F5EAC8, 0 0 0 25px #251C00;
+		
+		background: white;
+		
+		font-family: Unkempt, Arial, sans-serif;
+		font-size: 90px;
+		color: black;
+		
+		z-index: 10;
+  		
+  		right: 260px;
+  		
+  		top: 158px;
+		
+		overflow-x: hidden;
+		opacity: 0.0;
+	}
+
+       #eggsort .growth-display > div {
+            
+            display: inline-block;
+            position: absolute;
+        
+            width: 150px;
+            height: 200px;
+    
+    		opacity: 0;
+        }
+
+               #eggsort .growth-display > div div:first-child {
+            
+                    position: absolute;
+                
+                    width: 150px;
+                    height: 150px;
+    
+                    top: 0;
+            
+                }
+
+                #eggsort .growth-display > div div:last-child {
+            
+                    position: absolute;
+                
+                    width: 150px;
+                    height: 50px;
+    
+                    top: 150px;
+    
+                    font-family: Unkempt, Arial, sans-serif;
+                    font-size: 30px;
+    
+                    line-height: 50px;
+                    text-align: center;
+                }
+
+                    #eggsort .growth-display > div div:last-child:before {
+                        content: '+';
+                        font-family: Unkempt, Arial, sans-serif;
+                    font-size: 30px;
+                    }
+
+            #eggsort .growth-display .token-display {
+                   left: 15px;
+            }
+
+                #eggsort .growth-display .token-display .token-image {
+                    background: url("Resources/images/coin.png") center/contain;
+                }
+
+            #eggsort .growth-display .xp-display {
+                    left: 165px;
+            }
+        
+                #eggsort .growth-display .xp-display .xp-image {
+                    text-align: center;
+                }
+                
+#eggsort .nav-buttons {    
+    
+        position: absolute;
+    
+		z-index: 10;
+
+        width: 300px;
+		height: 100px;
+	
+		padding: 15px;
+		border-radius: 5px;
+		
+		box-shadow: 0 0 0 20px #F5EAC8, 0 0 0 25px #251C00;
+		
+		background: white;
+		
+		font-family: Unkempt, Arial, sans-serif;
+		font-size: 90px;
+		color: black;
+		
+		right: 260px;
+		top: 460px;
+		
+		display: none;
+		opacity: 0;
+	}
+
+    #eggsort .nav-buttons .button {
+        
+    position: absolute;
+    
+       font-size: 20px;
+        height: 100px;
+        width: 140px;
+    
+        line-height: 100px;
+        text-align: center;
+           
+        color: white;
+    
+        border-radius: 5px;
+        
+        top: 15px;
+    
+        cursor: pointer;
+    
+    }
+
+        #eggsort .nav-buttons  .button#reset {
+            
+            left: 15px;
+    
+            background: #BF3F3F;
+
+
+}
+
+#eggsort .nav-buttons  .button#back-to-main {
+    left: 174px;
+    background: green;
+    
+}
+
+                

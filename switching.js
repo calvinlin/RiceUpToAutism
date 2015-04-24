@@ -37,7 +37,7 @@ function switchToLayer (layerName){
 	
 	// scope jQuery, so that selectors in different functions don't 
 	// accidentally modify elements from different layers
-	$ = function (selector){ return jQuery(selector, currentLayer)};
+	$ = function (selector){ return jQuery(selector, document.getElementById(layerName))};
 	
 	layerFunction[layerName]();
 	
@@ -48,7 +48,8 @@ window.onload = function(){
 	stateMapping = {
 		"intro": initialState[0].cloneNode(true),
 		"main": initialState[1].cloneNode(true),
-		"eggsort": initialState[2].cloneNode(true)
+		"eggsort": initialState[2].cloneNode(true),
+		"shearing": initialState[3].cloneNode(true)		
 	};
 
 	if (fetchPlayerData().isNewPlayer()){

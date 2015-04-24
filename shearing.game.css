@@ -1,147 +1,123 @@
 @CHARSET "ISO-8859-1";
 
-.layer {				
 
-
-	position: fixed;
-				
-	height: 720px;
-	width: 1280px;
-
-	top: 50%;
-	left: 50%;
-
-	margin-top: -360px;
-	margin-left: -640px;
-	
-	background: url("images/sheep_field_background.jpg") no-repeat;
-	
-
-    background-position: center center;
-    background-size:contain
-
+#shearing .wool {
+  padding: 0px;
+    width: 150px;
+    height: 100px;
+    
+  position: absolute;
+  box-shadow: 0 0 0 20px #F5EAC8, 0 0 0 25px #251C00;
+  border-radius: 5px;
+  
+  background: white;
 }
-	.layer > * {
-		position: absolute;
-	}
+
+#shearing .wool div {
+    position: absolute;
+    
+}
+
+#shearing .wool .wool-name {
+    top: 0;
+    left: 0;
+    height: 40px;
+    width: 90px;
+    
+    
+    font-size: 25px;
+    
+    line-height: 40px;
+    text-align: center;
+}
+
+#shearing .wool .wool-collected {
+    height: 40px;
+    width: 60px;
+    
+    color: black;
+    
+    text-align: center;
+    line-height: 40px;
+    font-size: 25px;
+    
+    left: 90px;
+    top: 0;
+    border-top-right-radius: 5px;
+}
+
+#shearing .wool .wool-color {
+    bottom: 0;
+    left: 0;
+    
+    width: 150px;
+    height:50px;
+    
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    
+}
+
+#shearing.layer {				
+	background: url("images/sheep_field_background.jpg") center/contain no-repeat;
 	
+}	
 	
-#dialog-head {
+#shearing #dialog-head {
 	z-index: 10;
 	
 	width: 300px;
     height: 300px;
-    /*border: 1px solid red;*/
     
     position: absolute;
     left: 40px;
     bottom:  230px;
     
     background: url('images/sheep.png') center/contain no-repeat;
+    
+    opacity: 0;
 	
 }
 
-.field {
+#shearing .field {
 	
 	width: 1000px;
     height: 500px;
 
-    border: 1px solid blue;
-    
-    position: absolute;
     left: 50px;
     top:  40px;
 	
 }
 
-#wool-color-1 {
-	
-	width: 40px;
-    height: 40px;
-    padding: 50px;
-    border: 1px solid black;
+
+
+#shearing #wool-color-1 {
     font-family: Unkempt, Arial;
 	
-	position: absolute;
-    right: 57px;
+	right: 57px;
     top:  65px;
 	
 }
-	
-	#wool-count-1 {
-	
-		z-index = 1;
-		width: 40px;
-		height: 40px;
-		border: 1px solid red;
-		font-family: Unkempt, Arial;
-		font-size: 40px;
-		
-		position: absolute;
-		right: 57px;
-		top: 65px;
-	
-	}
 
-#wool-color-2 {
+#shearing #wool-color-2 {
 	
-	width: 40px;
-    height: 40px;
-    padding: 50px;
-    border: 1px solid black;
-    font-family: Unkempt, Arial;
+	font-family: Unkempt, Arial;
 	
-	position: absolute;
-    right: 57px;
+	right: 57px;
     top:  225px;
 	
 }
 
-	#wool-count-2 {
+#shearing #wool-color-3 {
 	
-		z-index = 1;
-		width: 40px;
-		height: 40px;
-		border: 1px solid red;
-		font-family: Unkempt, Arial;
-		font-size: 40px;
-		
-		position: absolute;
-		right: 57px;
-		top: 225px;
-	
-	}
-
-#wool-color-3 {
-	
-	width: 40px;
-    height: 40px;
-    padding: 50px;
-    border: 1px solid black;
     font-family: Unkempt, Arial;
 	
-	position: absolute;
     right: 57px;
     top:  382px;
 	
 }
-
-	#wool-count-3 {
 	
-		z-index = 1;
-		width: 40px;
-		height: 40px;
-		border: 1px solid red;
-		font-family: Unkempt, Arial;
-		font-size: 40px;
-		
-		position: absolute;
-		right: 57px;
-		top: 382px;
-	
-	}
-	
-#not-required-wool {
+#shearing #not-required-wool {
 		z-index = 1;
 		width: 40px;
 		height: 40px;
@@ -152,15 +128,13 @@
 		top: 450px;
 }
 
-.dialog-box {
+#shearing .dialog-box {
 	
 	z-index: 10;
 	
 	width: 635px;
-    height: 135px;
-    /*padding: 50px;*/
-    border: 1px solid orange;
-	
+    height: 100px;
+
 	position: absolute;
     left: 400px;
 	bottom: 310px;
@@ -173,15 +147,17 @@
 		
 	color: black;
 	font-family: Unkempt, Arial;
-	font-size: 22px;
+	font-size: 30px;
+	
 	line-height: 30px;
 	font-weight: bold;
-	word-spacing: 3px;
-    
+	word-spacing: 3px;    
+	
+	opacity: 0;
     
 }
 
-		.dialog-box:after, .dialog-box:before {
+		#shearing .dialog-box:after, .dialog-box:before {
 			right: 100%;
 			top: 50%;
 			border: solid transparent;
@@ -192,7 +168,7 @@
 			pointer-events: none;
 		}
 		
-		.dialog-box:after {
+		#shearing .dialog-box:after {
 			border-color: rgba(136, 183, 213, 0);
 			border-right-color: #F5EAC8;
 			border-width: 38px; /* 30px */
@@ -200,7 +176,7 @@
 			margin-right: 19px;
 		}
 		
-		.dialog-box:before {
+		#shearing .dialog-box:before {
 			border-color: rgba(194, 225, 245, 0);
 			border-right-color: black;
 			border-width: 44px; /* 31px */
@@ -208,44 +184,17 @@
 			margin-right: 20px;
 		}
 		
-		.dialog-box-image {
-
-			position: absolute;
-			
-			width: 0;
-			height: 90px;
-			
-			background: center/contain no-repeat;
-			
-		}
-		
-			.dialog-box.with-image-left .dialog-box-image {
-			
-				left: 15px;
-				
-				width: 90px;
-				
-			}
-			
-			.dialog-box.with-image-right .dialog-box-image {
-		
-				right: 15px;
-				
-				width: 90px;
-				
-			}
-		
-		.dialog-box-text {
+		#shearing .dialog-box-text {
 			
 			position: absolute;
 			left: 20px;
-			top: 35px;
+			top: 20px;
 			width: 90%;
 			height: 90px;
 			
 		}
 		
-			.dialog-box.with-image-left .dialog-box-text {			
+			#shearing .dialog-box.with-image-left .dialog-box-text {			
 
 				left: 120px;
 				
@@ -253,7 +202,7 @@
 				
 			}
 			
-			.dialog-box.with-image-right .dialog-box-text {
+			#shearing .dialog-box.with-image-right .dialog-box-text {
 			
 				right: 120px;
 				
@@ -262,7 +211,7 @@
 			
 			
 		
-		.dialog-box-arrow {
+		#shearing .dialog-box-arrow {
 		
 			position: absolute;
 		
@@ -278,7 +227,7 @@
 		
 		}
 		
-		.dialog-continue {
+		#shearing .dialog-continue {
 		
 			  position: absolute;
 			  
@@ -290,7 +239,7 @@
 		
 		}
 	
-	#greyout {
+	#shearing #greyout {
 		z-index: 10;
 
 		width: 100%;
@@ -303,9 +252,9 @@
 	}
 	
 	
-	.animal {
+	#shearing .animal {
 	
-		z-index: 4;
+		z-index: 2;
 	
 		position: absolute;
 		top: 0;
@@ -313,66 +262,66 @@
 	
 		width: 125px;
 		height: 125px;
+		
+		cursor: url(Resources/images/shears.png), auto;
 	
 	}
 
-	.animal.black_sheep {
+	#shearing .animal.black_sheep {
 	
 		background: url('images/black_sheep.png') center/cover no-repeat, url("images/shadow.png") bottom/contain no-repeat;
 	
 	}
 	
-		.animal.black_sheep.panic {
+		#shearing .animal.black_sheep.panic {
 		
 			background: url('images/black_sheep_2.png') center/cover no-repeat, url("images/shadow.png") bottom/contain no-repeat;
 		
 		}
 
-	.animal.blue_sheep {
+	#shearing .animal.blue_sheep {
 	
 		background: url('images/blue_sheep.png') center/cover no-repeat, url("images/shadow.png") bottom/contain no-repeat;
 	
 	}
 	
-		.animal.blue_sheep.panic {
+		#shearing .animal.blue_sheep.panic {
 		
 			background: url('images/blue_sheep_2.png') center/cover no-repeat, url("images/shadow.png") bottom/contain no-repeat;
 		
 		}
 
-	.animal.red_sheep {
+	#shearing .animal.red_sheep {
 	
 		background: url('images/red_sheep.png') center/cover no-repeat, url("images/shadow.png") bottom/contain no-repeat;
 	
 	}
 	
-		.animal.red_sheep.panic {
+		#shearing .animal.red_sheep.panic {
 		
 			background: url('images/red_sheep_2.png') center/cover no-repeat, url("images/shadow.png") bottom/contain no-repeat;
 		
 		}
 
-	.animal.green_sheep {
+	#shearing .animal.green_sheep {
 	
 		background: url('images/green_sheep.png') center/cover no-repeat, url("images/shadow.png") bottom/contain no-repeat;
 	
 	}
 	
-		.animal.green_sheep.panic {
+		#shearing .animal.green_sheep.panic {
 		
 			background: url('images/green_sheep_2.png') center/cover no-repeat, url("images/shadow.png") bottom/contain no-repeat;
 		
 		}
 
-	#tally-box {
+	#shearing #tally-box {
 		z-index: 10;
 		
-		left: 50%;
+		left: 490px;
 		top: 50%;
 		
-		margin-left: -200px;
-		
-		width: 500px;
+		width: 300px;
 		height: 0px;
 	
 		padding: 15px;
@@ -390,39 +339,201 @@
 		color: black;
 		
 	}
-			#tally-box .tally-row {
+		#shearing #tally-box .tally-row {
 			
 			position: relative;
 			
-			height: 100px;
+			height: 133.33px;
 			width: 100%;
 		
-			line-height: 100px;
+			line-height: 133.33px;
 			
+			opacity: 0;
+		}
+	
+		#shearing #tally-box .tally-row .tally-detail {
+			
+			position: absolute;
+			
+			height: 133.33px;
+			width: 200px;
+		
+			line-height: 133.33px;
+			text-align: center;
+		}
+			
+			
+			#shearing #tally-box .tally-row .tally-detail span.detail-content {
+				display: inline-block;
+				vertical-align: middle;
+				line-height: 50px;
+				color: grey;
 			}
+			
+			#shearing #tally-box .tally-row:last-child .tally-detail span.detail-content {
+				color: black;
+			}
+			
+		#shearing #tally-box .tally-row .tally-value {
+			position: absolute;
+			
+			width: 100px;
+			height: 133.33px;
+			
+			line-height: 133.33px;
+			text-align: center;
+			
+			left: 200px;
+		}
 
-				#tally-box .tally-row .tally-score {
-			
-					left: 210px;
-				
-					width: 100px;
-					height: 100%;
-				
-					font-size: 70px;
-				
-					text-align: center;
-				
-				}
-				
-				#tally-box .tally-row .tally-xp {
-			
-					left: 210px;
-				
-					width: 100px;
-					height: 100%;
-				
-					font-size: 70px;
-				
-					text-align: center;
-				
-				}
+		#shearing .growth-display {    
+		display: none;
+	
+		z-index: 10;
+
+        width: 0px;
+		height: 200px;
+	
+		padding: 15px;
+		border-radius: 5px;
+		
+		box-shadow: 0 0 0 20px #F5EAC8, 0 0 0 25px #251C00;
+		
+		background: white;
+		
+		font-family: Unkempt, Arial, sans-serif;
+		font-size: 90px;
+		color: black;
+		
+		z-index: 10;
+  		
+  		right: 260px;
+  		
+  		top: 158px;
+		
+		overflow-x: hidden;
+		opacity: 0.0;
+	}
+
+       #shearing .growth-display > div {
+            
+            display: inline-block;
+            position: absolute;
+        
+            width: 150px;
+            height: 200px;
+    
+    		opacity: 0;
+        }
+
+               #shearing .growth-display > div div:first-child {
+            
+                    position: absolute;
+                
+                    width: 150px;
+                    height: 150px;
+    
+                    top: 0;
+            
+                }
+
+                #shearing .growth-display > div div:last-child {
+            
+                    position: absolute;
+                
+                    width: 150px;
+                    height: 50px;
+    
+                    top: 150px;
+    
+                    font-family: Unkempt, Arial, sans-serif;
+                    font-size: 30px;
+    
+                    line-height: 50px;
+                    text-align: center;
+                }
+
+                    #shearing .growth-display > div div:last-child:before {
+                        content: '+';
+                        font-family: Unkempt, Arial, sans-serif;
+                    font-size: 30px;
+                    }
+
+            #shearing .growth-display .token-display {
+                   left: 15px;
+            }
+
+                #shearing .growth-display .token-display .token-image {
+                    background: url("Resources/images/coin.png") center/contain;
+                }
+
+            #shearing .growth-display .xp-display {
+                    left: 165px;
+            }
+        
+                #shearing .growth-display .xp-display .xp-image {
+                    text-align: center;
+                }
+                
+#shearing .nav-buttons {    
+    
+        position: absolute;
+    
+		z-index: 10;
+
+        width: 300px;
+		height: 100px;
+	
+		padding: 15px;
+		border-radius: 5px;
+		
+		box-shadow: 0 0 0 20px #F5EAC8, 0 0 0 25px #251C00;
+		
+		background: white;
+		
+		font-family: Unkempt, Arial, sans-serif;
+		font-size: 90px;
+		color: black;
+		
+		right: 260px;
+		top: 460px;
+		
+		display: none;
+		opacity: 0;
+	}
+
+    #shearing .nav-buttons .button {
+        
+    position: absolute;
+    
+       font-size: 20px;
+        height: 100px;
+        width: 140px;
+    
+        line-height: 100px;
+        text-align: center;
+           
+        color: white;
+    
+        border-radius: 5px;
+        
+        top: 15px;
+    
+        cursor: pointer;
+    
+    }
+
+        #shearing .nav-buttons  .button#reset {
+            
+            left: 15px;
+    
+            background: #BF3F3F;
+
+
+}
+
+#shearing .nav-buttons  .button#back-to-main {
+    left: 174px;
+    background: green;
+    
+}

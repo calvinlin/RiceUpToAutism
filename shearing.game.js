@@ -2,128 +2,137 @@
 //  Program main:
 //=======================================================================================
 
-window.onload = function (){
-	
-	
+layerFunction.shearing = function (){
 
-	var wool1 = 0;
-	var wool2 = 0;
-	var wool3 = 0;
+	var colors = ["black", "blue", "green", "red"];
 	
-	var color_wool1;
-	var color_wool2;
-	var color_wool3;
-
+	var wool_collected = [0, 0, 0];
 	var wool_color_array = [];
-	
 	var wool_needed_array = [];
 	
 	var not_required_wool = 0;
 	
 	var task_complete = false;
-	
-	var red_wool_full = false;
-	var blue_wool_full = false;
-	var green_wool_full = false;
-	var black_wool_full = false;
-	
+
 function sheep_game_over() {
-	if(wool1 == wool_needed_array[0] && wool2 == wool_needed_array[1] && wool3 == wool_needed_array[2])
-		return true;
-	return false;
+	for (var i = 0; i < wool_needed_array.length; ++i){
+		if (wool_collected[i] < wool_needed_array[i]){
+			return false;
+		}
+	}
+	return true;
 }
 
 function run_game_over() {
 	sequencer.newFunction(BLOCKING, function (next){
-		$(document.getElementById("greyout"))
+		$("#greyout")
 			.css("display", "block")
 			.transition({opacity: 0.5}, 500, "ease-in-out");
-		$(document.getElementById("tally-box"))
+		$("#tally-box")
 			.css("display", "block")
 			.transition({opacity: 1}, 500, "ease-in-out", next);
 	});
 
-	var score = wool1 + wool2 + wool3 - not_required_wool;
-	var tokens_won = 0;
-	if (score <= 0 )
-		tokens_won = 0;
-	else
-		tokens_won = Math.ceil((score/4) * 3);	
-	
-	var xp_gained = 5;
-	
-	$("#tally-box .tally-row").slice(0, -1).each(function (index){
+	var total = wool_needed_array[0] + wool_needed_array[1] + wool_needed_array[2];
+	var score = wool_collected[0] + wool_collected[1] + wool_collected[2] - not_required_wool;
+	var tokens_won = Math.max(0, Math.ceil((score / total) * 750));
+	var xp_gained = Math.max(0, Math.ceil((score / total) * 750));;
 		
-		// register three animations
-		sequencer.newFunction(BLOCKING, function(next){
-			
-			// move the top of the box down as it expands, so that
-			// it stays centered
-			$("#tally-box")
-				.transition({
-					height: 100 * (index + 1),
-					top: 360 - 50 * (index + 1)
-				}, 500, "snap", function(){
-				
-					// add up the eggs earned and multiply them by the "wave"
-					/*
-					$(this)
-						.children(".tally-score")
-						.text((wool1 + wool2 + wool3).toString());
-					*/
-					// string to represent total eggs collected as sum of each
-					// color
+	sequencer.newFunction(BLOCKING, function(next){
+		$("#tally-box").transition({height: "+=133.33", top: "-=66.66"}, 500, "snap", function(){
+			$(".tally-row#tally-sheep-sheared")
+				.transition({opacity: 1.0}, 500, "ease-in-out", next)
+				.children(".tally-value")
+				.text(total);
+		});
+	});
+	
+	sequencer.newFunction(BLOCKING, function(next){
+		$("#tally-box").transition({height: "+=133.33", top: "-=66.66"}, 500, "snap", function(){
+			$(".tally-row#tally-sheep-oversheared")
+				.transition({opacity: 1.0}, 500, "ease-in-out", next)
+				.children(".tally-value")
+				.text(not_required_wool);
+		});
+	});
+	
+	sequencer.newFunction(BLOCKING, function(next){
+		$("#tally-box").transition({height: "+=133.33", top: "-=66.66"}, 500, "snap", function(){
+			$(".tally-row#tally-total-score")
+				.transition({opacity: 1.0}, 200, "ease-in-out", next)
+				.children(".tally-value")
+				.text(score);
+		});
+	});
+	
+	sequencer.newFunction(BLOCKING, function( next ){
+		
+		$(currentLayer.querySelector(".growth-display"))
+			.css("display", "block")
+			.transition({opacity: 1.0}, 500, "ease-in-out", function(){
+				$(this).transition({width: 300}, 500, "snap");
+				$(currentLayer.querySelector("#tally-box")).transition({left: 260}, 500, "snap", next);
+		});
+		
+	});
 
-					
-					
-					$(this).children(".tally-wool-count")
-						.text("Your Score: " + (wool1 + wool2 + wool3).toString() + " - " + not_required_wool + " = " + score);
-					
-					// animate in each cell of the row at a staggered time
-					$(this).children().each(function (index){
-						window.setTimeout(function(){$(this).transition({ opacity: 1 }, 300, "ease-in-out")}.bind(this), index * 300);
-					});
-					
-					// go to the next animation when animating in the row is finished
-					// 300 ms per row, 3 rows = 900 ms
-					window.setTimeout(next, 900);
-					
-				}.bind(this));
-			
-	}.bind(this))});
-	
-	sequencer.newFunction(BLOCKING, function( next ){
-		$("#tally-box").transition({ height: 200, top: 160 }, 500, "snap",
-			function(){
-			
-				// tally up the total score as sum of values from cells
-				$(".tally-score")
-					.each(function(){
-						$("#tally-total-score").text("Tokens won: " + tokens_won);
-					});
-				
-				// fade the score in
-				$("#tally-total-score")
-					.transition({ opacity: 1 }, 500, "ease-in-out", next);
-			});
+	sequencer.newFunction(BLOCKING, function ( next ){
+		$(currentLayer.querySelector(".growth-display .token-display")).transition({opacity: 1}, 500, "ease-in-out", next);
 	});
-	
-	sequencer.newFunction(BLOCKING, function( next ){
-		$("#tally-box").transition({ height: 300, top: 160 }, 500, "snap",
-			function(){
-			
-				// tally up the total score as sum of values from cells
-				$(".tally-xp")
-					.each(function(){
-						$("#tally-total-xp").text("XP gained: " + xp_gained);
-					});
-				
-				// fade the score in
-				$("#tally-total-xp")
-					.transition({ opacity: 1 }, 500, "ease-in-out", next);
-			});
+
+	sequencer.newFunction(BLOCKING, function ( next ){
+		
+		var tokenDiv = currentLayer.querySelector(".growth-display .token-display .token-value");
+		var money = Math.ceil(score / total * 750);
+		var time = 800 / money;
+		
+		function incrementToken (){
+			var newVal = (parseInt(tokenDiv.innerHTML) || 0) + 1;
+	        tokenDiv.innerHTML = newVal;
+	        if (newVal <= money){
+	            window.setTimeout(incrementToken, time);
+	        } else {
+	        	next();
+	        }
+		}
+		
+		incrementToken();
+		
 	});
-	
+
+	sequencer.newFunction(BLOCKING, function ( next ){
+		$(currentLayer.querySelector(".growth-display .xp-display")).transition({opacity: 1}, 500, "ease-in-out", next);
+	});
+
+	sequencer.newFunction(BLOCKING, function ( next ){		
+		var xpDiv = currentLayer.querySelector(".growth-display .xp-display .xp-value");
+		var xp = Math.ceil(score / total * 750);
+		var time = 800 / xp ;
+		
+		function incrementXP(){
+			var newVal = (parseInt(xpDiv.innerHTML) || 0) + 1;
+	        xpDiv.innerHTML = newVal;
+	        if (newVal <= xp){
+	        	window.setTimeout(incrementXP, time);
+	        } else {
+	        	next();
+	        }
+		}
+		
+		incrementXP();
+		
+	});
+
+	sequencer.newFunction(BLOCKING, function( next ){
+		$(currentLayer.querySelector(".nav-buttons"))
+			.css("display", "block")
+			.transition({opacity: 1}, 500, "ease-in-out", function(){
+			currentLayer.querySelector("#reset").addEventListener("click", function(){
+				$("#tally-box, .growth-display, .nav-buttons").animate({opacity: 0}, 500, switchToLayer.bind(null, "shearing"));
+			});
+			currentLayer.querySelector("#back-to-main").addEventListener("click", switchToLayer.bind(null, "main"));
+		});
+	});
 	
 };
 
@@ -138,57 +147,34 @@ function Field (sequencer, selector, animalClass, wanderingClass, animateFreq ){
 	this.wanderingClass = wanderingClass === undefined ? "field-wandering" : wanderingClass;
 	this.animateFreq = animateFreq === undefined ? 500 : animateFreq;
 	
+	
+	function shuffle( array ){
+		var result = [];
+		var deepArray = JSON.parse(JSON.stringify(array));
+		while (deepArray.length){
+			result.push(deepArray.splice(Math.floor(Math.random() * deepArray.length), 1)[0]);
+		}
+		return result;
+	}
 
 	//randomizing the number of wool needed
 	for(var i = 0; i < 3; i++) {
-		var random = Math.random();
-		if(random <= 0.25) {
-			wool_needed_array[i] = 1;
-		}
-		else if(random <= .50) {
-			wool_needed_array[i] = 2;	
-		}
-		else if(random <= .75) {
-			wool_needed_array[i] = 3;
-		}
-		else if(random <= 1) {
-			wool_needed_array[i] = 4;
-		}
+		wool_needed_array[i] = Math.ceil(Math.random() * 4);
 	}
-	//randomizing the color wool needed
-		var random = Math.random();
-		if(random <= 0.25) {
-			wool_color_array[0] = "black";
-			wool_color_array[1] = "blue";
-			wool_color_array[2] = "green";
-		}
-		else if(random <= .50) {
-			wool_color_array[0] = "red";
-			wool_color_array[1] = "blue";
-			wool_color_array[2] = "green";
-		}
-		else if(random <= .75) {
-			wool_color_array[0] = "black";
-			wool_color_array[1] = "blue";
-			wool_color_array[2] = "red";
-		}
-		else if(random <= 1) {
-			wool_color_array[0] = "black";
-			wool_color_array[1] = "green";
-			wool_color_array[2] = "red";
-		}
-		
+	
+	//randomizing the color wool needed 
+	wool_color_array = shuffle(colors);
+	var unneeded = wool_color_array.shift();
+	
 	//setting css file with appropriate stats
 
-	$("#wool-count-1").text(0);
-	$("#wool-count-2").text(0);
-	$("#wool-count-3").text(0);	
+	$(".wool").each(function(i){
+		this.querySelector(".wool-collected").innerHTML = 0;
+		this.querySelector(".wool-name").innerHTML = wool_color_array[i];
+		this.querySelector(".wool-color").style.background
+			= "url('Resources/images/animal/" + wool_color_array[i] + "_sheep.png') bottom/60px auto";
+	});
 	
-	
-	$("#wool-color-1").text(wool_color_array[0]);
-	$("#wool-color-2").text(wool_color_array[1]);
-	$("#wool-color-3").text(wool_color_array[2]);
-
 	this.element = $(this.selector);
 	
 	this.updater = function (){
@@ -238,116 +224,31 @@ function Field (sequencer, selector, animalClass, wanderingClass, animateFreq ){
 	
 	//Click functions, and what happens when sheep gets clicked.
 	
-	this.element.on("click", "." + this.animalClass + ".red_sheep", function(){
-		if($(this).hasClass('deactive'))
-			return;
-		this.classList.add("panic");
-		if(jQuery.inArray("red", wool_color_array) < 0 || red_wool_full) {
-			not_required_wool += 1;
-		}
-
-		else if(wool_color_array[0] == "red") {
-			wool1 += 1;
-			document.getElementById("wool-count-1").innerHTML = wool1;
-			if(wool1 == wool_needed_array[0])
-				red_wool_full = true;
-		}
-		else if(wool_color_array[2] == "red"){
-			wool3 += 1;
-			document.getElementById("wool-count-3").innerHTML = wool3;
-			if(wool3 == wool_needed_array[2])
-				red_wool_full = true;
-		}
-		this.classList.add('deactive');
-		
-		if(sheep_game_over())
-			run_game_over();
-		
-		document.getElementById("not-required-wool").innerHTML = not_required_wool;
-	});
-	
-	this.element.on("click", "." + this.animalClass + ".blue_sheep", function(){
-		if($(this).hasClass('deactive'))
-			return;
-		this.classList.add("panic");
-		if(jQuery.inArray("blue", wool_color_array) < 0 || blue_wool_full ) {
-			not_required_wool += 1;
-		}
-		
-		else if(wool_color_array[1] == "blue") {
-			wool2 += 1;
-			document.getElementById("wool-count-2").innerHTML = wool2;
-			if(wool2 == wool_needed_array[1])
-				blue_wool_full = true;
-		}
-		
-		this.classList.add('deactive');
-		
-		if(sheep_game_over())
-			run_game_over();
-		
-		document.getElementById("not-required-wool").innerHTML = not_required_wool;
-	});
-	
-	this.element.on("click", "." + this.animalClass + ".green_sheep", function(){
-		if($(this).hasClass('deactive'))
-			return;
-		this.classList.add("panic");
-		if(jQuery.inArray("green", wool_color_array) < 0 || green_wool_full) {
-			not_required_wool += 1;
-		}
-		
-		else if(wool_color_array[1] == "green") {
-			wool2 += 1;
-			document.getElementById("wool-count-2").innerHTML = wool2;
-			if(wool2 == wool_needed_array[1])
-				green_wool_full = true;
-		}
-		else if(wool_color_array[2] == "green"){
-			wool3 += 1;
-			document.getElementById("wool-count-3").innerHTML = wool3;
-			if(wool3 == wool_needed_array[2])
-				green_wool_full = true;
-		}
-		
-		this.classList.add('deactive');
-		
-		if(sheep_game_over())
-			run_game_over();
-		
-		document.getElementById("not-required-wool").innerHTML = not_required_wool;
-	});
-	
-	this.element.on("click", "." + this.animalClass + ".black_sheep", function(){
-		if($(this).hasClass('deactive'))
-			return;
-		this.classList.add("panic");
-		if(jQuery.inArray("black", wool_color_array) < 0 || black_wool_full) {
-			console.log(jQuery.inArray("black", wool_color_array));
-			console.log(wool_color_array);
-			console.log(black_wool_full);
-			not_required_wool += 1;
-		}
-		
-		
-		else if(wool_color_array[0] == "black") {
-			console.log("hello");
-			wool1 += 1;
-			document.getElementById("wool-count-1").innerHTML = wool1;
-			if(wool1 == wool_needed_array[0])
-				black_wool_full = true;
-		}
-		
-		this.classList.add('deactive');
-		
-		if(sheep_game_over())
-			run_game_over();
-		
-		document.getElementById("not-required-wool").innerHTML = not_required_wool;
-	});
-
-	// ^^^^^ End of Click Functions ^^^^^
-	
+	for (var i = 0; i < wool_color_array.length; ++i){
+		(function (){
+			var j = i;
+			this.element.on("click", "." + this.animalClass + "." + wool_color_array[j] + "_sheep:not(.deactive)", function(){
+				this.classList.add("panic");
+				if (wool_collected[j] + 1 > wool_needed_array[j]){
+					++not_required_wool;
+				} else {
+					var scoreEl = document.getElementById("shearing").querySelectorAll(".wool .wool-collected")[j];
+					scoreEl.innerHTML = ++wool_collected[j];
+					$(scoreEl.cloneNode(true))
+						.text("+1")
+						.appendTo($(".wool")[j])
+						.transition({top: -50, opacity: 0}, 500, "ease-in-out", function(){$(this).remove()});
+				}
+				this.classList.add('deactive');
+				
+				if(sheep_game_over())
+					run_game_over();
+				
+				document.getElementById("not-required-wool").innerHTML = not_required_wool;
+			});		
+			
+		}).bind(this)();
+	}
 	
 	window.setTimeout(this.updater, this.animateFreq);
 	
@@ -404,18 +305,10 @@ var green_sheep = new Animal("green_sheep", undefined, undefined, "images/green_
 
 var game_not_over = true;
 
-function Sleeper ( sequencer ){
-	this.sequencer = sequencer;
-}	
-
-
-Sleeper.prototype.ms = function ( time, blocking ){
-	this.sequencer.newFunction( blocking, function(next){
-
-	window.setTimeout(next, time);
-		
-}.bind(this))};
-
+sequencer.newFunction(BLOCKING, function(next){
+	$("#dialog-head, #dialog-box").transition({opacity: 1}, 500, "ease-in-out");
+	window.setTimeout(next, 500);
+});
 
 //display the beginning of the game
 dialog.printDialog("Baaaaa! Help me collect wool from my children!", BLOCKING);
@@ -424,17 +317,16 @@ dialog.printDialog("Baaaaa! Help me collect wool from my children!", BLOCKING);
 dialog.promptNext(BLOCKING);
 dialog.clearDialog(BLOCKING);
 
-sequencer.newFunction(BLOCKING, function (next){
-	dialog.element.transition({ bottom : 50 }, 500, "ease-in-out",
-			function(){this.css("z-index", 3)});
-	dialog.head.transition({ bottom : 0 }, 500, "ease-in-out",
-			function(){this.css("z-index", 3)});
-		
-	$(document.getElementById("greyout"))
+sequencer.newFunction(BLOCKING, function (next){	
+	$(currentLayer.querySelector("#greyout"))
 		.transition({ opacity: 0 }, 500, "ease-in-out", 
 			function (){
 				this.css("display", "none");
-				next()
+				dialog.element.transition({ bottom : 90 }, 500, "ease-in-out",
+						function(){this.css("z-index", 3)});
+				dialog.head.transition({ bottom : 0 }, 500, "ease-in-out",
+						function(){this.css("z-index", 3)});
+				window.setTimeout(next, 500);
 			}
 		);
 });
@@ -461,12 +353,6 @@ for(var i = 0; i < 4; i++) {
 };
 
 dialog.clearDialog(BLOCKING);
-dialog.printDialog('Can you shear for me ' + wool_needed_array[0] + ' ' + wool_color_array[0] + ', ' + wool_needed_array[1] + ' ' + wool_color_array[1] + ' and ' + wool_needed_array[2] + ' ' + wool_color_array[2] + '?', BLOCKING);
-
-
-
-
-
-
+dialog.printDialog('Can you shear for me ' + wool_needed_array[0] + ' ' + wool_color_array[0] + ', ' + wool_needed_array[1] + ' ' + wool_color_array[1] + ' and ' + wool_needed_array[2] + ' ' + wool_color_array[2] + ' sheep?', BLOCKING);
 
 };

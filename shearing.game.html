@@ -1,26 +1,71 @@
 <html>
 	<head>
 		<link href='http://fonts.googleapis.com/css?family=Unkempt:400,700' rel='stylesheet' type='text/css'>
-		<link type="text/css" rel="stylesheet" href="shearing.template.css">
+		<link type="text/css" rel="stylesheet" href="shearing.game.css">
 	</head>	
 	<body>
 		<audio src="audio/task.mp3" loop autoplay></audio>
 		
-		<div class="layer" id="">
+		<div class="layer" id="shearing">
 			<div id="greyout"></div>
 			<div class="speaker" id="dialog-head"></div>
 			<div class="field"></div>
 			<div class="dialog-box" id="dialog-box"></div>
-			<div class = "wool" id="wool-color-1"></div>
-				<div class = "wool1" id="wool-count-1"></div>
 			
-			<div class = "wool" id="wool-color-2"></div>
-				<div class = "wool2" id="wool-count-2"></div>
-			
-			<div class = "wool" id="wool-color-3"></div>
-				<div class = "wool3" id="wool-count-3"></div>
-			
+			<div class="wool" id="wool-color-1">
+			    <div class="wool-name"></div>
+			    <div class="wool-collected"></div>
+			    <div class="wool-color"></div>
+			</div>
+			<div class="wool" id="wool-color-2">
+			    <div class="wool-name"></div>
+			    <div class="wool-collected"></div>
+			    <div class="wool-color">
+			    </div>
+			</div>
+			<div class="wool" id="wool-color-3">
+			    <div class="wool-name"></div>
+			    <div class="wool-collected"></div>
+			    <div class="wool-color"></div>
+			</div>
 			<div id="not-required-wool"></div>
+			
+			<div id="tally-box">
+				<div class="tally-row" id="tally-sheep-sheared">
+					<div class="tally-detail">
+						<span class="detail-content">sheep sheared</span>
+					</div>
+					<div class="tally-value"></div>
+				</div>
+				<div class="tally-row" id="tally-sheep-oversheared">
+					<div class="tally-detail">
+						<span class="detail-content">extra sheep</span>
+					</div>
+					<div class="tally-value"></div>
+				</div>
+				<div class="tally-row" id="tally-total-score">
+					<div class="tally-detail">
+						<span class="detail-content">total score</span>
+					</div>
+					<div class="tally-value"></div>
+				</div>
+			</div>
+			
+			<div class="growth-display">
+		        <div class="token-display">
+		            <div class="token-image"></div>
+		            <div class="token-value"></div>
+		        </div>
+		        <div class="xp-display">
+		            <div class="xp-image">XP</div>
+		            <div class="xp-value"></div>
+		        </div>
+	   		</div>
+	   		<div class="nav-buttons">
+		        <div class="button" id="reset">try again</div>
+		        <div class="button" id="back-to-main">go back</div>
+		    </div>
+			
 			
 			<div id="tally-box">
 				<div class="tally-row" id="tally-speed-1">

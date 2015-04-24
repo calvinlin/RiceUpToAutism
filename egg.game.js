@@ -43,11 +43,16 @@ function ConveyorBelt( sequencer, speed, updateInterval, element, eggElement ){
 	
 	interact(this.selector + " > " + this.eggSelector)
 	.on("mousedown", function(event){
-		$(event.target).removeClass("on-conveyor");
+		$(event.target)
+			.stop()
+			.removeClass("on-conveyor");
 	})
 	.draggable({
 		onstart: function(event){
-			$(event.target).removeClass("on-conveyor");
+			$(event.target)
+				.removeClass("on-conveyor")
+				.stop();
+				
 		},
 		onmove: function(event){
 			var coords = $(event.target).css("transform").split(",").slice(4)
@@ -76,10 +81,10 @@ function ConveyorBelt( sequencer, speed, updateInterval, element, eggElement ){
 	
 	
 	this.time = Date.now();
-	var updateEggPos = function(){
+	this.toUnbind = window.setInterval(function(){
 		var updateInterval = this.updateInterval;
 		var baseDx = this.baseDx;
-		var compDx = ((Date.now() - this.time) - this.updateInterval) * this.speed;
+		var compDx = 0 ; //Math.max(((Date.now() - this.time) - this.updateInterval) * this.speed, 0);
 		this.time = Date.now();
 		
 		var eggs = $(this.selector + " > " + this.eggSelector);
@@ -89,9 +94,9 @@ function ConveyorBelt( sequencer, speed, updateInterval, element, eggElement ){
 			eggs.filter(".on-conveyor").each(function(){
 				var compPos = parseFloat($(this).css("transform").split(",")[4]) + compDx;
 				if (compPos < 1280){
-					$(this).transition({ x: compPos }, 0, "linear", function(){
+					//$(this).transition({ x: compPos }, 0, "linear", function(){
 						$(this).transition({ x:  "+=" + baseDx }, updateInterval, "linear");
-					});
+					//});
 				} else {
 					++self.dropped;
 					$(this).remove();
@@ -101,10 +106,7 @@ function ConveyorBelt( sequencer, speed, updateInterval, element, eggElement ){
 			this.fireOnEmpty();
 			this.fireOnEmpty = function(){};
 		}
-		window.setTimeout(updateEggPos, updateInterval);
-	}.bind(this);
-	
-	updateEggPos();
+	}.bind(this), updateInterval);
 }
 
 ConveyorBelt.prototype.setSpeed = function (speed, blocking){
@@ -148,7 +150,7 @@ function Nest ( sequencer, element, accepts, eggElement ){
 	this.selector = element === undefined ? ".nest#nest-" + (++Nest.NUM_OF_INSTANCES) : element; 
 	this.accepts = accepts === undefined ? true : accepts;
 
-	$(this.selector).css("background", "url('Resources/images/colored nests/nest_" + this.accepts + ".png') center/cover");
+	$(this.selector).css("background", "url('Resources/images/colored nests/nest_" + this.accepts + ".png') 0 230px/cover");
 	
 	this.nDropped = 0;
 	
@@ -196,7 +198,7 @@ function shuffle( array ){
 var sequencer = new Sequential();
 var sleep = new Sleeper(sequencer);
 
-var conveyor = new ConveyorBelt( sequencer, 4000, 500);
+var conveyor = new ConveyorBelt( sequencer, 4000, 120);
 var dialog = new Dialog( sequencer, undefined, "#dialog-box", "#dialog-head");
 
 // generate egg colors to use in the nests
@@ -213,6 +215,11 @@ var nest3 = new Nest(sequencer, undefined, chosenColors[2]);
 // keep track of eggs collected at each speed
 var eggsCollectedAtSpeed = [];
 
+sequencer.newFunction(BLOCKING, function(next){
+	$("#dialog-head, #dialog-box").transition({opacity: 1}, 500, "ease-in-out");
+	window.setTimeout(next, 500);
+});
+
 // display the beginning of the game
 dialog.printDialog("Mother Hen is laying eggs! Help sort the colored eggs by dropping them the correct colored nests.", BLOCKING);
 
@@ -221,9 +228,9 @@ dialog.promptNext(BLOCKING);
 dialog.clearDialog(BLOCKING);
 
 sequencer.newFunction(BLOCKING, function (next){
-	dialog.element.transition({ bottom : 50 }, 500, "ease-in-out",
+	dialog.element.transition({ bottom : 80 }, 500, "ease-in-out",
 			function(){this.css("z-index", 3)});
-	dialog.head.transition({ bottom : 0 }, 500, "ease-in-out",
+	dialog.head.transition({ bottom : 30 }, 500, "ease-in-out",
 			function(){this.css("z-index", 3)});
 		
 	$(document.getElementById("greyout"))
@@ -323,6 +330,7 @@ for (var i = 0; i < 20; ++i){
 conveyor.waitOnClear(BLOCKING);
 
 sequencer.newFunction(BLOCKING, function(next){
+	window.clearInterval(conveyor.toUnbind);
 	eggsCollectedAtSpeed[2] = [nest1.nDropped, nest2.nDropped, nest3.nDropped];
 	nest1.nDropped = nest2.nDropped = nest3.nDropped = 0;
 	next();
@@ -394,7 +402,73 @@ sequencer.newFunction(BLOCKING, function( next ){
 });
 
 sequencer.newFunction(BLOCKING, function( next ){
-	currentLayer.addEventListener("click", switchToLayer.bind(null, "main"))	
+	
+	$(currentLayer.querySelector(".growth-display"))
+		.css("display", "block")
+		.transition({opacity: 1.0}, 500, "ease-in-out", function(){
+			$(this).transition({width: 300}, 500, "snap");
+			$(currentLayer.querySelector("#tally-box")).transition({left: 260}, 500, "snap", next);
+	});
+	
+});
+
+sequencer.newFunction(BLOCKING, function ( next ){
+	$(currentLayer.querySelector(".growth-display .token-display")).transition({opacity: 1}, 500, "ease-in-out", next);
+});
+
+sequencer.newFunction(BLOCKING, function ( next ){
+	
+	var tokenDiv = currentLayer.querySelector(".growth-display .token-display .token-value");
+	var money = Math.ceil(parseInt(currentLayer.querySelector("#tally-total-score").innerHTML) / 66 * 1000);
+	var time = 800 / money;
+	
+	function incrementToken (){
+		var newVal = (parseInt(tokenDiv.innerHTML) || 0) + 1;
+        tokenDiv.innerHTML = newVal;
+        if (newVal <= money){
+            window.setTimeout(incrementToken, time);
+        } else {
+        	next();
+        }
+	}
+	
+	incrementToken();
+	
+});
+
+sequencer.newFunction(BLOCKING, function ( next ){
+	$(currentLayer.querySelector(".growth-display .xp-display")).transition({opacity: 1}, 500, "ease-in-out", next);
+});
+
+sequencer.newFunction(BLOCKING, function ( next ){
+	
+	var xpDiv = currentLayer.querySelector(".growth-display .xp-display .xp-value");
+	var xp = Math.ceil(parseInt(currentLayer.querySelector("#tally-total-score").innerHTML) / 66 * 1000);
+	var time = 800 / xp ;
+	
+	function incrementXP(){
+		var newVal = (parseInt(xpDiv.innerHTML) || 0) + 1;
+        xpDiv.innerHTML = newVal;
+        if (newVal <= xp){
+            window.setTimeout(incrementXP, time);
+        } else {
+        	next();
+        }
+	}
+	
+	incrementXP();
+	
+});
+
+sequencer.newFunction(BLOCKING, function( next ){
+	$(currentLayer.querySelector(".nav-buttons"))
+		.css("display", "block")
+		.transition({opacity: 1}, 500, "ease-in-out", function(){
+		currentLayer.querySelector("#reset").addEventListener("click", function(){
+			$("#tally-box, .growth-display, .nav-buttons").animate({opacity: 0}, 500, switchToLayer.bind(null, "eggsort"));
+		});
+		currentLayer.querySelector("#back-to-main").addEventListener("click", switchToLayer.bind(null, "main"));
+	});
 });
 
 }
