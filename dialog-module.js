@@ -56,7 +56,7 @@ Dialog.prototype._dialog = function(callback, dialog, image, align){
 		this.head.removeClass("talking");
 		callback();
 	}.bind(this));
-	
+	 
 	toRemove = window.setTimeout(nextLetter, this.speed);
 	
 }
