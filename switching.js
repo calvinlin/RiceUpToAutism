@@ -19,11 +19,14 @@ function switchToLayer (layerName){
 		}
 	}
 	
+	
 	// clone the new visible layer. this will make sure that event listeners
 	// are not attached when switching.
+	
 	oldLayer = document.getElementById(layerName);
 	currentLayer = stateMapping[layerName].cloneNode(true);
-	document.body.replaceChild(currentLayer, oldLayer);
+	document.body.removeChild(oldLayer)
+	document.body.appendChild(currentLayer);
 	
 	// play its audio
 	audioEls = currentLayer.querySelectorAll("audio");
@@ -38,7 +41,7 @@ function switchToLayer (layerName){
 	// scope jQuery, so that selectors in different functions don't 
 	// accidentally modify elements from different layers
 	$ = function (selector){ return jQuery(selector, document.getElementById(layerName))};
-	
+
 	layerFunction[layerName]();
 	
 }
@@ -49,7 +52,8 @@ window.onload = function(){
 		"intro": initialState[0].cloneNode(true),
 		"main": initialState[1].cloneNode(true),
 		"eggsort": initialState[2].cloneNode(true),
-		"shearing": initialState[3].cloneNode(true)		
+		"shearing": initialState[3].cloneNode(true),
+		"shop": initialState[4].cloneNode(true)
 	};
 
 	if (fetchPlayerData().isNewPlayer()){
