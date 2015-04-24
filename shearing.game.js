@@ -4,6 +4,10 @@
 
 layerFunction.shearing = function (){
 
+	$(document.querySelectorAll(".resource-display")).transition({opacity: 0}, 500, "ease-in-out");
+	
+	var data = fetchPlayerData();
+	
 	var colors = ["black", "blue", "green", "red"];
 	
 	var wool_collected = [0, 0, 0];
@@ -35,9 +39,12 @@ function run_game_over() {
 
 	var total = wool_needed_array[0] + wool_needed_array[1] + wool_needed_array[2];
 	var score = wool_collected[0] + wool_collected[1] + wool_collected[2] - not_required_wool;
-	var tokens_won = Math.max(0, Math.ceil((score / total) * 750));
-	var xp_gained = Math.max(0, Math.ceil((score / total) * 750));;
+	var tokens_won = Math.max(0, Math.round((score / total) * 750));
+	var xp_gained = Math.max(0, Math.round((score / total) * 750));
 		
+	data.incMoneyBy(tokens_won);
+	data.incXPBy(tokens_won);
+	
 	sequencer.newFunction(BLOCKING, function(next){
 		$("#tally-box").transition({height: "+=133.33", top: "-=66.66"}, 500, "snap", function(){
 			$(".tally-row#tally-sheep-sheared")
@@ -66,7 +73,6 @@ function run_game_over() {
 	});
 	
 	sequencer.newFunction(BLOCKING, function( next ){
-		
 		$(currentLayer.querySelector(".growth-display"))
 			.css("display", "block")
 			.transition({opacity: 1.0}, 500, "ease-in-out", function(){
@@ -77,53 +83,93 @@ function run_game_over() {
 	});
 
 	sequencer.newFunction(BLOCKING, function ( next ){
+		$(document.querySelectorAll(".resource-display")).transition({opacity: 1}, 500, "ease-in-out");
 		$(currentLayer.querySelector(".growth-display .token-display")).transition({opacity: 1}, 500, "ease-in-out", next);
 	});
 
 	sequencer.newFunction(BLOCKING, function ( next ){
 		
 		var tokenDiv = currentLayer.querySelector(".growth-display .token-display .token-value");
-		var money = Math.ceil(score / total * 750);
-		var time = 800 / money;
+		var time = 800 / tokens_won;
 		var toClear;
+		
 		function incrementToken (){
 			var newVal = (parseInt(tokenDiv.innerHTML) || 0) + 1;
 	        tokenDiv.innerHTML = newVal;
-	        if (newVal <= money){
+	        if (newVal <= tokens_won){
 	            toClear = window.setTimeout(incrementToken, time);
 	        } else {
-	        	window.clearTimeout(toClear);
-	        	next();
+	        	skip();
 	        }
 		}
 		
+		function skip(){
+			tokenDiv.innerHTML = tokens_won;
+			currentLayer.removeEventListener(skip);
+			window.clearTimeout(toClear);
+			next();
+		}
+		
+		currentLayer.addEventListener("click", skip);
 		incrementToken();
 		
 	});
-
+	
+	sequencer.newFunction(BLOCKING, function ( next ){
+		var actual = document.querySelector("#token-display .resource-type-count");
+		$(actual.cloneNode())
+			.text("+" + tokens_won)
+			.appendTo("#token-display")
+			.transition({top: "-=100", opacity: 0}, 500, "ease-in-out", 
+					function(){
+				$(this).remove();
+			});
+		actual.innerHTML = data.getMoney();
+		next();
+	});
+	
 	sequencer.newFunction(BLOCKING, function ( next ){
 		$(currentLayer.querySelector(".growth-display .xp-display")).transition({opacity: 1}, 500, "ease-in-out", next);
 	});
 
 	sequencer.newFunction(BLOCKING, function ( next ){		
 		var xpDiv = currentLayer.querySelector(".growth-display .xp-display .xp-value");
-		var xp = Math.ceil(score / total * 750);
-		var time = 800 / xp ;
+		var time = 800 / xp_gained ;
 		var toClear;
 		
 		function incrementXP(){
 			var newVal = (parseInt(xpDiv.innerHTML) || 0) + 1;
 	        xpDiv.innerHTML = newVal;
-	        if (newVal <= xp){
+	        if (newVal <= xp_gained){
 	        	toClear = window.setTimeout(incrementXP, time);
 	        } else {
-	        	window.clearTimeout(toClear);
-	        	next();
+	        	skip();
 	        }
 		}
 		
+		function skip(){
+			xpDiv.innerHTML = xp_gained;
+			currentLayer.removeEventListener(skip);
+			window.clearTimeout(toClear);
+			next();
+		}
+		
+		currentLayer.addEventListener("click", skip);
 		incrementXP();
 		
+	});
+	
+	sequencer.newFunction(BLOCKING, function ( next ){
+		var actual = document.querySelector("#xp-display .resource-type-count");	
+		$(actual.cloneNode())
+			.text("+" + xp_gained)
+			.appendTo("#xp-display")
+			.transition({top: "-=100", opacity: 0}, 500, "ease-in-out", 
+					function(){
+				$(this).remove();
+			});
+		actual.innerHTML = data.getXP();
+		next();
 	});
 
 	sequencer.newFunction(BLOCKING, function( next ){
@@ -249,9 +295,6 @@ function Field (sequencer, selector, animalClass, wanderingClass, animateFreq ){
 				}
 				this.classList.add('deactive');
 				
-
-				document.getElementById("not-required-wool").innerHTML = not_required_wool;
-				
 				if(sheep_game_over()){
 					window.clearTimeout(self.toUnbind);
 					run_game_over();
@@ -261,6 +304,14 @@ function Field (sequencer, selector, animalClass, wanderingClass, animateFreq ){
 			
 		}).bind(this)();
 	}
+	
+	this.element.on("click", "." + this.animalClass + "." + unneeded + "_sheep:not(.deactive)", function(){
+		this.classList.add("panic");
+		++not_required_wool;
+		this.classList.add('deactive');
+	});
+	
+	
 	
 }
 

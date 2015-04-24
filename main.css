@@ -13,7 +13,57 @@ body, html {
 }
 
 body:before {
-	background: url('')
+	display: none;
+	content: url("Resources/images/background.jpg")
+url("images/background_flipped.jpg"),
+url('images/cow.png'),
+url("images/shadow.png"),
+url('images/cow_2.png'),
+url('images/pig.png'),
+url('images/pig_2.png'),
+url('images/horse.png'),
+url('images/horse_2.png'),
+url('images/sheep.png'),
+url('images/sheep_2.png'),
+url('images/chicken.png'),
+url('images/chicken_2.png'),
+url('images/goat.png'),
+url('images/goat_2.png'),
+url('Resources/images/farmer.png'),
+url("images/truck.png"),
+url("images/arrow.png"),
+url("images/denied.png"),
+url("Resources/images/coin.png"),
+url("Resources/images/xp icon.png"),
+url("Resources/images/chicken coup background.jpg"),
+url("images/conveyor-belt.png"),
+url("images/sheep_field_background.jpg"),
+url('images/black_sheep.png'),
+url('images/black_sheep_2.png'),
+url('images/blue_sheep.png'),
+ url('images/blue_sheep_2.png'),
+url('images/red_sheep.png'),
+url('images/red_sheep_2.png'),
+url('images/green_sheep.png'),
+url('images/green_sheep_2.png'),
+url('Resources/images/store_background.jpg'),
+url('Resources/images/tractor/tractor_3_locked.png'),
+url('Resources/images/tractor/tractor_2_locked.png'),
+url('Resources/images/tractor/tractor_1_locked.png'),
+url('Resources/images/tractor/tractor_3.png'),
+url('Resources/images/tractor/tractor_2.png'),
+url('Resources/images/tractor/tractor_1.png'),
+url('Resources/images/property_icon/chicken_coup_locked.png'),
+url('Resources/images/property_icon/pig_pen_locked.png'),
+url('Resources/images/property_icon/stable_locked.png'),
+url("Resources/images/property_icon/sheep_pen.png"),
+url('Resources/images/property_icon/chicken_coup.png'),
+url('Resources/images/property_icon/pig_pen.png'),
+url('Resources/images/property_icon/stable.png'),
+url("Resources/images/property_icon/sheep_pen_locked.png"),
+url('Resources/images/store_owner.png'),
+url("Resources/images/shop_sign.png"),
+url("Resources/images/achievement_sign.png");
 	
 }
 
@@ -45,3 +95,90 @@ body:before {
 		position: absolute;
 	
 	}
+	
+	#mute {
+	
+		position: fixed;
+		display: block;
+		z-index: 12;
+	
+		height: 50px;
+		width: 50px;
+		
+		top: 50%;
+		left: 50%;
+		
+		margin-left: -610px;
+		margin-top: -330px;
+		
+		background: url('Resources/images/volume.png') center/contain no-repeat;	
+	}
+		
+		#mute.muted {
+			background: url('Resources/images/volume_mute.png') center/contain no-repeat;	
+		}
+	
+	
+	.resource-display {
+		position: fixed;
+	
+		z-index: 11;
+		
+		width: 300px;
+		height: 100px;
+		
+		top: 50%;
+		left: 50%;
+		
+		margin-top: 240px;
+		
+		background: url('Resources/images/xp_coin bar.png') center/cover no-repeat;
+		
+	}
+	
+		#token-display.resource-display {
+			margin-left: -620px;
+		}
+		
+		#xp-display.resource-display {
+			margin-left: 320px;
+		}
+		
+		.resource-display > * {
+			position: absolute;
+		}
+		
+		.resource-display .resource-type-image {
+			
+			left: 0px;
+			top: 5px;
+			
+			width: 90px;
+			height: 90px;
+			
+		}
+		
+			#token-display.resource-display .resource-type-image {
+				background: url('Resources/images/coin.png') center/contain no-repeat;
+			}
+			
+			#xp-display.resource-display .resource-type-image {
+				background: url('Resources/images/xp icon.png') center/contain no-repeat;
+			}
+			
+		.resource-display .resource-type-count {
+			
+			left: 110px;
+			top: 30px;
+			
+			width: 180px;
+			height: 50px;
+			
+			font-family: Unkempt, Arial, sans-serif;
+			font-size: 50px;
+			
+			line-height: 50px;
+			
+		}
+			
+		

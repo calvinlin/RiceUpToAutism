@@ -47,6 +47,14 @@ dialog.clearDialog(BLOCKING);
 dialog.printDialog('Before I leave though, I need you to help me out with loading animals onto my truck.', BLOCKING);
 dialog.promptNext(BLOCKING);
 
+sequencer.newFunction(BLOCKING, function( next ){
+	$("#greyout").transition({ opacity: 0 }, 500, "ease-in-out", function(){
+		$(this).css("display", "none");
+		$(".dialog-box, .dialog-head").css("z-index", 9);
+		next();
+	});
+});
+
 field.spawn(cow, NONBLOCK);
 field.spawn(goat, NONBLOCK);
 field.spawn(pig, NONBLOCK);
@@ -110,33 +118,93 @@ truck.accept([goat], BLOCKING);
 truck.waitForNDrops(1, BLOCKING);
 
 truck.accept(false, BLOCKING);
-dialog.clearDialog(BLOCKING);
-dialog.printDialog("Thanks neighbor! You did a pretty good job here.", BLOCKING);
-dialog.promptNext(BLOCKING);
 
-dialog.clearDialog(BLOCKING);
-dialog.printDialog("Here on out you can do similar tasks like this and gain XP points and gold tokens.", BLOCKING);
-dialog.promptNext(BLOCKING);
+sequencer.newFunction(BLOCKING, function(next){
+	$("#greyout")
+		.css("display", "block")
+		.transition({ opacity: 0.5 }, 500, "ease-in-out", next);
+});
 
+sequencer.newFunction(BLOCKING, function( next ){
+	$(document.querySelectorAll(".resource-display")).transition({opacity: 1.0}, 500, "ease-in-out");
+	$(".growth-display")
+		.css("display", "block")
+		.transition({opacity: 1.0}, 500, "ease-in-out", next);
+	
+});
 
-dialog.clearDialog(BLOCKING);
-dialog.printDialog("See these properties? Some of them you can't buy yet, but don't worry, complete enough tasks and one day you will be able to buy all of them!", BLOCKING);
-dialog.promptNext(BLOCKING);
+sequencer.newFunction(BLOCKING, function ( next ){
+	$(currentLayer.querySelector(".growth-display .token-display")).transition({opacity: 1}, 500, "ease-in-out", next);
+});
 
-dialog.clearDialog(BLOCKING);
-dialog.printDialog("Each property has it's own task that you can complete over and over again to obtain gold tokens as well as XP points.", BLOCKING);
-dialog.promptNext(BLOCKING);
+sequencer.newFunction(BLOCKING, function ( next ){
+	
+	var tokenDiv = currentLayer.querySelector(".growth-display .token-display .token-value");
+	var money = 500;
+	var time = 800 / money;
+	
+	data.incMoneyBy(money);
+	function incrementToken (){
+		var newVal = (parseInt(tokenDiv.innerHTML) || 0) + 1;
+        tokenDiv.innerHTML = newVal;
+        if (newVal <= money){
+            window.setTimeout(incrementToken, time);
+        } else {
+        	var actual = document.querySelector("#token-display .resource-type-count");
+    		$(actual.cloneNode())
+    			.text("+" + money)
+    			.appendTo("#token-display")
+    			.transition({top: "-=100", opacity: 0}, 500, "ease-in-out", 
+    					function(){
+    				$(this).remove();
+    			});
+    		actual.innerHTML = data.getMoney();
+        	next();
+        }
+	}
+	
+	incrementToken();
+	
+});
 
-dialog.clearDialog(BLOCKING);
-dialog.printDialog("Generate enough XP points and you'll go up a level!", BLOCKING);
-dialog.promptNext(BLOCKING);
+sequencer.newFunction(BLOCKING, function ( next ){
+	$(currentLayer.querySelector(".growth-display .xp-display")).transition({opacity: 1}, 500, "ease-in-out", next);
+});
 
-dialog.clearDialog(BLOCKING);
-dialog.printDialog("I hope you enjoy working on this farm as much as I did!", BLOCKING);
-dialog.promptNext(BLOCKING);
+sequencer.newFunction(BLOCKING, function ( next ){
+	
+	var xpDiv = currentLayer.querySelector(".growth-display .xp-display .xp-value");
+	var xp = 500;
+	var time = 800 / xp;
+	
+	data.incXPBy(xp);
+	function incrementXP(){
+		var newVal = (parseInt(xpDiv.innerHTML) || 0) + 1;
+        xpDiv.innerHTML = newVal;
+        if (newVal <= xp){
+            window.setTimeout(incrementXP, time);
+        } else {
+        	var actual = document.querySelector("#xp-display .resource-type-count");
+    		$(actual.cloneNode())
+    			.text("+" + xp)
+    			.appendTo("#xp-display")
+    			.transition({top: "-=100", opacity: 0}, 500, "ease-in-out", 
+    					function(){
+    				$(this).remove();
+    			});
+    		actual.innerHTML = data.getXP();
+        	next();
+        }
+	}
+	
+	incrementXP();
+	
+});
 
-dialog.clearDialog(BLOCKING);
-dialog.printDialog("Oh look at the time! I must be going, good luck neighbor!", NONBLOCK);
+sequencer.newFunction(BLOCKING, function (next){
+	$(document.querySelectorAll(".resource-display")).transition({opacity: 0}, 500, "ease-in-out");
+	$(".growth-display").transition({opacity: 0}, 500, "ease-in-out", next);
+});
 
 sequencer.newFunction(NONBLOCK, function (next){
 	switchToLayer("main");

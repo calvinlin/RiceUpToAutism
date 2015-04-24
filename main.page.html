@@ -9,7 +9,7 @@
 		
 		<meta name="theme-color" content="green">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		
+
 		
 		<link href='http://fonts.googleapis.com/css?family=Unkempt:400,700' rel='stylesheet' type='text/css'>
 		 
@@ -26,7 +26,7 @@
 		<script src="jslibs/interact-1.2.4.min.js"></script>
 		
 		<script type="text/javascript" src="data-module.js"></script>
-		<script type="text/javascript" src="switching.js"></script>
+		<script type="text/javascript" src="manager.js"></script>
 		
 		<script type="text/javascript" src="sequential-module.js"></script>
 		<script type="text/javascript" src="dialog-module.js"></script>
@@ -49,6 +49,17 @@
 		<div class="truck"></div>
 		<div class="dialog-head"></div>
 		<div class="dialog-box"></div>
+		<div id="greyout"></div>
+		<div class="growth-display">
+	        <div class="token-display">
+	            <div class="token-image"></div>
+	            <div class="token-value"></div>
+	        </div>
+	        <div class="xp-display">
+	            <div class="xp-image"></div>
+	            <div class="xp-value"></div>
+	        </div>
+   		</div>
 	</div>
 	
 	<div id="main" class="layer">
@@ -66,9 +77,22 @@
 		</div>
 		<div id="shop-link" class="layer-switcher nav" data-targetLayer="shop"></div>
 		<div id="achievements-link" class="layer-switcher nav"></div>
+		<div id="add-money-prompt">+</div>
+		<div id="add-money">
+			<div id="add-money-ask">
+				How much would you like to add?
+			</div>
+			<div id="add-money-input-container">
+				<input type="text" id="add-money-input">
+			</div>
+			<div id="add-money-submit">
+				add
+			</div>
+		</div>
+		<div id="greyout"></div>
+		<div class="dialog-head"></div>
+		<div class="dialog-box"></div>
 		
-		<span id="_money" class="money">money</span> <span id="_xp" class="xp">xp</span>
-		<button id="_reset">RESET</button>
 	</div>
 	
 	<div id="eggsort" class="layer">
@@ -140,8 +164,6 @@
 			    <div class="wool-collected"></div>
 			    <div class="wool-color"></div>
 			</div>
-			<div id="not-required-wool"></div>
-			
 			<div id="tally-box">
 				<div class="tally-row" id="tally-sheep-sheared">
 					<div class="tally-detail">
@@ -189,8 +211,9 @@
 					<div class="item-image">
 					</div>
 					<div class="item-price">
-						10000
+						5000
 					</div>
+					<div class="bought">bought</div>
 				</div>
 				<div class="item">
 					<div class="item-image">
@@ -198,13 +221,15 @@
 					<div class="item-price">
 						25000
 					</div>
+					<div class="bought">bought</div>
 				</div>
 				<div class="item">
 					<div class="item-image">
 					</div>
 					<div class="item-price">
-						50000
+						100000
 					</div>
+					<div class="bought">bought</div>
 				</div>
 				<div class="row-accompanying-text">
 					<span class="text-body">buy new tractors</span> 
@@ -215,8 +240,9 @@
 					<div class="item-image">
 					</div>
 					<div class="item-price">
-						10000
+						5000
 					</div>
+					<div class="bought">bought</div>
 				</div>
 				<div class="item">
 					<div class="item-image">
@@ -224,13 +250,15 @@
 					<div class="item-price">
 						25000
 					</div>
+					<div class="bought">bought</div>
 				</div>
 				<div class="item">
 					<div class="item-image">
 					</div>
 					<div class="item-price">
-						50000
+						100000
 					</div>
+					<div class="bought">bought</div>
 				</div>
 				<div class="row-accompanying-text">
 					<span class="text-body">buy new property</span>
@@ -244,6 +272,17 @@
 			</div>
 			<div id="exit">
 			</div>
+		</div>
+		
+		<div id="mute" class="mute-off"></div>
+		
+		<div class="resource-display" id="xp-display">
+			<div class="resource-type-image"></div>
+			<div class="resource-type-count">0</div>
+		</div>
+		<div class="resource-display" id="token-display">
+			<div class="resource-type-image"></div>
+			<div class="resource-type-count">0</div>
 		</div>
 		
 </body>
