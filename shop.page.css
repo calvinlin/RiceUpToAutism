@@ -13,6 +13,7 @@
 	 left: 420px;
 	 top: 80px;
 }
+
 #shop .item-row {
 	
 	height: 150px;
@@ -26,24 +27,38 @@
 		top: 180px;
 	}
 	
+		
 		#shop .item-row#truck-row .item:nth-child(1) .item-image{
-			background: url('Resources/images/tractor/tractor_3.png') center/contain no-repeat;
+			background: url('Resources/images/tractor/tractor_3_locked.png') center/contain no-repeat;
 		}
 		
 		#shop .item-row#truck-row .item:nth-child(2) .item-image{
-			background: url('Resources/images/tractor/tractor_2.png') center/contain no-repeat;
+			background: url('Resources/images/tractor/tractor_2_locked.png') center/contain no-repeat;
 		}
 		
 		#shop .item-row#truck-row .item:nth-child(3) .item-image{
+			background: url('Resources/images/tractor/tractor_1_locked.png') center/contain no-repeat;
+		}
+	
+		#shop .item-row#truck-row .item.locked:nth-child(1) .item-image{
+			background: url('Resources/images/tractor/tractor_3.png') center/contain no-repeat;
+		}
+		
+		#shop .item-row#truck-row .item.locked:nth-child(2) .item-image{
+			background: url('Resources/images/tractor/tractor_2.png') center/contain no-repeat;
+		}
+		
+		#shop .item-row#truck-row .item.locked:nth-child(3) .item-image{
 			background: url('Resources/images/tractor/tractor_1.png') center/contain no-repeat;
 		}
+		
 	
 	#shop .item-row#property-row {	
 		top: 330px;
 	}
-	
+
 		#shop .item-row#property-row .item:nth-child(1) .item-image{
-			background: url('Resources/images/property_icon/sheep_pen_locked.png') center/contain no-repeat;
+			background: url('Resources/images/property_icon/chicken_coup_locked.png') center/contain no-repeat;
 		}
 		
 		#shop .item-row#property-row .item:nth-child(2) .item-image{
@@ -53,7 +68,19 @@
 		#shop .item-row#property-row .item:nth-child(3) .item-image{
 			background: url('Resources/images/property_icon/stable_locked.png') center/contain no-repeat;
 		}
-	
+		
+		
+		#shop .item-row#property-row .item.locked:nth-child(1) .item-image{
+			background: url('Resources/images/property_icon/chicken_coup.png') center/contain no-repeat;
+		}
+		
+		#shop .item-row#property-row .item.locked:nth-child(2) .item-image{
+			background: url('Resources/images/property_icon/pig_pen.png') center/contain no-repeat;
+		}
+		
+		#shop .item-row#property-row .item.locked:nth-child(3) .item-image{
+			background: url('Resources/images/property_icon/stable.png') center/contain no-repeat;
+		}
 
 	#shop .item-row .item {
 		
@@ -63,9 +90,30 @@
 		
 		height: 150px;
 		width: 250px;
+		
+		cursor: default;
 	
 	}
 	
+	
+		#shop .item-row .item.locked {
+		
+			cursor: pointer;
+			
+		}
+	
+		#shop .item-row .item > div:not(.bought) {
+		
+			opacity: 0.5;
+		
+		}
+	
+		#shop .item-row .item.locked > div{
+		
+			opacity: 1.0;
+		
+		}
+		
 		#shop .item-row .item .item-image {
 		
 			position: absolute;
@@ -104,7 +152,30 @@
 				content: "";
 				
 			}
+		
+		#shop .item-row .item .bought {
+		
+			display: none;
 			
+		}
+			
+		#shop .item-row .item:not(.locked) .bought {
+		
+			display: block;
+			
+			position: absolute;
+			
+			width: 250px;
+			height: 150px;
+			
+			font-family: Unkempt, Arial, sans-serif;
+			font-size: 50px;
+			font-weight: bold;
+			line-height: 150px;
+			text-align: center;
+			color: white;
+		}
+		
 	#shop .item-row .row-accompanying-text {
 	
 		position: absolute;

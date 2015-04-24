@@ -8,6 +8,10 @@ html {
   padding: 0;
 }
 
+body:before {
+  background: url('');
+}
+
 * {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -28,4 +32,52 @@ html {
 
 .layer > * {
   position: absolute;
+}
+
+.resource-display {
+  position: fixed;
+  z-index: 11;
+  width: 300px;
+  height: 100px;
+  top: 50%;
+  left: 50%;
+  margin-top: 240px;
+  background: url('Resources/images/xp_coin bar.png') center/cover no-repeat;
+}
+
+#xp-display.resource-display {
+  margin-left: -620px;
+}
+
+#token-display.resource-display {
+  margin-left: 320px;
+}
+
+.resource-display > * {
+  position: absolute;
+}
+
+.resource-display .resource-type-image {
+  left: 0px;
+  top: 5px;
+  width: 90px;
+  height: 90px;
+}
+
+#token-display.resource-display .resource-type-image {
+  background: url('Resources/images/coin.png') center/contain no-repeat;
+}
+
+#xp-display.resource-display .resource-type-image {
+  background: url('Resources/images/xp icon.png') center/contain no-repeat;
+}
+
+.resource-display .resource-type-count {
+  left: 110px;
+  top: 30px;
+  width: 180px;
+  height: 50px;
+  font-family: Unkempt, Arial, sans-serif;
+  font-size: 50px;
+  line-height: 50px;
 }

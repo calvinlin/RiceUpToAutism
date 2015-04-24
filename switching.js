@@ -42,6 +42,14 @@ function switchToLayer (layerName){
 	// accidentally modify elements from different layers
 	$ = function (selector){ return jQuery(selector, document.getElementById(layerName))};
 
+	document.querySelector("#token-display .resource-type-count").innerHTML = fetchPlayerData().getMoney();
+	document.querySelector("#xp-display .resource-type-count").innerHTML = fetchPlayerData().getXP();
+
+	for (var i = 0; i < 9999; ++i){
+		window.clearTimeout(i);
+		window.clearInterval(i);
+	}
+	
 	layerFunction[layerName]();
 	
 }
@@ -55,8 +63,9 @@ window.onload = function(){
 		"shearing": initialState[3].cloneNode(true),
 		"shop": initialState[4].cloneNode(true)
 	};
-
+	
 	if (fetchPlayerData().isNewPlayer()){
+		$(".resource-display").css('opacity', 0);
 		switchToLayer("intro");
 	} else { 
 		switchToLayer("main");

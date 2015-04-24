@@ -81,10 +81,9 @@ function ConveyorBelt( sequencer, speed, updateInterval, element, eggElement ){
 	
 	
 	this.time = Date.now();
-	this.toUnbind = window.setInterval(function(){
+	this.updater = function(){
 		var updateInterval = this.updateInterval;
 		var baseDx = this.baseDx;
-		var compDx = 0 ; //Math.max(((Date.now() - this.time) - this.updateInterval) * this.speed, 0);
 		this.time = Date.now();
 		
 		var eggs = $(this.selector + " > " + this.eggSelector);
@@ -92,7 +91,7 @@ function ConveyorBelt( sequencer, speed, updateInterval, element, eggElement ){
 		if (eggs.length > 0){
 			var self = this;
 			eggs.filter(".on-conveyor").each(function(){
-				var compPos = parseFloat($(this).css("transform").split(",")[4]) + compDx;
+				var compPos = parseFloat($(this).css("transform").split(",")[4]);
 				if (compPos < 1280){
 					//$(this).transition({ x: compPos }, 0, "linear", function(){
 						$(this).transition({ x:  "+=" + baseDx }, updateInterval, "linear");
@@ -106,7 +105,8 @@ function ConveyorBelt( sequencer, speed, updateInterval, element, eggElement ){
 			this.fireOnEmpty();
 			this.fireOnEmpty = function(){};
 		}
-	}.bind(this), updateInterval);
+	};
+	
 }
 
 ConveyorBelt.prototype.setSpeed = function (speed, blocking){
@@ -133,9 +133,12 @@ ConveyorBelt.prototype.spawnEgg = function( color, blocking ){
 		.css("background", "url('Resources/images/colored eggs/egg_" + color + ".png') center/contain no-repeat")
 		.appendTo(this.element)
 		.transition({x: -150 + (this.updateInterval - (Date.now() - this.time)) * this.speed}, 
-				this.updateInterval - (Date.now() - this.time), "linear");
+				this.updateInterval - (Date.now() - this.time), "linear", function(){
+			if (this.toUnbind === undefined){
+				this.toUnbind = window.setInterval(this.updater.bind(this), this.updateInterval);
+			}
+		}.bind(this));
 	window.setTimeout(next, 150 / this.speed);
-	
 }.bind(this))};
 
 ConveyorBelt.prototype.waitOnClear = function( blocking ){
@@ -215,6 +218,10 @@ var nest3 = new Nest(sequencer, undefined, chosenColors[2]);
 // keep track of eggs collected at each speed
 var eggsCollectedAtSpeed = [];
 
+var data = fetchPlayerData();
+
+$(document.querySelectorAll(".resource-display")).transition({opacity: 0}, 500, "ease-in-out");
+
 sequencer.newFunction(BLOCKING, function(next){
 	$("#dialog-head, #dialog-box").transition({opacity: 1}, 500, "ease-in-out");
 	window.setTimeout(next, 500);
@@ -233,7 +240,7 @@ sequencer.newFunction(BLOCKING, function (next){
 	dialog.head.transition({ bottom : 30 }, 500, "ease-in-out",
 			function(){this.css("z-index", 3)});
 		
-	$(document.getElementById("greyout"))
+	$("#greyout")
 		.transition({ opacity: 0 }, 500, "ease-in-out", 
 			function (){
 				this.css("display", "none");
@@ -338,10 +345,10 @@ sequencer.newFunction(BLOCKING, function(next){
 
 // display the scoreboard
 sequencer.newFunction(BLOCKING, function (next){
-	$(document.getElementById("greyout"))
+	$("#greyout")
 		.css("display", "block")
 		.transition({opacity: 0.5}, 500, "ease-in-out");
-	$(document.getElementById("tally-box"))
+	$("#tally-box")
 		.css("display", "block")
 		.transition({opacity: 1}, 500, "ease-in-out", next);
 });
@@ -402,7 +409,7 @@ sequencer.newFunction(BLOCKING, function( next ){
 });
 
 sequencer.newFunction(BLOCKING, function( next ){
-	
+	$(document.querySelectorAll(".resource-display")).transition({opacity: 1.0}, 500, "ease-in-out");
 	$(currentLayer.querySelector(".growth-display"))
 		.css("display", "block")
 		.transition({opacity: 1.0}, 500, "ease-in-out", function(){
@@ -422,12 +429,22 @@ sequencer.newFunction(BLOCKING, function ( next ){
 	var money = Math.ceil(parseInt(currentLayer.querySelector("#tally-total-score").innerHTML) / 66 * 1000);
 	var time = 800 / money;
 	
+	data.incMoneyBy(money);
 	function incrementToken (){
 		var newVal = (parseInt(tokenDiv.innerHTML) || 0) + 1;
         tokenDiv.innerHTML = newVal;
         if (newVal <= money){
             window.setTimeout(incrementToken, time);
         } else {
+        	var actual = document.querySelector("#token-display .resource-type-count");
+    		$(actual.cloneNode())
+    			.text("+" + money)
+    			.appendTo("#token-display")
+    			.transition({top: "-=100", opacity: 0}, 500, "ease-in-out", 
+    					function(){
+    				$(this).remove();
+    			});
+    		actual.innerHTML = data.getMoney();
         	next();
         }
 	}
@@ -446,12 +463,22 @@ sequencer.newFunction(BLOCKING, function ( next ){
 	var xp = Math.ceil(parseInt(currentLayer.querySelector("#tally-total-score").innerHTML) / 66 * 1000);
 	var time = 800 / xp ;
 	
+	data.incXPBy(xp);
 	function incrementXP(){
 		var newVal = (parseInt(xpDiv.innerHTML) || 0) + 1;
         xpDiv.innerHTML = newVal;
         if (newVal <= xp){
             window.setTimeout(incrementXP, time);
         } else {
+        	var actual = document.querySelector("#xp-display .resource-type-count");
+    		$(actual.cloneNode())
+    			.text("+" + xp)
+    			.appendTo("#xp-display")
+    			.transition({top: "-=100", opacity: 0}, 500, "ease-in-out", 
+    					function(){
+    				$(this).remove();
+    			});
+    		actual.innerHTML = data.getXP();
         	next();
         }
 	}

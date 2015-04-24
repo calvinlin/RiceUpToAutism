@@ -12,11 +12,12 @@ function fetchPlayerData(){
 		this.xp				= 0;
 		this.name			= "neighbor";
 		this.unlocked_task 	= {
-			"shearing": false,
-			"eggsort": true,
+			"shearing": true,
+			"eggsort": false,
 			"stable": false,
 			"pigpen": false
 		}
+		this.tractor_tier = 0;
 	};
 	
 	// fetch the index of the most recent update
@@ -67,6 +68,7 @@ function fetchPlayerData(){
 		getXP: function (){ return data.xp },
 		getName: function (){ return data.name },
 		hasUnlockedTask: function (task){ return data.unlocked_task[task] },
+		getTractorTier: function () { return data.tractor_tier },
 		isNewPlayer: function (){ return data.isNew },
 		// nonconst functions ----------------------
 		
@@ -86,6 +88,8 @@ function fetchPlayerData(){
 		
 		// sets the value of a task to be unlocked 
 		unlockTask: function (task) { return nonconst( function() { data.unlocked_task[task] = true } ) },
+		
+		unlockTractor: function (tier) {return nonconst( function(){ return ++data.tractor_tier })},
 		
 		setNew: function (val) { return nonconst( function() { data.isNew = val } ) }
 	};

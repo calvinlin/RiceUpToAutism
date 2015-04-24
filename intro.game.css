@@ -103,7 +103,7 @@
 	
 	#intro .dialog-head {
 	
-		z-index: 2;
+		z-index: 11;
 	
 		left: 100px;
 		bottom: 0;
@@ -111,9 +111,9 @@
 		width: 300px;
 		height: 300px;
 	
-		background: url('images/moustache.png') 50% 155px/26.5% auto no-repeat, url('images/farmer-nostache.png') center/contain no-repeat;
+		background: /*url('images/moustache.png') 50% 155px/26.5% auto no-repeat, */url('Resources/images/farmer.png') center/contain no-repeat;
 			
-	}
+	}/*
 	
 		@keyframes dialog-head-talking {
 		
@@ -128,11 +128,11 @@
 			animation: dialog-head-talking 0.1s linear 0.03s infinite alternate;
 
 		}
-		
+		*/
 		
 	#intro .dialog-box {
 	
-		z-index: 2;
+		z-index: 11;
 	
 		position: absolute;
 		
@@ -314,7 +314,108 @@
 						
 		}
 		
+		#intro #greyout {
+			z-index: 10;
+
+			width: 100%;
+			height: 100%;
 		
+			background: black;
+			
+			opacity: 0.5;
+		}
+		
+	#intro .growth-display {    
+		display: none;
+	
+		z-index: 10;
+
+        width: 300px;
+		height: 200px;
+	
+		padding: 15px;
+		border-radius: 5px;
+		
+		box-shadow: 0 0 0 20px #F5EAC8, 0 0 0 25px #251C00;
+		
+		background: white;
+		
+		font-family: Unkempt, Arial, sans-serif;
+		font-size: 90px;
+		color: black;
+		
+		z-index: 10;
+  		
+  		left: 50%;
+  		top: 50%;
+  		
+  		margin-left: -150px;
+  		margin-top: -100px;
+  		
+  		
+		overflow-x: hidden;
+		opacity: 0.0;
+	}
+
+       #intro .growth-display > div {
+            
+            display: inline-block;
+            position: absolute;
+        
+            width: 150px;
+            height: 200px;
+    
+    		opacity: 0;
+        }
+
+               #intro .growth-display > div div:first-child {
+            
+                    position: absolute;
+                
+                    width: 150px;
+                    height: 150px;
+    
+                    top: 0;
+            
+                }
+
+                #intro .growth-display > div div:last-child {
+            
+                    position: absolute;
+                
+                    width: 150px;
+                    height: 50px;
+    
+                    top: 150px;
+    
+                    font-family: Unkempt, Arial, sans-serif;
+                    font-size: 30px;
+    
+                    line-height: 50px;
+                    text-align: center;
+                }
+
+                    #intro .growth-display > div div:last-child:before {
+                        content: '+';
+                        font-family: Unkempt, Arial, sans-serif;
+                    font-size: 30px;
+                    }
+
+            #intro .growth-display .token-display {
+                   left: 15px;
+            }
+
+                #intro .growth-display .token-display .token-image {
+                    background: url("Resources/images/coin.png") center/contain;
+                }
+
+            #intro .growth-display .xp-display {
+                    left: 165px;
+            }
+        
+                #intro .growth-display .xp-display .xp-image {
+                    background: url("Resources/images/xp icon.png") center/contain;
+                }
 		
 	
 
