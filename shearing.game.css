@@ -263,7 +263,7 @@
 		width: 125px;
 		height: 125px;
 		
-		cursor: url(Resources/images/shears.png), auto;
+		cursor: url('Resources/images/shears.png'), auto;
 	
 	}
 
@@ -275,7 +275,7 @@
 	
 		#shearing .animal.black_sheep.panic {
 		
-			background: url('images/black_sheep_2.png') center/cover no-repeat, url("images/shadow.png") bottom/contain no-repeat;
+			background: url('images/black_sheep_2.png') center/cover no-repeat, "images/shadow.png") bottom/contain no-repeat;
 		
 		}
 

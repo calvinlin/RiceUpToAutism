@@ -126,6 +126,89 @@
   width: 10%;
 }
 
+#main #add-money-prompt {
+  bottom: 40px;
+  font-family: Unkempt, Arial, sans-serif;
+  font-size: 80px;
+  width: 50px;
+  height: 50px;
+  color: white;
+  background: gold;
+  left: 320px;
+  /* border: solid white 5px; */
+  text-align: center;
+  border-radius: 5px;
+  line-height: 50px;
+  box-shadow: 0 0 2px grey;
+  cursor: pointer;
+}
+
+#main #add-money {
+  top: 50%;
+  left: 50%;
+  margin-left: -175px;
+  margin-top: -110px;
+  font-family: Unkempt, Arial, sans-serif;
+  font-size: 30px;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 0 0 20px #F5EAC8, 0 0 0 25px #251C00;
+  background: white;
+  width: 350px;
+  height: 220px;
+  z-index: 11;
+  display: none;
+}
+
+#main #add-money-input-container {
+  background: url('Resources/images/coin.png') left/contain no-repeat, url('Resources/images/xp_coin bar.png') center/cover no-repeat;
+  width: 300px;
+  height: 100px;
+  position: absolute;
+  left: 40px;
+  top: 80px;
+}
+
+#main #add-money-input-container #add-money-input {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  display: inline-block;
+  vertical-align: middle;
+  white-space: normal;
+  background: none;
+  line-height: 1;
+  font-size: 30px;
+  font-family: Unkempt, Arial, sans-serif;
+  overflow: hidden;
+  height: 50px;
+  position: absolute;
+  width: 170px;
+  left: 110px;
+  top: 30px;
+}
+
+#main #add-money-input-container #add-money-input:focus {
+  outline: 0;
+}
+
+#main #add-money-submit {
+  border: 0;
+  box-shadow: 0;
+  border-radius: 5px;
+  background: green;
+  width: 100px;
+  height: 50px;
+  line-height: 50px;
+  position: absolute;
+  bottom: 10px;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  left: 140px;
+  cursor: pointer;
+}
+
 #main #greyout {
   z-index: 10;
   width: 100%;

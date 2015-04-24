@@ -2,6 +2,12 @@
 var currentLayer;
 var layerFunction = {};
 var stateMapping = {};
+var music = {
+	"task": new Audio("audio/task.mp3"),
+	"main": new Audio("audio/bgm.mp3")
+};
+var currentAudio;
+var paused = false;
 
 function switchToLayer (layerName){
 	var audioEls, i;
@@ -10,33 +16,32 @@ function switchToLayer (layerName){
 	if (currentLayer !== undefined){
 		// hide it
 		currentLayer.style.display = "none";
-		
-		// mute it
-		audioEls = currentLayer.querySelectorAll("audio");
-		for (i = audioEls.length; i--;){
-			audioEls[i].pause();
-			audioEls[i].currentTime = 0.0;
-		}
 	}
-	
 	
 	// clone the new visible layer. this will make sure that event listeners
 	// are not attached when switching.
 	
 	oldLayer = document.getElementById(layerName);
-	currentLayer = stateMapping[layerName].cloneNode(true);
-	document.body.removeChild(oldLayer)
+	currentLayer = stateMapping[layerName].el.cloneNode(true);
+	document.body.removeChild(oldLayer);
 	document.body.appendChild(currentLayer);
-	
-	// play its audio
-	audioEls = currentLayer.querySelectorAll("audio");
-	for (i = audioEls.length; i--;){
-		audioEls[i].currentTime = 0.0;
-		audioEls[i].play();
-	}
 	
 	// make it visible
 	currentLayer.style.display = "block";
+	
+	// play music
+	if (currentAudio !== stateMapping[layerName].audio){
+		if (!paused && currentAudio !== undefined){
+			music[currentAudio].pause();
+			music[currentAudio].currentTime = 0;
+		}
+		currentAudio = stateMapping[layerName].audio;
+		if (!paused){
+			music[currentAudio].currentTime = 0;
+			music[currentAudio].loop = true;
+			music[currentAudio].play();
+		}
+	}
 	
 	// scope jQuery, so that selectors in different functions don't 
 	// accidentally modify elements from different layers
@@ -57,12 +62,23 @@ function switchToLayer (layerName){
 window.onload = function(){
 	var initialState = document.querySelectorAll(".layer");
 	stateMapping = {
-		"intro": initialState[0].cloneNode(true),
-		"main": initialState[1].cloneNode(true),
-		"eggsort": initialState[2].cloneNode(true),
-		"shearing": initialState[3].cloneNode(true),
-		"shop": initialState[4].cloneNode(true)
+		"intro": {el: initialState[0].cloneNode(true), audio: "task"},
+		"main": {el: initialState[1].cloneNode(true), audio: "main"},
+		"eggsort": {el: initialState[2].cloneNode(true), audio: "task"},
+		"shearing": {el: initialState[3].cloneNode(true),  audio: "task"},
+		"shop": {el: initialState[4].cloneNode(true),  audio: "main"}
 	};
+	
+	document.getElementById("mute").addEventListener("click", function(){
+		this.classList.toggle("muted");
+		if (paused){
+			paused = false;
+			music[currentAudio].play();
+		} else if (!paused){
+			paused = true;
+			music[currentAudio].pause();
+		}
+	});
 	
 	if (fetchPlayerData().isNewPlayer()){
 		$(".resource-display").css('opacity', 0);

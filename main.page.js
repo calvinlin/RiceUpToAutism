@@ -74,9 +74,6 @@ if (data.isNewPlayer()){
 		
 	});
 }
-	
-var mainMusic = new Audio('audio/bgm.mp3');
-var taskMusic = new Audio('audio/task.mp3');
 
 var tasks = {
 	shearing: "sheep_pen",
@@ -102,6 +99,29 @@ for (var i = layerChangers.length; i--;){
 		switchToLayer(this.dataset.targetlayer);
 	});
 }
+
+$("#add-money-prompt").click(function(){
+	$("#add-money").css("display", "block");
+});
+
+$("#add-money-submit").click(function(){
+	var money = parseInt($("#add-money-input").val());
+	if (!isNaN(money)){
+		data.incMoneyBy(money);
+		var actual = document.querySelector("#token-display .resource-type-count");
+		$(actual.cloneNode())
+			.text("+" + money)
+			.appendTo("#token-display")
+			.transition({top: "-=100", opacity: 0}, 500, "ease-in-out", 
+					function(){
+				$(this).remove();
+			});
+		actual.innerHTML = data.getMoney();
+	}
+	$("#add-money").css("display", "none");
+});
+
+
 
 
 };

@@ -1,7 +1,6 @@
 @CHARSET "ISO-8859-1";
 
 #shop {
-	display: block;
 	background: url('Resources/images/store_background.jpg') center/contain no-repeat;
 }
 

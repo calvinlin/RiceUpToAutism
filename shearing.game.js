@@ -295,9 +295,6 @@ function Field (sequencer, selector, animalClass, wanderingClass, animateFreq ){
 				}
 				this.classList.add('deactive');
 				
-
-				document.getElementById("not-required-wool").innerHTML = not_required_wool;
-				
 				if(sheep_game_over()){
 					window.clearTimeout(self.toUnbind);
 					run_game_over();
@@ -307,6 +304,14 @@ function Field (sequencer, selector, animalClass, wanderingClass, animateFreq ){
 			
 		}).bind(this)();
 	}
+	
+	this.element.on("click", "." + this.animalClass + "." + unneeded + "_sheep:not(.deactive)", function(){
+		this.classList.add("panic");
+		++not_required_wool;
+		this.classList.add('deactive');
+	});
+	
+	
 	
 }
 
