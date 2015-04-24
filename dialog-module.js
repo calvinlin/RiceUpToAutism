@@ -50,13 +50,13 @@ Dialog.prototype._dialog = function(callback, dialog, image, align){
 		}	
 	}.bind(this);
 	
-	$(currentLayer).one("click", function(){
+	this.element.one("click", function(){
 		textBox.text(this.element.text() + letters.join(""));
 		window.clearTimeout(toRemove);
 		this.head.removeClass("talking");
 		callback();
 	}.bind(this));
-	
+	 
 	toRemove = window.setTimeout(nextLetter, this.speed);
 	
 }
@@ -89,6 +89,6 @@ Dialog.prototype.promptNext = function (blocking) {
 	this.sequencer.newFunction(blocking, function(next){
 		
 	this.element.append('<div class="dialog-box-arrow"></div><div class="dialog-continue">click to continue</div>');
-	$(currentLayer).one("click", next);
+	this.element.one("click", next);
 	
 }.bind(this))};
