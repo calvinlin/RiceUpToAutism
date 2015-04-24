@@ -12,6 +12,13 @@ body, html {
 	
 }
 
+body:before {
+	background: url('')
+	
+}
+
+
+
 * {
 	user-select: none;
 }

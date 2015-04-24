@@ -18,7 +18,8 @@
 		<link href="intro.game.css" rel="stylesheet" type="text/css">
 		<link href="main.page.css" rel="stylesheet" type="text/css">
 		<link href="egg.game.min.css" rel="stylesheet" type="text/css">
-		<link  href="shearing.game.css" rel="stylesheet" type="text/css" >
+		<link href="shearing.game.css" rel="stylesheet" type="text/css" >
+		<link href="shop.page.css" rel="stylesheet" type="text/css" >
 
 		<script src="jslibs/jquery-2.1.3.min.js"></script>
 		<script src="jslibs/jquery.transit.min.js"></script>
@@ -37,6 +38,7 @@
 		<script type="text/javascript" src="main.page.js"></script>
 		<script type="text/javascript" src="egg.game.js"></script>
 		<script type="text/javascript" src="shearing.game.js"></script>		
+		<script type="text/javascript" src="shop.page.js"></script>		
 		
 	</head>
 	<body>
@@ -62,7 +64,7 @@
 		<div id="chicken_coup-link" class="layer-switcher task" data-targetLayer="eggsort">
 			<div class="menuTitle">Chicken Coop</div>
 		</div>
-		<div id="shop-link" class="layer-switcher nav"></div>
+		<div id="shop-link" class="layer-switcher nav" data-targetLayer="shop"></div>
 		<div id="achievements-link" class="layer-switcher nav"></div>
 		
 		<span id="_money" class="money">money</span> <span id="_xp" class="xp">xp</span>
@@ -104,7 +106,7 @@
 	            <div class="token-value"></div>
 	        </div>
 	        <div class="xp-display">
-	            <div class="xp-image">XP</div>
+	            <div class="xp-image"></div>
 	            <div class="xp-value"></div>
 	        </div>
    		</div>
@@ -167,7 +169,7 @@
 		            <div class="token-value"></div>
 		        </div>
 		        <div class="xp-display">
-		            <div class="xp-image">XP</div>
+		            <div class="xp-image"></div>
 		            <div class="xp-value"></div>
 		        </div>
 	   		</div>
@@ -176,6 +178,72 @@
 		        <div class="button" id="back-to-main">go back</div>
 		    </div>
 	
+		</div>
+		
+	<div class="layer" id="shop">
+			<div id="shop-title">
+				FarmReTails
+			</div>
+			<div class="item-row" id="truck-row">
+				<div class="item">
+					<div class="item-image">
+					</div>
+					<div class="item-price">
+						10000
+					</div>
+				</div>
+				<div class="item">
+					<div class="item-image">
+					</div>
+					<div class="item-price">
+						25000
+					</div>
+				</div>
+				<div class="item">
+					<div class="item-image">
+					</div>
+					<div class="item-price">
+						50000
+					</div>
+				</div>
+				<div class="row-accompanying-text">
+					<span class="text-body">buy new tractors</span> 
+				</div>
+			</div>
+			<div class="item-row" id="property-row">
+				<div class="item">
+					<div class="item-image">
+					</div>
+					<div class="item-price">
+						10000
+					</div>
+				</div>
+				<div class="item">
+					<div class="item-image">
+					</div>
+					<div class="item-price">
+						25000
+					</div>
+				</div>
+				<div class="item">
+					<div class="item-image">
+					</div>
+					<div class="item-price">
+						50000
+					</div>
+				</div>
+				<div class="row-accompanying-text">
+					<span class="text-body">buy new property</span>
+			</div>
+				</div>
+			<div id="dialog-head">
+			</div>
+			<div id="dialog-box">
+				Hello, dear.
+				What would you like to buy today?
+			</div>
+			<div id="exit">
+			</div>
 		</div>
 		
 </body>

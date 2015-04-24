@@ -472,7 +472,7 @@
             }
         
                 #shearing .growth-display .xp-display .xp-image {
-                    text-align: center;
+                    background: url("Resources/images/xp icon.png") center/contain;
                 }
                 
 #shearing .nav-buttons {    
@@ -492,7 +492,7 @@
 		background: white;
 		
 		font-family: Unkempt, Arial, sans-serif;
-		font-size: 90px;
+		font-size: 30px;
 		color: black;
 		
 		right: 260px;
@@ -506,7 +506,6 @@
         
     position: absolute;
     
-       font-size: 20px;
         height: 100px;
         width: 140px;
     

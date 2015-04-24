@@ -85,13 +85,14 @@ function run_game_over() {
 		var tokenDiv = currentLayer.querySelector(".growth-display .token-display .token-value");
 		var money = Math.ceil(score / total * 750);
 		var time = 800 / money;
-		
+		var toClear;
 		function incrementToken (){
 			var newVal = (parseInt(tokenDiv.innerHTML) || 0) + 1;
 	        tokenDiv.innerHTML = newVal;
 	        if (newVal <= money){
-	            window.setTimeout(incrementToken, time);
+	            toClear = window.setTimeout(incrementToken, time);
 	        } else {
+	        	window.clearTimeout(toClear);
 	        	next();
 	        }
 		}
@@ -108,13 +109,15 @@ function run_game_over() {
 		var xpDiv = currentLayer.querySelector(".growth-display .xp-display .xp-value");
 		var xp = Math.ceil(score / total * 750);
 		var time = 800 / xp ;
+		var toClear;
 		
 		function incrementXP(){
 			var newVal = (parseInt(xpDiv.innerHTML) || 0) + 1;
 	        xpDiv.innerHTML = newVal;
 	        if (newVal <= xp){
-	        	window.setTimeout(incrementXP, time);
+	        	toClear = window.setTimeout(incrementXP, time);
 	        } else {
+	        	window.clearTimeout(toClear);
 	        	next();
 	        }
 		}
@@ -178,7 +181,7 @@ function Field (sequencer, selector, animalClass, wanderingClass, animateFreq ){
 	this.element = $(this.selector);
 	
 	this.updater = function (){
-		
+	
 		var self = this;
 		
 		$('.'+this.wanderingClass+'.'+this.animalClass).each(function(){
@@ -218,7 +221,11 @@ function Field (sequencer, selector, animalClass, wanderingClass, animateFreq ){
 			
 		});
 		
-		window.setTimeout(this.updater, this.animateFreq);
+		if (!sheep_game_over()){
+			this.toUnbind = window.setTimeout(this.updater, this.animateFreq);
+		} else {
+			window.clearTimeout(this.toUnbind);
+		}
 		
 	}.bind(this);
 	
@@ -227,6 +234,7 @@ function Field (sequencer, selector, animalClass, wanderingClass, animateFreq ){
 	for (var i = 0; i < wool_color_array.length; ++i){
 		(function (){
 			var j = i;
+			var self = this;
 			this.element.on("click", "." + this.animalClass + "." + wool_color_array[j] + "_sheep:not(.deactive)", function(){
 				this.classList.add("panic");
 				if (wool_collected[j] + 1 > wool_needed_array[j]){
@@ -241,16 +249,18 @@ function Field (sequencer, selector, animalClass, wanderingClass, animateFreq ){
 				}
 				this.classList.add('deactive');
 				
-				if(sheep_game_over())
-					run_game_over();
-				
+
 				document.getElementById("not-required-wool").innerHTML = not_required_wool;
+				
+				if(sheep_game_over()){
+					window.clearTimeout(self.toUnbind);
+					run_game_over();
+				}
+				
 			});		
 			
 		}).bind(this)();
 	}
-	
-	window.setTimeout(this.updater, this.animateFreq);
 	
 }
 
@@ -284,6 +294,9 @@ Field.prototype.spawn = function (animalType, blocking){
 		});
 	});
 	
+	if (this.toUnbind === undefined){
+		this.toUnbind = window.setTimeout(this.updater, this.animateFreq);
+	}
 	next();
 	
 }.bind(this))};	

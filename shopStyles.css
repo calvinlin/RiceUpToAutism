@@ -1,9 +1,8 @@
 @CHARSET "ISO-8859-1";
-@import url(//fonts.googleapis.com/css?family=Tangerine&effect=distressed);
 
 body{
 	
-	background-image: url("store_background.jpg");
+	background-image: url("Resources/images/store_background.jpg");
 	background-repeat: no-repeat;
 	
 }
@@ -128,7 +127,7 @@ body{
     color : white;
     font-size:400%;
     font-stretch: extra-expanded;
-    font-family: 'Tangerine', serif; 
+    font-family: Unkempt, 'Tangerine', serif; 
     text-shadow: 2px 4px #D2691E;
 	
 }

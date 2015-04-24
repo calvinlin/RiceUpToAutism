@@ -323,7 +323,7 @@
 }
 
 #eggsort .growth-display .xp-display .xp-image {
-  text-align: center;
+  background: url("Resources/images/xp icon.png") center/contain;
 }
 
 #eggsort .nav-buttons {

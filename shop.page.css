@@ -1,0 +1,218 @@
+@CHARSET "ISO-8859-1";
+
+#shop {
+	display: block;
+	background: url('Resources/images/store_background.jpg') center/contain no-repeat;
+}
+
+#shop #shop-title {
+	font-family: Unkempt, Arial, sans-serif;
+	 font-size: 50px;
+	 color: white;
+	 font-weight: bold;
+	 left: 420px;
+	 top: 80px;
+}
+#shop .item-row {
+	
+	height: 150px;
+	width: 1000px;
+	
+	left: 60px;
+	
+}
+
+	#shop .item-row#truck-row {	
+		top: 180px;
+	}
+	
+		#shop .item-row#truck-row .item:nth-child(1) .item-image{
+			background: url('Resources/images/tractor/tractor_3.png') center/contain no-repeat;
+		}
+		
+		#shop .item-row#truck-row .item:nth-child(2) .item-image{
+			background: url('Resources/images/tractor/tractor_2.png') center/contain no-repeat;
+		}
+		
+		#shop .item-row#truck-row .item:nth-child(3) .item-image{
+			background: url('Resources/images/tractor/tractor_1.png') center/contain no-repeat;
+		}
+	
+	#shop .item-row#property-row {	
+		top: 330px;
+	}
+	
+		#shop .item-row#property-row .item:nth-child(1) .item-image{
+			background: url('Resources/images/property_icon/sheep_pen_locked.png') center/contain no-repeat;
+		}
+		
+		#shop .item-row#property-row .item:nth-child(2) .item-image{
+			background: url('Resources/images/property_icon/pig_pen_locked.png') center/contain no-repeat;
+		}
+		
+		#shop .item-row#property-row .item:nth-child(3) .item-image{
+			background: url('Resources/images/property_icon/stable_locked.png') center/contain no-repeat;
+		}
+	
+
+	#shop .item-row .item {
+		
+		position: relative;
+		
+		display: inline-block;
+		
+		height: 150px;
+		width: 250px;
+	
+	}
+	
+		#shop .item-row .item .item-image {
+		
+			position: absolute;
+			
+			left: 0;
+			height: 150px;
+			width: 150px;
+		
+		}
+		
+		#shop .item-row .item .item-price {
+		
+			position: absolute;
+			
+			left: 150px;
+			height: 150px;
+			width: 100px;
+		
+			font-family: Unkempt, Arial, sans-serif;
+			font-size: 20px;
+			line-height: 150px;
+			text-align: center;
+			color: white;
+			font-weight: bold;
+		}
+		
+			#shop .item-row .item .item-price:after {
+	
+				display: inline-block;
+	
+				height: 20px;
+				width: 20px;
+				
+				background: url('Resources/images/coin.png') center/contain no-repeat;
+				
+				content: "";
+				
+			}
+			
+	#shop .item-row .row-accompanying-text {
+	
+		position: absolute;
+	
+		right: 20px;
+		top: 0;
+	
+		height: 150px;
+		width: 175px;
+		
+		line-height: 150px;
+		vertical-align: middle;
+		
+		
+		
+	}
+	
+		#shop .item-row .row-accompanying-text .text-body {
+		
+			display: inline-block;
+		
+			font-family: Unkempt, Arial, sans-serif;
+			font-size: 40px;
+		
+			color: white;
+			font-weight: bold;
+		
+			line-height: 40px;
+			
+			position: absolute;
+			top: 30px;
+		}
+		
+#shop #dialog-head {
+	
+	z-index: 2;
+
+	left: 100px;
+	bottom: 0;
+	
+	width: 300px;
+	height: 300px;
+
+	background: url('Resources/images/store_owner.png') center/contain no-repeat;
+		
+}
+
+
+#shop #dialog-box {
+	
+	z-index: 2;
+
+	position: absolute;
+	
+	left: 400px;
+	bottom: 100px;
+	
+	width: 500px;
+	height: 60px;
+	
+	margin-left: 39px;
+	padding: 15px;
+
+	border-radius: 5px;
+	
+	box-shadow: 0 0 0 20px #F5EAC8, 0 0 0 25px #251C00;
+	
+	background: white;
+	
+	color: black;
+	font-family: Unkempt, Arial;
+	font-size: 32px;
+	line-height: 30px;
+	font-weight: bold;
+	word-spacing: 3px;
+	
+}
+
+	#shop #dialog-box:after, #shop #dialog-box:before {
+			right: 100%;
+			top: 50%;
+			border: solid transparent;
+			content: " ";
+			height: 0;
+			width: 0;
+			position: absolute;
+			pointer-events: none;
+		}
+		
+		#shop #dialog-box:after {
+			border-color: rgba(136, 183, 213, 0);
+			border-right-color: #F5EAC8;
+			border-width: 38px; /* 30px */
+			margin-top: -35px;
+			margin-right: 19px;
+		}
+		
+		#shop #dialog-box:before {
+			border-color: rgba(194, 225, 245, 0);
+			border-right-color: black;
+			border-width: 44px; /* 31px */
+			margin-top: -42px; /* 31px */
+			margin-right: 20px;
+		}
+		
+#shop #exit {
+	 bottom: 140px;
+  width: 150px;
+  right: 0;
+  height: 300px;
+}
