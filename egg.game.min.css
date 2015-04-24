@@ -1,5 +1,9 @@
 @CHARSET "ISO-8859-1";
 
+#eggsort {
+  background: url("Resources/images/chicken coup background.jpg") center/contain no-repeat;
+}
+
 #eggsort #dialog-box {
   z-index: 10;
   position: absolute;
