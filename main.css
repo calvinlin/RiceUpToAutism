@@ -15,54 +15,54 @@ body, html {
 body:before {
 	display: none;
 	content: url("Resources/images/background.jpg")
-url("images/background_flipped.jpg"),
-url('images/cow.png'),
-url("images/shadow.png"),
-url('images/cow_2.png'),
-url('images/pig.png'),
-url('images/pig_2.png'),
-url('images/horse.png'),
-url('images/horse_2.png'),
-url('images/sheep.png'),
-url('images/sheep_2.png'),
-url('images/chicken.png'),
-url('images/chicken_2.png'),
-url('images/goat.png'),
-url('images/goat_2.png'),
-url('Resources/images/farmer.png'),
-url("images/truck.png"),
-url("images/arrow.png"),
-url("images/denied.png"),
-url("Resources/images/coin.png"),
-url("Resources/images/xp icon.png"),
-url("Resources/images/chicken coup background.jpg"),
-url("images/conveyor-belt.png"),
-url("images/sheep_field_background.jpg"),
-url('images/black_sheep.png'),
-url('images/black_sheep_2.png'),
-url('images/blue_sheep.png'),
- url('images/blue_sheep_2.png'),
-url('images/red_sheep.png'),
-url('images/red_sheep_2.png'),
-url('images/green_sheep.png'),
-url('images/green_sheep_2.png'),
-url('Resources/images/store_background.jpg'),
-url('Resources/images/tractor/tractor_3_locked.png'),
-url('Resources/images/tractor/tractor_2_locked.png'),
-url('Resources/images/tractor/tractor_1_locked.png'),
-url('Resources/images/tractor/tractor_3.png'),
-url('Resources/images/tractor/tractor_2.png'),
-url('Resources/images/tractor/tractor_1.png'),
-url('Resources/images/property_icon/chicken_coup_locked.png'),
-url('Resources/images/property_icon/pig_pen_locked.png'),
-url('Resources/images/property_icon/stable_locked.png'),
-url("Resources/images/property_icon/sheep_pen.png"),
-url('Resources/images/property_icon/chicken_coup.png'),
-url('Resources/images/property_icon/pig_pen.png'),
-url('Resources/images/property_icon/stable.png'),
-url("Resources/images/property_icon/sheep_pen_locked.png"),
-url('Resources/images/store_owner.png'),
-url("Resources/images/shop_sign.png"),
+url("images/background_flipped.jpg")
+url('images/cow.png')
+url("images/shadow.png")
+url('images/cow_2.png')
+url('images/pig.png')
+url('images/pig_2.png')
+url('images/horse.png')
+url('images/horse_2.png')
+url('images/sheep.png')
+url('images/sheep_2.png')
+url('images/chicken.png')
+url('images/chicken_2.png')
+url('images/goat.png')
+url('images/goat_2.png')
+url('Resources/images/farmer.png')
+url("images/truck.png")
+url("images/arrow.png")
+url("images/denied.png")
+url("Resources/images/coin.png")
+url("Resources/images/xp icon.png")
+url("Resources/images/chicken coup background.jpg")
+url("images/conveyor-belt.png")
+url("images/sheep_field_background.jpg")
+url('images/black_sheep.png')
+url('images/black_sheep_2.png')
+url('images/blue_sheep.png')
+ url('images/blue_sheep_2.png')
+url('images/red_sheep.png')
+url('images/red_sheep_2.png')
+url('images/green_sheep.png')
+url('images/green_sheep_2.png')
+url('Resources/images/store_background.jpg')
+url('Resources/images/tractor/tractor_3_locked.png')
+url('Resources/images/tractor/tractor_2_locked.png')
+url('Resources/images/tractor/tractor_1_locked.png')
+url('Resources/images/tractor/tractor_3.png')
+url('Resources/images/tractor/tractor_2.png')
+url('Resources/images/tractor/tractor_1.png')
+url('Resources/images/property_icon/chicken_coup_locked.png')
+url('Resources/images/property_icon/pig_pen_locked.png')
+url('Resources/images/property_icon/stable_locked.png')
+url("Resources/images/property_icon/sheep_pen.png")
+url('Resources/images/property_icon/chicken_coup.png')
+url('Resources/images/property_icon/pig_pen.png')
+url('Resources/images/property_icon/stable.png')
+url("Resources/images/property_icon/sheep_pen_locked.png")
+url('Resources/images/store_owner.png')
+url("Resources/images/shop_sign.png")
 url("Resources/images/achievement_sign.png");
 	
 }
