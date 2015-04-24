@@ -1,0 +1,405 @@
+@CHARSET "ISO-8859-1";
+@import url(//fonts.googleapis.com/css?family=Tangerine&effect=distressed);
+
+body{
+	
+	background-image: url("store_background.jpg");
+	background-repeat: no-repeat;
+	
+}
+#mytitle{
+	
+	position : absolute;
+	top : 145px;
+	left : 750px;
+	color : white;
+	font-size: 500%;
+	text-shadow: 2px 4px #D2691E;
+	-webkit-transition: width 0.15s ease;
+	transition: -webkit-transform 0.5s ease;
+	
+}
+
+#mytitle:active {
+    -webkit-transform: scale(2);
+}
+@-webkit-keyframes orbit {
+	from {
+		-webkit-transform:rotate(0deg);}
+	to {
+		-webkit-transform:rotate(360deg);
+	}
+}
+
+@keyframes orbit {
+	from {
+		transform:rotate(0deg);
+
+		/* I am including the -webkit-transform properties, because
+		   Chrome might start supporting keyframe without prefix in the future,
+		   but we can't be certain whether it will support prefix-free transform
+		   at the same time */
+
+		-webkit-transform:rotate(0deg);}
+	to {
+		transform:rotate(360deg);
+		-webkit-transform:rotate(360deg);
+	}
+}
+#truck1{
+	
+	position:absolute;
+    top: 380px;
+    left: 250px;	
+}
+#truck2{
+	
+	position:absolute;
+    top: 380px;
+    left: 450px;
+}
+
+
+#level1{
+	
+	position:absolute;
+    top: 580px;
+    left: 250px;
+    	
+}
+#level2{
+	
+	position:absolute;
+    top: 580px;
+    left: 450px;
+}
+#t1{
+	
+	position:absolute;
+    top: 320px;
+    left: 295px;
+    color : white;
+	
+}
+#t2{
+	
+	position:absolute;
+    top: 320px;
+    left: 495px;
+    color : white;
+		
+}
+
+#l1{
+	
+	position:absolute;
+    top: 520px;
+    left: 295px;
+    color : white;
+	
+}
+#l2{
+	
+	position:absolute;
+    top: 520px;
+    left: 495px;
+    color : white;
+		
+}
+#newlevels{
+	
+	position:absolute;
+    top: 520px;
+    left: 730px;
+    color : white;
+    font-size:350%;
+    font-stretch: extra-expanded;
+    font-family: 'Tangerine', serif; 
+    text-shadow: 2px 4px #D2691E;
+	
+    
+}
+
+#newtrucks{
+	
+	position:absolute;
+    top: 320px;
+    left: 730px;
+    color : white;
+    font-size:400%;
+    font-stretch: extra-expanded;
+    font-family: 'Tangerine', serif; 
+    text-shadow: 2px 4px #D2691E;
+	
+}
+#next{
+    
+   	text-align:center;
+    text-decoration:none;
+    position:absolute;
+    top: 640px;
+    right: 150px;
+   	    
+}
+#money1{
+	
+	
+	position:absolute;
+    top: 145px;
+    left: 360px;
+    color : white;
+    background:url(http://demo.tutorialzine.com/2013/10/css3-features-you-can-finally-use/assets/img/rocket.png) no-repeat 50px center;
+
+	/* Chrome still requires the -webkit- prefix */
+	-webkit-animation:orbit 2s linear infinite;
+	animation:orbit 2s linear infinite;
+
+	transition:background-position 0.8s;
+    
+
+}
+#money2{
+	
+	
+	position:absolute;
+    top: 145px;
+    left:460px;
+    color : white;
+    	background:url(http://demo.tutorialzine.com/2013/10/css3-features-you-can-finally-use/assets/img/rocket.png) no-repeat 50px center;
+
+	/* Chrome still requires the -webkit- prefix */
+	-webkit-animation:orbit 2s linear infinite;
+	animation:orbit 2s linear infinite;
+
+	transition:background-position 0.8s;
+    
+
+}
+#money3{
+	
+	
+	position:absolute;
+    top: 145px;
+    left: 560px;
+    color : white;
+    	background:url(http://demo.tutorialzine.com/2013/10/css3-features-you-can-finally-use/assets/img/rocket.png) no-repeat 50px center;
+
+	/* Chrome still requires the -webkit- prefix */
+	-webkit-animation:orbit 2s linear infinite;
+	animation:orbit 2s linear infinite;
+
+	transition:background-position 0.8s;
+    
+
+}
+//#money4{
+	
+	
+	position:absolute;
+    top: 145px;
+    left: 660px;
+    color : white;
+    	background:url(http://demo.tutorialzine.com/2013/10/css3-features-you-can-finally-use/assets/img/rocket.png) no-repeat 50px center;
+
+	/* Chrome still requires the -webkit- prefix */
+	-webkit-animation:orbit 2s linear infinite;
+	animation:orbit 2s linear infinite;
+
+	transition:background-position 0.8s;
+    
+
+}
+//#money5{
+	
+	
+	position:absolute;
+    top: 145px;
+    left: 760px;
+    color : white;
+    	background:url(http://demo.tutorialzine.com/2013/10/css3-features-you-can-finally-use/assets/img/rocket.png) no-repeat 50px center;
+
+	/* Chrome still requires the -webkit- prefix */
+	-webkit-animation:orbit 2s linear infinite;
+	animation:orbit 2s linear infinite;
+
+	transition:background-position 0.8s;
+    
+
+}
+//#money6{
+	
+	
+	position:absolute;
+    top: 145px;
+    left: 860px;
+    color : white;
+    	background:url(http://demo.tutorialzine.com/2013/10/css3-features-you-can-finally-use/assets/img/rocket.png) no-repeat 50px center;
+
+	/* Chrome still requires the -webkit- prefix */
+	-webkit-animation:orbit 2s linear infinite;
+	animation:orbit 2s linear infinite;
+
+	transition:background-position 0.8s;
+    
+
+}
+//#money7{
+	
+	
+	position:absolute;
+    top: 145px;
+    left: 960px;
+    color : white;
+    	background:url(http://demo.tutorialzine.com/2013/10/css3-features-you-can-finally-use/assets/img/rocket.png) no-repeat 50px center;
+
+	/* Chrome still requires the -webkit- prefix */
+	-webkit-animation:orbit 2s linear infinite;
+	animation:orbit 2s linear infinite;
+
+	transition:background-position 0.8s;
+    
+
+}
+#money8{
+	
+	
+	position:absolute;
+    top: 145px;
+    left: 1060px;
+    color : white;
+    	background:url(http://demo.tutorialzine.com/2013/10/css3-features-you-can-finally-use/assets/img/rocket.png) no-repeat 50px center;
+
+	/* Chrome still requires the -webkit- prefix */
+	-webkit-animation:orbit 2s linear infinite;
+	animation:orbit 2s linear infinite;
+
+	transition:background-position 0.8s;
+    
+
+}
+#money9{
+	
+	
+	position:absolute;
+    top: 145px;
+    left: 1160px;
+    color : white;
+    	background:url(http://demo.tutorialzine.com/2013/10/css3-features-you-can-finally-use/assets/img/rocket.png) no-repeat 50px center;
+
+	/* Chrome still requires the -webkit- prefix */
+	-webkit-animation:orbit 2s linear infinite;
+	animation:orbit 2s linear infinite;
+
+	transition:background-position 0.8s;
+    
+
+}
+#money10{
+	
+	
+	position:absolute;
+    top: 145px;
+    left: 1260px;
+    color : white;
+    	background:url(http://demo.tutorialzine.com/2013/10/css3-features-you-can-finally-use/assets/img/rocket.png) no-repeat 50px center;
+
+	/* Chrome still requires the -webkit- prefix */
+	-webkit-animation:orbit 2s linear infinite;
+	animation:orbit 2s linear infinite;
+
+	transition:background-position 0.8s;
+    
+
+}
+
+
+
+#coins{
+	
+	position:absolute;
+    top: 780px;
+    left: 1230px;
+    color : white;
+    font-size:450%;
+    font-stretch: extra-expanded;
+    font-family: 'Tangerine', serif; 
+    
+}
+
+#row1{
+    
+   	right : 500;
+    text-align:center;
+    display:inline-block;
+    text-decoration:none;
+    color:black;    
+}
+#storeowner{
+	
+	position:absolute;
+    top : 680px;
+    left: 00px;
+    
+}
+
+#row2{
+    
+    text-align:center;
+    display:inline-block;
+    text-decoration:none;
+    color:black;
+}
+
+	#row1 > * {
+		display: inline-block;
+		
+	}
+	
+	#row2 > * {
+		display: inline-block;
+	}
+	
+	
+img {
+    transition: -webkit-transform 0.25s ease;
+}
+
+img:active {
+    -webkit-transform: scale(1.25);
+}
+.triangle{
+		
+			position: absolute;
+		
+			right: 10px;
+			bottom: 10px;
+			
+			height: 0px; 
+			width: 0px; 
+		
+			border-left: 10px solid red;
+			border-bottom: 10px solid;
+			border-top: 10px solid;
+		
+		}
+//.triangle
+{
+    height: 0px;
+    width: 0px;
+    border-top: 50px solid transparent;
+    border-bottom: 50px solid transparent;
+    border-right: 50px solid #70c282;
+}
+.dialogBox{
+   	
+   	position:relative;
+    top : 680px;
+    left : 322px;
+    width : 700px;
+    background: white;
+    border: 10px solid #0000a0;
+    padding: 0.75em;
+    border-radius: 3px;
+    min-height: 1.5em;
+    line-height: 2.5em;
+}
