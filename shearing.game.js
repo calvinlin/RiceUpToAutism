@@ -281,7 +281,7 @@ function Field (sequencer, selector, animalClass, wanderingClass, animateFreq ){
 		(function (){
 			var j = i;
 			var self = this;
-			this.element.on("click", "." + this.animalClass + "." + wool_color_array[j] + "_sheep:not(.deactive)", function(){
+			this.element.on("mouseup", "." + this.animalClass + "." + wool_color_array[j] + "_sheep:not(.deactive)", function(){
 				console.log(this.classList);
 				this.classList.add("panic");
 				if (wool_collected[j] + 1 > wool_needed_array[j]){
@@ -306,7 +306,7 @@ function Field (sequencer, selector, animalClass, wanderingClass, animateFreq ){
 		}).bind(this)();
 	}
 	
-	this.element.on("click", "." + this.animalClass + "." + unneeded + "_sheep:not(.deactive)", function(){
+	this.element.on("mouseup", "." + this.animalClass + "." + unneeded + "_sheep:not(.deactive)", function(){
 		this.classList.add("panic");
 		++not_required_wool;
 		this.classList.add('deactive');
