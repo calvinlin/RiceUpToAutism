@@ -80,10 +80,10 @@ window.onload = function(){
 		}
 	});
 	
-	$("#splash")
+	jQuery(document.getElementById("splash"))
 		.transition({opacity: 0}, 500, "ease-in-out", 
 				function(){ 
-			$("#splash").css("display", "none");
+			jQuery(document.getElementById("splash")).css("display", "none");
 		});
 	
 	if (fetchPlayerData().isNewPlayer()){
