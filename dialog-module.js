@@ -44,19 +44,19 @@ Dialog.prototype._dialog = function(callback, dialog, image, align){
 			textBox.append(letters.shift());
 			toRemove = window.setTimeout(nextLetter, this.speed);
 		} else {
-			this.element.off("click");
+			$(currentLayer).off("click");
 			this.head.removeClass("talking");
 			callback();
 		}	
 	}.bind(this);
 	
-	this.element.one("click", function(){
+	$(currentLayer).one("click", function(){
 		textBox.text(this.element.text() + letters.join(""));
 		window.clearTimeout(toRemove);
 		this.head.removeClass("talking");
 		callback();
 	}.bind(this));
-	 
+	
 	toRemove = window.setTimeout(nextLetter, this.speed);
 	
 }

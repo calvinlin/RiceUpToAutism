@@ -85,6 +85,7 @@ window.onload = function(){
 			music[currentAudio].pause();
 		}
 	});
+	fetchPlayerData().reset();
 	
 	
 	/*if (fetchPlayerData().isNewPlayer()){*/
