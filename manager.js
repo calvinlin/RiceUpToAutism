@@ -55,11 +55,17 @@ function switchToLayer (layerName){
 		window.clearInterval(i);
 	}
 	
+	document.getElementById("splash").style.display = "none";
+	
 	layerFunction[layerName]();
 	
 }
 
 window.onload = function(){
+	jQuery(document.getElementById("splash")).transition(
+			{opacity: 0}, 500, "ease-in-out", function(){
+				$(this).css("display", "none");
+			});
 	var initialState = document.querySelectorAll(".layer");
 	stateMapping = {
 		"intro": {el: initialState[0].cloneNode(true), audio: "task"},
@@ -80,11 +86,6 @@ window.onload = function(){
 		}
 	});
 	
-	jQuery(document.getElementById("splash"))
-		.transition({opacity: 0}, 500, "ease-in-out", 
-				function(){ 
-			jQuery(document.getElementById("splash")).css("display", "none");
-		});
 	
 	if (fetchPlayerData().isNewPlayer()){
 		$(".resource-display").css('opacity', 0);
