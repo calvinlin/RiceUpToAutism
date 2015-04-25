@@ -1,0 +1,7 @@
+@CHARSET "ISO-8859-1";
+  
+  #splash {
+	  background: url("Resources/images/title.png") center/contain no-repeat, url("Resources/images/background.jpg") center/contain no-repeat;
+	  z-index: 12;
+	  display: block;
+  }
