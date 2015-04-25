@@ -87,11 +87,11 @@ window.onload = function(){
 	});
 	
 	
-	if (fetchPlayerData().isNewPlayer()){
+	/*if (fetchPlayerData().isNewPlayer()){*/
 		$(".resource-display").css('opacity', 0);
 		switchToLayer("intro");
-	} else { 
+	/*} else { 
 		switchToLayer("main");
-	}
+	}*/
 
 };
