@@ -80,6 +80,7 @@ window.onload = function(){
 		}
 	});
 	
+	$("#splash").transition({opacity: 0}, 500, "ease-in-out", function(){ $(this).css("display", "none")});
 	if (fetchPlayerData().isNewPlayer()){
 		$(".resource-display").css('opacity', 0);
 		switchToLayer("intro");
